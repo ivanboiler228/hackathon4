@@ -32,6 +32,54 @@
         /* если страница открыта без основного скрипта */
       }
 
+      // Подтягиваем серверные выжимки, задачи и аудит, чтобы данные не терялись после перезагрузки.
+      try {
+        const [mr, tr, ar] = await Promise.all([
+          fetch("/api/meetings/ai", { credentials: "same-origin", cache: "no-store" }),
+          fetch("/api/tasks", { credentials: "same-origin", cache: "no-store" }),
+          fetch("/api/audit?limit=100", { credentials: "same-origin", cache: "no-store" }),
+        ]);
+        if (mr.ok) {
+          const data = await mr.json();
+          (data.items || []).forEach((item) => {
+            if (typeof AI_MEETINGS !== "undefined") AI_MEETINGS[item.event_id] = item;
+            if (typeof AI_LOADED !== "undefined") AI_LOADED.add(item.event_id);
+            if (typeof ensureMeetingFromAI === "function") ensureMeetingFromAI(item);
+          });
+        }
+        if (tr.ok) {
+          const data = await tr.json();
+          if (typeof MEETING_TASKS !== "undefined") MEETING_TASKS = data.items || [];
+          if (typeof addServerTask === "function") {
+            (data.items || []).forEach((item) => addServerTask(item));
+          }
+        }
+        if (ar.ok) {
+          const data = await ar.json();
+          window.SERVER_AUDIT = data.items || [];
+          if (typeof mergeServerAudit === "function") mergeServerAudit(data.items || []);
+        }
+        if (typeof refresh === "function") refresh(true);
+      } catch {
+        /* демо без бэкенда */
+      }
+
+      // Какая модель реально подключена — показываем в интерфейсе без хардкода.
+      try {
+        const hr = await fetch("/health", { credentials: "same-origin", cache: "no-store" });
+        if (hr.ok) {
+          const health = await hr.json();
+          window.LLM_INFO = {
+            provider: health.llm?.provider || "DeepSeek",
+            model: health.llm?.model || "deepseek-chat",
+            stt: health.stt?.model || "Vosk",
+          };
+          if (typeof refresh === "function") refresh(true);
+        }
+      } catch {
+        /* health недоступен */
+      }
+
       const avatar = document.querySelector("#meAvatar");
       if (avatar) {
         avatar.textContent = initials(user.name);

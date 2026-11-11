@@ -80,3 +80,20 @@
   .tabsbar a .lbl { font-size: 11px; }
   .tabsbar a .ms { font-size: 16px; }
 }
+
+@media (max-width: 900px) {
+  .dc-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .dc-pane { min-height: 0; height: auto; max-height: none; overflow: visible; }
+  .dc-pane.dc-chat { min-height: 70vh; height: auto; max-height: none; }
+  .dc-log { max-height: none; min-height: 240px; }
+  .dc-list { max-height: 320px; }
+  .dc-doc b { font-size: 14px; }
+  .st-grid .card[style*="grid-column"] { grid-column: auto !important; }
+  .st-row { grid-template-columns: minmax(0, 1fr) auto; }
+}
+@media (max-width: 520px) {
+  .dc-compose { flex-wrap: wrap; }
+  .dc-compose textarea { flex: 1 1 100%; }
+  .dc-compose .btn { width: 100%; justify-content: center; }
+  .dc-pane.dc-chat { min-height: 80vh; }
+}

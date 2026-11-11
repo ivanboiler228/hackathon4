@@ -62,6 +62,38 @@ def search(query: str, acls: list[str], limit: int = 4) -> list[dict[str, Any]]:
     return [doc for score, doc in ranked if score >= cutoff][:limit]
 
 
+def selected(query: str, doc_ids: list[str]) -> list[dict[str, Any]]:
+    """Источники, выбранные пользователем вручную. Без keyword-отсечения."""
+    docs: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for raw_id in doc_ids[:8]:
+        doc_id = str(raw_id).strip().upper()
+        if not doc_id or doc_id in seen:
+            continue
+        doc = db.get_doc(doc_id)
+        if doc:
+            docs.append(doc)
+            seen.add(doc_id)
+    return docs
+
+
+def best_fragment(query: str, text: str, limit: int = 260) -> str:
+    """Короткий фрагмент источника для цитаты в ответе."""
+    clean = re.sub(r"\s+", " ", text or "").strip()
+    if not clean:
+        return ""
+    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", clean) if s.strip()]
+    q_stems = stems(query)
+    best = max(
+        sentences,
+        key=lambda sentence: sum(1 for stem in q_stems if stem in normalize(sentence)),
+        default=clean,
+    )
+    if len(best) <= limit:
+        return best
+    return best[: limit - 1].rstrip() + "…"
+
+
 def explicit_doc(query: str) -> dict[str, Any] | None:
     match = DOC_ID_RE.search(query)
     if not match:

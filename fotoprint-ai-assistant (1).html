@@ -910,8 +910,68 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
 .mp-h b{display:block;font-weight:600}.mp-h span{font-size:12px;color:var(--ink2)}
 .mp-r{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:12px 4px 2px}
 .mp-r .ms{color:var(--ink2)}.mp-r b{display:block;font-size:13px;font-weight:600}.mp-r span:not(.ms){font-size:12px;color:var(--ink2)}
+
+/* ===== documents workspace ===== */
+.dc-grid{display:grid;grid-template-columns:210px 300px minmax(0,1fr);gap:16px;align-items:start}
+.dc-pane{padding:12px;height:560px;max-height:560px;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:2px;min-width:0}
+.dc-pane.dc-chat{padding:0;height:560px;max-height:560px}
+.dc-head{display:flex;align-items:center;gap:6px;padding:4px 8px 10px;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+.dc-head .ms{font-size:17px}
+.dc-f{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;text-align:left;padding:9px 10px;border-radius:14px;background:transparent;font-size:13.5px}
+.dc-f:hover{background:rgba(255,255,255,.55)}
+.dc-f.on{background:rgba(255,255,255,.92);box-shadow:0 2px 8px rgba(40,60,40,.08)}
+.dc-f .ms{font-size:18px;color:var(--ink2)}
+.dc-f b{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-f .c{font-size:11.5px;color:var(--ink2)}
+.dc-search{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:13px;padding:7px 10px;margin:2px 4px 8px}
+.dc-search input{border:0;outline:0;font:inherit;font-size:13px;flex:1;min-width:0;background:transparent}
+.dc-search .ms{font-size:17px;color:var(--ink2)}
+.dc-list{overflow:auto;flex:1;min-height:0}
+.dc-doc{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;padding:8px 8px;border-radius:12px}
+.dc-doc:hover{background:rgba(255,255,255,.6)}
+.dc-doc input{margin:3px 0 0;accent-color:var(--ink)}
+.dc-doc b{display:block;font-size:13px;font-weight:500;line-height:1.35;cursor:pointer}
+.dc-doc small{display:block;font-size:11.5px;color:var(--ink2);margin-top:2px}
+.dc-doc .tag{font-size:10.5px;padding:1px 6px;margin-top:4px}
+.dc-log{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:540px}
+.dc-empty{margin:auto;text-align:center;color:var(--ink2);font-size:13px;max-width:360px;line-height:1.5}
+.dc-empty .ms{font-size:38px;display:block;margin-bottom:8px;color:var(--ink2)}
+.dc-empty b{display:block;color:var(--ink);font-weight:600;margin-bottom:4px}
+.dc-b{max-width:92%;border-radius:18px;padding:10px 12px;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere}
+.dc-b.u{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.dc-b.a{align-self:flex-start;background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.05);border-bottom-left-radius:6px}
+.dc-who{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin-bottom:4px}
+.dc-srcs{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.dc-src{background:rgba(0,0,0,.035);border-radius:12px;padding:8px 10px;font-size:12px}
+.dc-src b{font-weight:600}
+.dc-src span{color:var(--ink2)}
+.dc-frag{color:var(--ink2);margin-top:3px;line-height:1.4}
+.dc-priv{margin-top:8px;font-size:12px;color:var(--ink2)}
+.dc-priv summary{cursor:pointer}
+.dc-priv pre{white-space:pre-wrap;max-height:180px;overflow:auto;background:rgba(0,0,0,.04);padding:8px;border-radius:10px;margin:6px 0 0;font-size:11px}
+.dc-compose{display:flex;gap:8px;align-items:flex-end;padding:12px;border-top:1px solid rgba(0,0,0,.06)}
+.dc-compose textarea{flex:1;min-height:44px;max-height:120px;resize:vertical;border:1px solid rgba(0,0,0,.1);border-radius:14px;padding:10px 12px;font:inherit;font-size:13.5px;background:#fff}
+.dc-hint{font-size:11.5px;color:var(--ink2);padding:0 14px 10px;line-height:1.4}
+.dc-sample{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;justify-content:center}
+.dc-sample button{font:inherit;font-size:12px;padding:5px 9px;border-radius:12px;border:1px solid rgba(0,0,0,.08);background:#fff;color:var(--ink2);cursor:pointer}
+.dc-sample button:hover{background:rgba(255,255,255,.75);color:var(--ink)}
+.dc-typing{display:inline-flex;gap:4px;align-items:center}
+.dc-typing i{width:6px;height:6px;border-radius:50%;background:var(--ink2);animation:dcPulse 1s infinite}
+.dc-typing i:nth-child(2){animation-delay:.15s}.dc-typing i:nth-child(3){animation-delay:.3s}
+@keyframes dcPulse{0%,100%{opacity:.25}50%{opacity:1}}
+.st-src{font-size:11px;color:var(--ink2);margin-top:6px;display:block;line-height:1.4}
+.st-list{display:flex;flex-direction:column;gap:2px}
+.st-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.st-row:last-child{border-bottom:0}
+.st-row b{font-weight:500;font-size:13.5px}
+.st-row small{display:block;font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.4}
+.st-row span{font-weight:600;font-size:14px}
+@media (max-width:1200px){
+  .tabsbar a{padding:0 15px}
+  .new-tab{margin-left:8px;padding:0 14px 0 10px}
+}
 </style>
-<link rel="stylesheet" href="/static/mobile.css?v=11">
+<link rel="stylesheet" href="/static/mobile.css?v=12">
 </head>
 <body>
 <div class="app">
@@ -921,6 +981,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
       <a data-view="calendar" class="active" style="--tc:#c9b6ff"><span class="ms">calendar_month</span><span class="lbl">Календарь</span></a>
       <a data-view="tasks" style="--tc:#ffb59a"><span class="ms">task_alt</span><span class="lbl">Задачи</span><span class="count" id="cReq" title="Новые запросы"></span><span class="count n" id="cTasks" style="display:none"></span></a>
       <a data-view="meetings" style="--tc:#8cecf2"><span class="ms">mic</span><span class="lbl">Встречи</span></a>
+      <a data-view="docs" style="--tc:#ffd27a"><span class="ms">folder</span><span class="lbl">Документы</span></a>
       <a data-view="stats" style="--tc:#b4f0a8"><span class="ms">monitoring</span><span class="lbl">Статистика</span></a>
     </nav>
     <div class="spacer" style="flex:1"></div>
@@ -964,6 +1025,8 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
       </div></section>
       <!-- MEETINGS -->
       <section class="view" id="v-meetings"><div class="page" id="meetPage"></div></section>
+      <!-- DOCS -->
+      <section class="view" id="v-docs"><div class="page" id="docsPage"></div></section>
       <!-- STATS -->
       <section class="view" id="v-stats"><div class="page" id="statPage"></div><div id="histList" hidden></div></section>
     </main>
@@ -991,10 +1054,13 @@ const PEOPLE={
   pavel:{name:'Павел Орлов',short:'Павел',role:'Финансы',color:'#5f6368'},
   irina:{name:'Ирина Жук',short:'Ирина',role:'HR',color:'#039be5'}
 };
-const ROLES={director:{me:'anna',label:'Директор',access:['all','fin','hr','prod','mkt']},prod:{me:'igor',label:'Рук. производства',access:['all','prod']}};
+const ROLES={director:{me:'anna',label:'Директор',access:['all','fin','hr','prod','mkt','support','legal']},prod:{me:'igor',label:'Рук. производства',access:['all','prod']}};
 const CAL={meet:{name:'Встречи',color:'var(--peacock)',hex:'#039be5',on:true},focus:{name:'Фокус-время',color:'var(--lavender)',hex:'#7986cb',on:true},deadline:{name:'Дедлайны задач',color:'var(--tomato)',hex:'#d50000',on:true},remind:{name:'Напоминания',color:'var(--banana)',hex:'#f6bf26',on:true}};
 const PASTEL={peacock:'#c3e4ff',sage:'#c8f1d5',grape:'#e2d2ff',tangerine:'#ffd6c4',lavender:'#dcdcff',basil:'#bfeccb',blueberry:'#cfd6ff',flamingo:'#ffd2de',graphite:'#e6e6ea',banana:'#fff1a6',tomato:'#ffcaca'};
 const COLORS={peacock:'#039be5',sage:'#33b679',grape:'#8e24aa',tangerine:'#f4511e',lavender:'#7986cb',basil:'#0b8043',blueberry:'#3f51b5',flamingo:'#e67c73',graphite:'#616161',banana:'#f6bf26',tomato:'#d50000'};
+ICONS.folder='<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>';
+ICONS.folder_open='<path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>';
+ICONS.note_add='<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>';
 const DOCS=[
   {id:'D-03',title:'Регламент производства фотокниг, ред. 4',date:'2026-10-14',acl:'prod',text:'Срок изготовления фотокниги — 3 рабочих дня. Модерация макета не дольше 4 часов. Перепечатка за счёт компании при браке >2 мм смещения.'},
   {id:'D-07',title:'Отчёт по SLA поддержки, октябрь',date:'2026-11-03',acl:'all',text:'SLA первого ответа 92% при цели 95%. Основные темы: сроки доставки (31%), качество печати (18%), промокоды (12%).'},
@@ -1096,7 +1162,7 @@ function show(v){
   currentView=v;$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
   $$('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===v));const ac=$('#nav a.active');document.documentElement.style.setProperty('--tab',ac?getComputedStyle(ac).getPropertyValue('--tc'):'#c9b6ff');
   
-  if(v==='calendar')renderCal();if(v==='tasks')renderBoard();if(v==='meetings')renderMeetings();if(v==='stats')renderStats();
+  if(v==='calendar')renderCal();if(v==='tasks')renderBoard();if(v==='meetings')renderMeetings();if(v==='docs')renderDocs();if(v==='stats')renderStats();
   try{history.replaceState(null,'','#'+v)}catch(e){}
 }
 $('#nav').onclick=e=>{const a=e.target.closest('a');if(a)show(a.dataset.view)};
@@ -1476,33 +1542,47 @@ function openTaskView(id){
     ${taskPreview(t)}
     ${t.source.ref?`<div style="margin-top:8px" class="small">Связано: ${t.source.type==='doc'?srcChip(t.source.ref):`<a href="#" data-ev="${t.source.ref}" style="color:var(--primary)">встреча «${esc(t.source.label)}»</a>`}</div>`:''}
     ${t.co.length?`<div class="small" style="margin-top:8px">Соисполнители: ${t.co.map(pname).join(', ')}</div>`:''}
+    ${isServerTask(t)?'<div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">lock</span> Задача из протокола: название и основание зафиксированы, статус синхронизируется с сервером.</div>':''}
     <div class="hist"><div><b>История</b></div>${t.hist.map(h=>`<div>${h.t} · ${PEOPLE[h.u]?.short||h.u}: ${esc(h.a)}</div>`).join('')||'<div>—</div>'}</div>
   </div>
   <div class="mf">
-    <button class="btn sm" id="tvEdit"><span class="ms">edit</span>Изменить</button>
-    <button class="btn sm" id="tvDl"><span class="ms">update</span>Перенести срок</button><button class="btn sm danger" id="tvDel"><span class="ms">delete</span>Удалить</button>
+    ${isServerTask(t)?'':`<button class="btn sm" id="tvEdit"><span class="ms">edit</span>Изменить</button><button class="btn sm" id="tvDl"><span class="ms">update</span>Перенести срок</button>`}<button class="btn sm danger" id="tvDel"><span class="ms">delete</span>Удалить</button>
     ${t.status==='review'&&t.created===me()?`<button class="btn sm" id="tvFb"><span class="ms">rate_review</span>Обратная связь</button>`:''}
     <span class="spacer"></span>
     ${!t.claimedBy?`<button class="btn primary sm" id="tvClaim"><span class="ms">back_hand</span>Взять в работу</button>`:t.claimedBy===me()&&t.status!=='review'&&t.status!=='done'?`<button class="btn primary sm" id="tvReview">Отправить на проверку</button>`:t.claimedBy!==me()&&t.status!=='done'?`<button class="btn tonal sm" id="tvJoin">Попросить подключиться</button>`:''}
   </div>`,'wide');
   const g=s=>$(s);
-  g('#tvEdit').onclick=()=>openTask({},id);
-  g('#tvDl').onclick=()=>openReschedule({taskId:id});
+  if(g('#tvEdit'))g('#tvEdit').onclick=()=>openTask({},id);
+  if(g('#tvDl'))g('#tvDl').onclick=()=>openReschedule({taskId:id});
   g('#tvDel').onclick=()=>deleteTask(id);
   if(g('#tvFb'))g('#tvFb').onclick=()=>openFeedback(id);
   if(g('#tvClaim'))g('#tvClaim').onclick=()=>{closeModal();claim(id)};
-  if(g('#tvReview'))g('#tvReview').onclick=()=>{t.status='review';t.hist.push({t:nowStr(),u:me(),a:'отправил(а) на проверку'});log('Задача на проверку',t.id);closeModal();refresh();toast('Отправлено на проверку '+PEOPLE[t.created].short)};
+  if(g('#tvReview'))g('#tvReview').onclick=()=>{t.status='review';t.hist.push({t:nowStr(),u:me(),a:'отправил(а) на проверку'});log('Задача на проверку',t.id);syncServerTask(t,t.status);closeModal();refresh();toast('Отправлено на проверку '+PEOPLE[t.created].short)};
   if(g('#tvJoin'))g('#tvJoin').onclick=()=>{REQUESTS.unshift({id:nid('R'),kind:'join',from:me(),to:t.claimedBy,obj:t.id,objLabel:t.title,payload:{text:'Готов(а) помочь с задачей, могу взять часть'},status:'pending',created:'сейчас'});log('Запрос на подключение',t.id);closeModal();refresh();toast('Запрос отправлен '+PEOPLE[t.claimedBy].short+'. Дубль не создан.')};
   $$('#modal [data-ev]').forEach(a=>a.onclick=e=>{e.preventDefault();closeModal();const ev=EVENTS.find(x=>x.id===a.dataset.ev);if(ev){anchor=parse(ev.date);show('calendar')}});
 }
-function deleteTask(id){const t=TASKS.find(x=>x.id===id);if(!t)return;
-  confirmAct({title:'Удалить задачу?',danger:true,ok:'Удалить',body:`<p style="margin:0">«${esc(t.title)}»${t.owner&&t.owner!==me()?` — ${PEOPLE[t.owner].short} получит уведомление`:''}</p>`,onOk:()=>{const i=TASKS.indexOf(t);TASKS.splice(i,1);log('Удаление задачи',t.id+' · '+t.title);refresh();
-    toast('Задача удалена','Вернуть',()=>{TASKS.splice(i,0,t);log('Восстановление задачи',t.id);refresh()})}})}
+function deleteTask(id){
+  const t=TASKS.find(x=>x.id===id);if(!t)return;
+  const srv=isServerTask(t);
+  confirmAct({title:'Удалить задачу?',danger:true,ok:'Удалить',body:`<p style="margin:0">«${esc(t.title)}»${t.owner&&t.owner!==me()?` — ${PEOPLE[t.owner]?.short||t.owner} получит уведомление`:''}</p>`,onOk:async()=>{
+    if(srv){
+      try{
+        const r=await fetch('/api/tasks/'+encodeURIComponent(t.id),{method:'DELETE',credentials:'same-origin'});
+        if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||('Ошибка '+r.status));
+      }catch(e){toast('Не удалось удалить на сервере: '+e.message);return}
+    }
+    const idx=TASKS.findIndex(x=>x.id===t.id);
+    if(idx>=0)TASKS.splice(idx,1);
+    log('Удаление задачи',t.id+' · '+t.title);refresh();
+    if(!srv)toast('Задача удалена','Вернуть',()=>{TASKS.splice(idx,0,t);log('Восстановление задачи',t.id);refresh()});
+    else toast('Задача удалена');
+  }});
+}
 function claim(id){
   const t=TASKS.find(x=>x.id===id);
   if(t.claimedBy&&t.claimedBy!==me()){toast('Задачу уже взял(а) '+PEOPLE[t.claimedBy].short+' — повторно взять нельзя','Подключиться',()=>{REQUESTS.unshift({id:nid('R'),kind:'join',from:me(),to:t.claimedBy,obj:t.id,objLabel:t.title,payload:{text:'Готов(а) помочь'},status:'pending',created:'сейчас'});refresh()});log('Попытка взять занятую задачу',t.id,'отклонено: уже в работе');return}
-  t.claimedBy=me();t.owner=t.owner||me();t.status='progress';t.hist.push({t:nowStr(),u:me(),a:'взял(а) в работу'});log('Взятие задачи в работу',t.id);refresh();
-  toast(t.id+' закреплена за вами — для остальных заблокирована','Отменить',()=>{t.claimedBy=null;t.status='new';refresh()});
+  t.claimedBy=me();t.owner=t.owner||me();t.status='progress';t.hist.push({t:nowStr(),u:me(),a:'взял(а) в работу'});log('Взятие задачи в работу',t.id);syncServerTask(t,t.status);refresh();
+  toast(t.id+' закреплена за вами — для остальных заблокирована','Отменить',()=>{t.claimedBy=null;t.status='new';syncServerTask(t,t.status);refresh()});
 }
 
 /* ============ BOARD ============ */
@@ -1534,7 +1614,7 @@ $('#board').addEventListener('drop',e=>{const l=e.target.closest('.lane');$$('.l
   if(to==='progress'&&t.claimedBy&&t.claimedBy!==me()){toast('Задача у '+PEOPLE[t.claimedBy].short+' — переместить нельзя');return}
   if(to==='progress'&&!t.claimedBy){claim(t.id);return}
   if(to==='done'&&t.created!==me()){toast('Закрыть задачу может постановщик после проверки. Отправлено на проверку.');to!=='review'&&(t.status='review')}else t.status=to;
-  t.hist.push({t:nowStr(),u:me(),a:'статус → '+t.status});log('Смена статуса',t.id+' → '+t.status);refresh()});
+  t.hist.push({t:nowStr(),u:me(),a:'статус → '+t.status});log('Смена статуса',t.id+' → '+t.status);syncServerTask(t,t.status);refresh()});
 $('#taskSearch').addEventListener('input',renderBoard);
 let BOARD_MODE='kanban';const LANE_OPEN={};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-lane-more]');if(b){LANE_OPEN[b.dataset.laneMore]=true;renderBoard()}});
@@ -1631,7 +1711,7 @@ function openFeedback(id){const t=TASKS.find(x=>x.id===id);let v='accepted';
   <div class="field"><label>Комментарий</label><textarea class="inp" id="fbT" placeholder="Что хорошо, что поправить"></textarea></div></div>
   <div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="fbOk">Отправить</button></div>`,'narrow');
   $('#fbV').onclick=e=>{const b=e.target.closest('button');if(!b)return;v=b.dataset.v;$$('#fbV button').forEach(x=>x.setAttribute('aria-pressed',x===b))};
-  $('#fbOk').onclick=()=>{const txt=$('#fbT').value+($('#fbK').value?' · KPI факт: '+$('#fbK').value:'');REQUESTS.unshift({id:nid('R'),kind:'feedback',from:me(),to:t.owner,obj:t.id,objLabel:t.title,payload:{verdict:v,text:txt||'—'},status:'done',created:'сейчас'});t.status=v==='accepted'?'done':'progress';t.hist.push({t:nowStr(),u:me(),a:v==='accepted'?'принял(а) результат':'вернул(а) на доработку'});log('Обратная связь',t.id,v);modal.dirty=false;closeModal();refresh();toast('Обратная связь отправлена '+PEOPLE[t.owner].short)};
+  $('#fbOk').onclick=()=>{const txt=$('#fbT').value+($('#fbK').value?' · KPI факт: '+$('#fbK').value:'');REQUESTS.unshift({id:nid('R'),kind:'feedback',from:me(),to:t.owner,obj:t.id,objLabel:t.title,payload:{verdict:v,text:txt||'—'},status:'done',created:'сейчас'});t.status=v==='accepted'?'done':'progress';t.hist.push({t:nowStr(),u:me(),a:v==='accepted'?'принял(а) результат':'вернул(а) на доработку'});log('Обратная связь',t.id,v);syncServerTask(t,t.status);modal.dirty=false;closeModal();refresh();toast('Обратная связь отправлена '+PEOPLE[t.owner].short)};
 }
 
 function openRequest(){
@@ -1679,6 +1759,7 @@ const MEET_SUM={
 let MEET_SEL=null;
 const MEET_OPEN={};
 let AI_MEETINGS={};
+let MEETING_TASKS=[];
 const AI_LOADED=new Set();
 function fmtAiDate(iso){try{const d=new Date(iso);return d.toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
 async function loadMeetingAI(id){
@@ -1687,19 +1768,135 @@ async function loadMeetingAI(id){
   try{const r=await fetch(`/api/meetings/${encodeURIComponent(id)}/ai`,{credentials:'same-origin'});if(r.ok){AI_MEETINGS[id]=await r.json();if(currentView==='meetings'&&MEET_SEL===id)renderMeetings()}}catch(e){}
 }
 function meetAiHtml(e,A){
-  const tasks=(A.tasks||[]).map(t=>`<div class="kr"><i class="pdot" style="background:var(--ink)"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?esc(t.owner):'ответственный не назначен'}${t.deadline?' · '+esc(t.deadline):' · без срока'}</span></div></div>`).join('')||'<div class="small muted">Задач нет</div>';
-  const decisions=(A.decisions||[]).map(x=>`<li>${esc(x)}</li>`).join('');
-  const risks=(A.risks||[]).map(x=>`<li>${esc(x)}</li>`).join('');
-  const open=(A.open_questions||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const P=A.protocol||{decided:A.decisions||[],proposed:[],discussed:[],needs_clarification:A.open_questions||[]};
+  const tasks=(A.tasks||[]).map(t=>`<div class="kr"><i class="pdot" style="background:var(--ink)"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?esc(t.owner):'ответственный не назначен'}${t.deadline?' · '+esc(t.deadline):' · без срока'}</span>${t.basis?`<div class="small muted" style="margin-top:2px">Основание: ${esc(t.basis)}</div>`:''}</div></div>`).join('')||'<div class="small muted">Задач нет</div>';
+  const list=(items,cls)=>items&&items.length?`<ul class="${cls}">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'';
+  const decided=P.decided||[];
+  const proposed=P.proposed||[];
+  const discussed=P.discussed||[];
+  const needs=P.needs_clarification||[];
+  const risks=A.risks||[];
+  const feedback=A.feedback&&A.feedback.verdict?`<div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">rate_review</span> Оценка пользователя: ${A.feedback.verdict==='useful'?'полезно':'есть неточности'}${A.feedback.comment?' · '+esc(A.feedback.comment):''}</div>`:'';
   return `<div class="md-sum">
-    <div class="md-rec"><span class="ms">mic</span>AI-выжимка · ${A.used_llm?'локальная расшифровка + DeepSeek':'локальная выжимка'}${A.created_at?' · '+fmtAiDate(A.created_at):''}${A.duration_sec?' · '+Math.round(A.duration_sec)+' сек':''}</div>
+    <div class="md-rec"><span class="ms">mic</span>AI-выжимка · ${A.used_llm?'локальная расшифровка + DeepSeek':'локальная выжимка'}${A.edited_at?' · исправлено вручную':''}${A.created_at?' · '+fmtAiDate(A.created_at):''}${A.duration_sec?' · '+Math.round(A.duration_sec)+' сек':''}</div>
     <div class="md-s">Коротко</div><p class="md-lead">${esc(A.summary)}</p>
-    ${decisions?`<div class="md-s">Решения</div><ul class="md-ok">${decisions}</ul>`:''}
+    ${decided.length?`<div class="md-s">Решено</div>${list(decided,'md-ok')}`:''}
+    ${proposed.length?`<div class="md-s">Предложено</div>${list(proposed,'md-ag')}`:''}
+    ${discussed.length?`<div class="md-s">Обсуждалось</div>${list(discussed,'md-q')}`:''}
+    ${needs.length?`<div class="md-s">Требует уточнения</div>${list(needs,'md-q')}`:''}
     <div class="md-s">Задачи по итогам</div>${tasks}
-    ${open||risks?`<div class="md-2">${open?`<div><div class="md-s">Открытые вопросы</div><ul class="md-q">${open}</ul></div>`:''}${risks?`<div><div class="md-s">Риски</div><ul class="md-r">${risks}</ul></div>`:''}</div>`:''}
-    <details class="md-qt"><summary>Расшифровка</summary><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;padding-top:6px">${esc(A.transcript||'')}</div></details>
+    ${risks.length?`<div class="md-s">Риски</div>${list(risks,'md-r')}`:''}
+    <details class="md-qt"><summary>Расшифровка · можно исправить</summary><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;padding-top:6px">${esc(A.transcript||'')}</div></details>
     <div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">shield</span> Аудио распознано локально. В DeepSeek ушёл только обезличенный текст.</div>
-  </div><div class="md-act" id="mdAct"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="gbtn" data-ma="ai-rec"><span class="ms">mic</span>Записать заново</button></div>`;
+    ${feedback}
+  </div><div class="md-act" id="mdAct" style="flex-wrap:wrap"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="gbtn" data-ma="edit"><span class="ms">edit</span>Редактировать</button><button class="gbtn" data-ma="tasks"><span class="ms">task_alt</span>В задачи</button><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать заново</button></div>`;
+}
+function parseTaskLines(text){
+  return String(text||'').split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(line=>{
+    const [title,owner,deadline,basis]=line.split('|').map(x=>(x||'').trim());
+    return {title:title||'',owner:owner||null,deadline:deadline||null,basis:basis||null};
+  }).filter(t=>t.title);
+}
+function taskLines(tasks){
+  return (tasks||[]).map(t=>[t.title||'',t.owner||'',t.deadline||'',t.basis||''].join(' | ')).join('\n');
+}
+function serverTaskToTask(t){
+  const isoDate=/^\d{4}-\d{2}-\d{2}$/.test(t.deadline||'')?t.deadline:'';
+  const context=[t.basis||('Основание: встреча '+t.event_id),t.deadline&&!isoDate?'Срок из протокола: '+t.deadline:''].filter(Boolean).join(' · ');
+  return {id:t.id,title:t.title,context:context,result:'',kpi:{m:'',t:''},prio:'P2',deadline:isoDate,owner:t.owner_id||null,co:[],status:t.status||'new',source:{type:'meeting',ref:t.event_id,label:t.event_title||('Встреча '+t.event_id)},claimedBy:null,created:t.created_by||'anna',hist:[{t:'из выжимки',u:t.created_by||'anna',a:'создана из протокола встречи'}]};
+}
+function addServerTask(t){
+  if(!t||!t.id||TASKS.some(x=>x.id===t.id))return;
+  TASKS.push(serverTaskToTask(t));
+  if(typeof updateCounts==='function')updateCounts();
+}
+function ensureMeetingFromAI(item){
+  if(!item||!item.event_id||EVENTS.some(e=>e.id===item.event_id))return;
+  const d=new Date(item.created_at||Date.now());
+  const start=Math.min(23,d.getHours()+d.getMinutes()/60);
+  EVENTS.push({id:item.event_id,title:item.title||'Встреча',date:iso(d),s:start,e:Math.min(24,start+1),cal:'meet',color:'peacock',people:[me()]});
+}
+function isServerTask(t){return !!(t&&String(t.id).startsWith('MT-'))}
+async function syncServerTask(t,status){
+  if(!isServerTask(t))return;
+  try{
+    const body={status};
+    if(t.owner&&['anna','igor','maria','olga','pavel'].includes(t.owner))body.owner_id=t.owner;
+    const r=await fetch('/api/tasks/'+encodeURIComponent(t.id),{method:'PATCH',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
+    if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||('Ошибка '+r.status));
+  }catch(e){toast('Статус сохранён локально, сервер недоступен: '+e.message)}
+}
+function openMeetEdit(e,A){
+  if(!A){toast('Выжимка не загружена');return}
+  const P=A.protocol||{decided:A.decisions||[],proposed:[],discussed:[],needs_clarification:A.open_questions||[]};
+  const lines=x=>(x||[]).join('\n');
+  const fb=A.feedback||{};
+  modal(`${mh('edit','Исправить выжимку: '+esc(e.title))}<div class="mb">
+    <div class="alert ok"><span class="ms">shield</span> Правки сохраняются на сервере и попадают в аудит. Проверьте текст перед сохранением.</div>
+    <label class="small">Коротко</label><textarea class="inp" id="meSummary" rows="4">${esc(A.summary||'')}</textarea>
+    <div class="row2">
+      <div><label class="small">Решено (по одному в строке)</label><textarea class="inp" id="meDecided" rows="3">${esc(lines(P.decided))}</textarea></div>
+      <div><label class="small">Предложено</label><textarea class="inp" id="meProposed" rows="3">${esc(lines(P.proposed))}</textarea></div>
+    </div>
+    <div class="row2">
+      <div><label class="small">Обсуждалось</label><textarea class="inp" id="meDiscussed" rows="3">${esc(lines(P.discussed))}</textarea></div>
+      <div><label class="small">Требует уточнения</label><textarea class="inp" id="meNeeds" rows="3">${esc(lines(P.needs_clarification))}</textarea></div>
+    </div>
+    <label class="small">Задачи: Название | владелец | срок | основание</label><textarea class="inp" id="meTasks" rows="4">${esc(taskLines(A.tasks))}</textarea>
+    <label class="small">Риски (по одному в строке)</label><textarea class="inp" id="meRisks" rows="2">${esc(lines(A.risks))}</textarea>
+    <details class="md-qt"><summary>Расшифровка — можно исправить ошибки распознавания</summary><textarea class="inp" id="meTranscript" rows="9" style="margin-top:6px">${esc(A.transcript||'')}</textarea></details>
+    <div class="row2">
+      <div><label class="small">Оценка выжимки</label><select class="inp" id="meVerdict"><option value="">не оценивать</option><option value="useful" ${fb.verdict==='useful'?'selected':''}>полезно</option><option value="inaccurate" ${fb.verdict==='inaccurate'?'selected':''}>есть неточности</option></select></div>
+      <div><label class="small">Комментарий</label><input class="inp" id="meComment" value="${esc(fb.comment||'')}" placeholder="Что исправить в следующий раз"></div>
+    </div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="meSave">Сохранить</button></div>`,'wide');
+  $('#meSave').onclick=async()=>{
+    const btn=$('#meSave');btn.disabled=true;btn.textContent='Сохраняю…';
+    const body={
+      summary:$('#meSummary').value.trim(),
+      protocol:{
+        decided:$('#meDecided').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),
+        proposed:$('#meProposed').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),
+        discussed:$('#meDiscussed').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),
+        needs_clarification:$('#meNeeds').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)
+      },
+      tasks:parseTaskLines($('#meTasks').value),
+      risks:$('#meRisks').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),
+      transcript:$('#meTranscript').value
+    };
+    const verdict=$('#meVerdict').value;
+    if(verdict)body.feedback={verdict,comment:$('#meComment').value.trim()};
+    try{
+      const r=await fetch(`/api/meetings/${encodeURIComponent(e.id)}/ai`,{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      AI_MEETINGS[e.id]=data;AI_LOADED.add(e.id);closeModal();renderMeetings();toast('Правки сохранены');
+    }catch(err){btn.disabled=false;btn.textContent='Сохранить';toast('Не удалось сохранить: '+err.message)}
+  };
+}
+function openMeetTasks(e,A){
+  if(!A||!(A.tasks||[]).length){toast('В выжимке нет задач');return}
+  const rows=A.tasks.map((t,i)=>`<label class="dc-doc" style="grid-template-columns:18px minmax(0,1fr)"><input type="checkbox" data-mt="${i}" checked><div><b>${esc(t.title)}</b><small>${esc(t.owner||'ответственный не назначен')} · ${esc(t.deadline||'без срока')}</small>${t.basis?`<small>Основание: ${esc(t.basis)}</small>`:''}</div></label>`).join('');
+  modal(`${mh('task_alt','Задачи из встречи: '+esc(e.title))}<div class="mb">
+    <div class="alert"><span class="ms">info</span> После подтверждения задачи появятся в реестре. Без подтверждения ничего не создаётся. Повторное нажатие не создаст дубликаты.</div>
+    <div class="dc-list" style="max-height:380px">${rows}</div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="mtGo">Создать выбранные</button></div>`,'wide');
+  $('#mtGo').onclick=async()=>{
+    const items=A.tasks.filter((_,i)=>{const el=$(`[data-mt="${i}"]`);return el&&el.checked});
+    if(!items.length){toast('Выберите хотя бы одну задачу');return}
+    const btn=$('#mtGo');btn.disabled=true;btn.textContent='Создаю…';
+    try{
+      const r=await fetch(`/api/meetings/${encodeURIComponent(e.id)}/tasks`,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({items:items.map(t=>({title:t.title,owner:t.owner,deadline:t.deadline,basis:t.basis})),confirm:true})});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      (data.created||[]).forEach(addServerTask);
+      if(typeof MEETING_TASKS!=='undefined'){(data.created||[]).forEach(t=>{if(!MEETING_TASKS.some(x=>x.id===t.id))MEETING_TASKS.push(t)})}
+      closeModal();
+      const skipped=(data.skipped||[]).length;
+      toast(`Создано задач: ${(data.created||[]).length}${skipped?' · уже были: '+skipped:''}`,'Открыть',()=>show('tasks'));
+      renderMeetings();
+    }catch(err){btn.disabled=false;btn.textContent='Создать выбранные';toast('Не удалось: '+err.message)}
+  };
 }
 function renderMeetings(){
   const mine=EVENTS.filter(e=>e.cal==='meet'&&e.people.includes(me())).sort((a,b)=>(a.date+pad(a.s)).localeCompare(b.date+pad(b.s)));
@@ -1720,8 +1917,10 @@ function renderMeetings(){
   loadMeetingAI(MEET_SEL);
   const act=$('#mdAct');if(act)act.onclick=ev=>{const b=ev.target.closest('[data-ma]');if(!b)return;const a=b.dataset.ma;
     if(a==='rec')openNotes(e.id);if(a==='ai-rec')openMeetRecord(e);if(a==='resched')openReschedule({eventId:e.id});
+    if(a==='edit')openMeetEdit(e,AI_MEETINGS[e.id]);
+    if(a==='tasks')openMeetTasks(e,AI_MEETINGS[e.id]);
     if(a==='copy'){navigator.clipboard?.writeText($('.md-sum')?.innerText||'').then(()=>toast('Выжимка скопирована')).catch(()=>toast('Не удалось скопировать'))}
-    if(a==='send'){log('Рассылка выжимки',e.title,'участникам: '+(e.people.length-1));toast('Выжимка отправлена участникам ('+(e.people.length-1)+')')}};
+    if(a==='send'){confirmAct({title:'Отправить выжимку?',body:`<p>Выжимка уйдёт ${e.people.length-1} участникам. Проверьте текст перед отправкой.</p>`,ok:'Отправить',onOk:()=>{log('Рассылка выжимки',e.title,'участникам: '+(e.people.length-1));toast('Выжимка отправлена участникам ('+(e.people.length-1)+')')}})}};
 }
 function meetDetail(e,past){
   const head=`<div class="md-h"><div><h2>${esc(e.title)}</h2><div class="md-m">${fmtDW(e.date)}, ${hm(e.s)}–${hm(e.e)}${e.place?' · '+esc(e.place):''}</div></div><span class="rm-avs">${e.people.map(p=>av(p)).join('')}</span></div>`;
@@ -2181,6 +2380,190 @@ function renderSide(){
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}});
 function renderStatTop(){renderStats()}
+/* ============ DOCUMENTS WORKSPACE ============ */
+const ACL_NAMES={all:'Все руководители',prod:'Производство + дирекция',mkt:'Маркетинг + дирекция',fin:'Только дирекция',hr:'HR + дирекция',support:'Поддержка + дирекция',legal:'Юридическое + дирекция'};
+let SERVER_DOCS=[],FOLDERS=[],DOC_SEL=new Set(),DOC_CHAT=[],DOC_FILTER='all',DOC_QUERY='',DOC_DRAFT='';
+let DOCS_LOADED=false,DOCS_LOADING=false,DOCS_CAN_MANAGE=false,DOC_ASKING=false,DOCS_UPDATED_AT='';
+const canManage=()=>window.APP_USER?window.APP_USER.role==='boss':ROLE==='director';
+const folderTitle=id=>{const f=FOLDERS.find(x=>x.id===id);return f?f.title:'Без папки'};
+function docsFiltered(){
+  const q=DOC_QUERY.trim().toLowerCase();
+  return SERVER_DOCS.filter(d=>{
+    if(DOC_FILTER==='mine'&&!d.created_by)return false;
+    if(DOC_FILTER!=='all'&&DOC_FILTER!=='mine'&&d.folder_id!==DOC_FILTER)return false;
+    return !q||String(d.title||'').toLowerCase().includes(q);
+  });
+}
+async function loadDocsWorkspace(force){
+  if(DOCS_LOADING)return;
+  if(DOCS_LOADED&&!force)return;
+  DOCS_LOADING=true;
+  try{
+    const [dr,fr]=await Promise.all([
+      fetch('/api/docs',{credentials:'same-origin',cache:'no-store'}),
+      fetch('/api/folders',{credentials:'same-origin',cache:'no-store'})
+    ]);
+    if(dr.ok){const j=await dr.json();SERVER_DOCS=j.items||[];DOCS_CAN_MANAGE=!!j.can_manage}
+    if(fr.ok){const j=await fr.json();FOLDERS=j.items||[];DOCS_CAN_MANAGE=DOCS_CAN_MANAGE||!!j.can_manage}
+    DOCS_UPDATED_AT=new Date();
+    [...DOC_SEL].forEach(id=>{if(!SERVER_DOCS.some(d=>d.id===id))DOC_SEL.delete(id)});
+  }catch(e){/* офлайн-демо: пустой список */}
+  DOCS_LOADING=false;DOCS_LOADED=true;
+  if(currentView==='docs')renderDocs();
+}
+function dcMsgHtml(m){
+  if(m.role==='user')return `<div class="dc-b u">${esc(m.text).replace(/\n/g,'<br>')}</div>`;
+  if(m.pending)return `<div class="dc-b a"><div class="dc-who">Ассистент</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
+  const srcs=(m.sources||[]).map(s=>`<div class="dc-src"><b data-doc="${s.id}">${s.id}</b> · ${esc(s.title)} <span>${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
+  const err=m.error?` style="border-color:rgba(197,34,31,.3)"`:'';
+  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент · ${m.used_llm?'DeepSeek':'локальный ответ'}${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${esc(m.answer||'').replace(/\n/g,'<br>')}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
+}
+function renderDocs(){
+  if(!DOCS_LOADED&&!DOCS_LOADING)loadDocsWorkspace();
+  const llm=window.LLM_INFO||{provider:'DeepSeek',model:'deepseek-chat'};
+  const all=SERVER_DOCS,list=docsFiltered(),mine=SERVER_DOCS.filter(d=>d.created_by);
+  const folderBtns=`<button class="dc-f ${DOC_FILTER==='all'?'on':''}" data-df="all"><span class="ms">folder_open</span><b>Все документы</b><span class="c">${all.length}</span></button>`+
+    FOLDERS.map(f=>`<button class="dc-f ${DOC_FILTER===f.id?'on':''}" data-df="${f.id}"><span class="ms">folder</span><b>${esc(f.title)}</b><span class="c">${f.doc_count||0}</span></button>`).join('')+
+    `<button class="dc-f ${DOC_FILTER==='mine'?'on':''}" data-df="mine"><span class="ms">note_add</span><b>Мои загрузки</b><span class="c">${mine.length}</span></button>`;
+  const docsHtml=list.map(d=>`<div class="dc-doc" data-q="${esc(String(d.title||'').toLowerCase())}"><input type="checkbox" data-dsel="${d.id}" ${DOC_SEL.has(d.id)?'checked':''} aria-label="Использовать ${esc(d.title)}"><div><b data-doc="${d.id}">${esc(d.title)}</b><small>${fmtD(d.date)} · ${esc(folderTitle(d.folder_id))}${d.source_type==='email'?' · письмо':d.created_by?' · моё':''}</small></div></div>`).join('')||'<div class="small muted" style="padding:10px">Ничего не найдено</div>';
+  const log=DOC_CHAT.length?DOC_CHAT.map(dcMsgHtml).join(''):`<div class="dc-empty"><span class="ms">auto_awesome</span><b>Спросите по документам</b>Выберите источники слева или задайте вопрос по всем доступным. В ответе будут документ, дата и фрагмент-основание.<div class="dc-sample"><button data-dcq="Что грозит пику спроса в неделю 48?">Что грозит пику в неделю 48?</button><button data-dcq="Какой SLA поддержки и что его роняет?">SLA поддержки</button><button data-dcq="Кто отвечает за запуск ночной смены?">Кто за ночную смену?</button></div></div>`;
+  const manage=DOCS_CAN_MANAGE?`<button class="gbtn" id="dcNewFolder"><span class="ms">folder</span>Папка</button><button class="gbtn" id="dcNewMail"><span class="ms">mail</span>Письмо</button><button class="btn primary" id="dcUpload"><span class="ms">upload_file</span>Загрузить</button>`:`<span class="small muted" style="display:inline-flex;align-items:center;gap:4px"><span class="ms" style="font-size:15px">lock</span>Загрузка — только директор</span>`;
+  $('#docsPage').innerHTML=`<div class="ph"><h1>Документы</h1><span class="small muted">${all.length} доступно · ${DOC_SEL.size} выбрано</span><span class="spacer" style="flex:1"></span>${manage}</div>
+  <div class="dc-grid">
+    <div class="glass dc-pane"><div class="dc-head"><span class="ms">folder_open</span>Папки</div><div class="dc-list">${folderBtns}</div></div>
+    <div class="glass dc-pane"><div class="dc-head"><span class="ms">description</span>Источники<span style="flex:1"></span><button class="icon-btn" id="dcRefresh" title="Обновить" aria-label="Обновить"><span class="ms">refresh</span></button></div>
+      <div class="dc-search"><span class="ms">search</span><input id="dcSearch" placeholder="Поиск по названию" aria-label="Поиск по документам" value="${esc(DOC_QUERY)}"></div>
+      <div class="dc-list" id="dcList">${docsHtml}</div>
+    </div>
+    <div class="glass dc-pane dc-chat"><div class="dc-head"><span class="ms">forum</span>Чат по источникам<span style="flex:1"></span>${DOC_SEL.size?`<button class="chip-add" id="dcReset">Сбросить ${DOC_SEL.size}</button>`:'<span class="small muted" style="text-transform:none;letter-spacing:0">по всем доступным</span>'}</div>
+      <div class="dc-log" id="dcLog">${log}</div>
+      <div class="dc-hint"><span class="ms" style="font-size:13px">shield</span> ${llm.provider} · ${llm.model}. В модель уходят только выбранные фрагменты после маскирования ПДн. Аудио не отправляется.</div>
+      <div class="dc-compose"><textarea id="dcQ" rows="1" placeholder="Спросите по документам…" aria-label="Вопрос по документам">${esc(DOC_DRAFT)}</textarea><button class="btn primary" id="dcAsk" ${DOC_ASKING?'disabled':''}><span class="ms">send</span>${DOC_ASKING?'Думаю…':'Спросить'}</button></div>
+    </div>
+  </div>`;
+  $$('[data-df]').forEach(b=>b.onclick=()=>{DOC_FILTER=b.dataset.df;renderDocs()});
+  $$('[data-dsel]').forEach(c=>c.onchange=()=>{if(c.checked&&!DOC_SEL.has(c.dataset.dsel)&&DOC_SEL.size>=8){c.checked=false;toast('Максимум 8 источников на один вопрос');return}c.checked?DOC_SEL.add(c.dataset.dsel):DOC_SEL.delete(c.dataset.dsel);renderDocs()});
+  const search=$('#dcSearch');if(search)search.oninput=()=>{DOC_QUERY=search.value;$$('#dcList .dc-doc').forEach(el=>{el.style.display=(el.dataset.q||'').includes(DOC_QUERY.trim().toLowerCase())?'':'none'})};
+  const q=$('#dcQ');if(q){q.oninput=()=>{DOC_DRAFT=q.value};q.onkeydown=ev=>{if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();askDocs()}}}
+  if($('#dcAsk'))$('#dcAsk').onclick=askDocs;
+  if($('#dcReset'))$('#dcReset').onclick=()=>{DOC_SEL.clear();renderDocs()};
+  if($('#dcRefresh'))$('#dcRefresh').onclick=()=>{DOCS_LOADED=false;loadDocsWorkspace(true)};
+  if($('#dcUpload'))$('#dcUpload').onclick=openDocUpload;
+  if($('#dcNewMail'))$('#dcNewMail').onclick=openDocEmail;
+  if($('#dcNewFolder'))$('#dcNewFolder').onclick=openFolderCreate;
+  $$('[data-dcq]').forEach(b=>b.onclick=()=>{DOC_DRAFT=b.dataset.dcq;renderDocs();askDocs()});
+  const lg=$('#dcLog');if(lg)lg.scrollTop=lg.scrollHeight;
+}
+async function askDocs(){
+  if(DOC_ASKING)return;
+  const input=$('#dcQ');
+  const q=(input?input.value:DOC_DRAFT).trim();
+  if(!q){toast('Введите вопрос');return}
+  DOC_DRAFT='';DOC_CHAT.push({role:'user',text:q});DOC_CHAT.push({role:'ai',pending:true});
+  DOC_ASKING=true;renderDocs();
+  try{
+    const r=await fetch('/api/assistant/ask',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({q,doc_ids:DOC_SEL.size?[...DOC_SEL]:null})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+    DOC_CHAT[DOC_CHAT.length-1]={role:'ai',...data};
+  }catch(err){
+    DOC_CHAT[DOC_CHAT.length-1]={role:'ai',error:err.message,answer:'Не удалось получить ответ: '+err.message,sources:[]};
+  }
+  DOC_ASKING=false;renderDocs();
+}
+function folderOptions(selected){
+  if(!FOLDERS.length)return '<option value="F-REG" data-acl="all">Регламенты и общее</option>';
+  return FOLDERS.map(f=>`<option value="${f.id}" data-acl="${f.acl}" ${f.id===selected?'selected':''}>${esc(f.title)}</option>`).join('');
+}
+function bindFolderAcl(folderSel,aclSel){
+  if(!folderSel||!aclSel)return;
+  const sync=()=>{const opt=folderSel.selectedOptions[0];const acl=opt&&opt.dataset.acl;if(acl)aclSel.value=acl};
+  folderSel.onchange=sync;
+}
+function aclOptions(selected){
+  return Object.keys(ACL_NAMES).map(k=>`<option value="${k}" ${k===selected?'selected':''}>${ACL_NAMES[k]}</option>`).join('');
+}
+function openDocUpload(){
+  if(!DOCS_CAN_MANAGE){toast('Загрузка доступна директору');return}
+  modal(`${mh('upload_file','Новый документ')}<div class="mb">
+    <label class="small">Название (необязательно)</label><input class="inp" id="duTitle" placeholder="Например: Регламент смен">
+    <label class="small">Файл: .txt, .md, .csv, .pdf или .eml</label><input class="inp" type="file" id="duFile" accept=".txt,.md,.csv,.pdf,.eml">
+    <div class="row2"><div><label class="small">Папка</label><select class="inp" id="duFolder">${folderOptions('F-REG')}</select></div><div><label class="small">Доступ</label><select class="inp" id="duAcl">${aclOptions('all')}</select></div></div>
+    <div class="alert ok"><span class="ms">shield</span> Текст хранится локально. В DeepSeek уходит только обезличенный фрагмент при вопросе.</div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="duGo">Загрузить</button></div>`,'narrow');
+  bindFolderAcl($('#duFolder'),$('#duAcl'));
+  $('#duGo').onclick=async()=>{
+    const f=$('#duFile').files[0];if(!f){toast('Выберите файл');return}
+    const btn=$('#duGo');btn.disabled=true;btn.textContent='Загружаю…';
+    const fd=new FormData();fd.append('file',f);fd.append('title',$('#duTitle').value.trim());fd.append('acl',$('#duAcl').value);fd.append('folder_id',$('#duFolder').value);
+    try{
+      const r=await fetch('/api/docs',{method:'POST',body:fd,credentials:'same-origin'});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOCS_LOADED=false;await loadDocsWorkspace(true);DOC_SEL.add(data.id);DOC_FILTER='all';closeModal();renderDocs();
+      toast('Документ добавлен · '+data.id,'Открыть',()=>openDoc(data.id));
+    }catch(err){btn.disabled=false;btn.textContent='Загрузить';toast('Не удалось: '+err.message)}
+  };
+}
+function openDocEmail(){
+  if(!DOCS_CAN_MANAGE){toast('Добавление писем доступно директору');return}
+  modal(`${mh('mail','Добавить письмо')}<div class="mb">
+    <label class="small">От кого</label><input class="inp" id="deFrom" placeholder="client@example.by">
+    <label class="small">Тема</label><input class="inp" id="deSubject" placeholder="Сроки поставки">
+    <label class="small">Текст письма</label><textarea class="inp" id="deBody" rows="7" placeholder="Вставьте текст письма…"></textarea>
+    <div class="row2"><div><label class="small">Папка</label><select class="inp" id="deFolder">${folderOptions('F-MAIL')}</select></div><div><label class="small">Доступ</label><select class="inp" id="deAcl">${aclOptions('all')}</select></div></div>
+    <div class="alert"><span class="ms">info</span> Письмо станет источником в папке «Письма». В модель уйдёт только обезличенный текст.</div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="deGo">Добавить</button></div>`,'narrow');
+  bindFolderAcl($('#deFolder'),$('#deAcl'));
+  $('#deGo').onclick=async()=>{
+    const body=$('#deBody').value.trim();if(!body){toast('Вставьте текст письма');return}
+    const btn=$('#deGo');btn.disabled=true;btn.textContent='Добавляю…';
+    const fd=new FormData();fd.append('email_subject',$('#deSubject').value.trim());fd.append('email_from',$('#deFrom').value.trim());fd.append('email_body',body);fd.append('acl',$('#deAcl').value);fd.append('folder_id',$('#deFolder').value);
+    try{
+      const r=await fetch('/api/docs',{method:'POST',body:fd,credentials:'same-origin'});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOCS_LOADED=false;await loadDocsWorkspace(true);DOC_SEL.add(data.id);DOC_FILTER='all';closeModal();renderDocs();
+      toast('Письмо добавлено · '+data.id);
+    }catch(err){btn.disabled=false;btn.textContent='Добавить';toast('Не удалось: '+err.message)}
+  };
+}
+function openFolderCreate(){
+  if(!DOCS_CAN_MANAGE){toast('Папки создаёт директор');return}
+  modal(`${mh('folder','Новая папка')}<div class="mb">
+    <label class="small">Название</label><input class="inp" id="dfTitle" placeholder="Например: Договоры">
+    <label class="small">Кому доступна</label><select class="inp" id="dfAcl">${aclOptions('all')}</select>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="dfGo">Создать</button></div>`,'narrow');
+  $('#dfGo').onclick=async()=>{
+    const title=$('#dfTitle').value.trim();if(!title){toast('Введите название');return}
+    const btn=$('#dfGo');btn.disabled=true;
+    try{
+      const r=await fetch('/api/folders',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({title,acl:$('#dfAcl').value})});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Папка создана');
+    }catch(err){btn.disabled=false;toast('Не удалось: '+err.message)}
+  };
+}
+function openDocEdit(d){
+  modal(`${mh('edit','Изменить документ '+d.id)}<div class="mb">
+    <label class="small">Название</label><input class="inp" id="dedTitle" value="${esc(d.title)}">
+    <div class="row2"><div><label class="small">Папка</label><select class="inp" id="dedFolder">${folderOptions(d.folder_id)}</select></div><div><label class="small">Доступ</label><select class="inp" id="dedAcl">${aclOptions(d.acl)}</select></div></div>
+    <label class="small">Текст</label><textarea class="inp" id="dedText" rows="10">${esc(d.text||'')}</textarea>
+    <div class="alert"><span class="ms">info</span> Встроенные документы менять нельзя — только загруженные.</div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="dedGo">Сохранить</button></div>`,'wide');
+  bindFolderAcl($('#dedFolder'),$('#dedAcl'));
+  $('#dedGo').onclick=async()=>{
+    const btn=$('#dedGo');btn.disabled=true;
+    try{
+      const r=await fetch('/api/docs/'+encodeURIComponent(d.id),{method:'PATCH',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({title:$('#dedTitle').value.trim(),text:$('#dedText').value,folder_id:$('#dedFolder').value,acl:$('#dedAcl').value})});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Документ обновлён');
+    }catch(err){btn.disabled=false;toast('Не удалось: '+err.message)}
+  };
+}
+
 function renderStats(){
   const m=me();const mine=TASKS.filter(t=>t.owner===m||t.created===m||t.co.includes(m));const open=mine.filter(t=>t.status!=='done');const done=mine.filter(t=>t.status==='done');
   const late=open.filter(t=>t.deadline&&t.deadline<TODAY);const onTime=Math.round(done.length/Math.max(1,done.length+late.length)*100);
@@ -2188,14 +2571,29 @@ function renderStats(){
   const dups=[];open.forEach((a,i)=>open.slice(i+1).forEach(b=>{if(similar(a.title,b.title)>=.5)dups.push([a,b])}));
   const busyJoin=REQUESTS.filter(r=>r.kind==='join').length+AUDIT.filter(a=>/занятую задачу/.test(a.action)).length;
   const kpi=open.filter(t=>t.kpi&&t.kpi.m).sort((a,b)=>a.prio.localeCompare(b.prio));
+  const meetCount=Object.keys(AI_MEETINGS).length;
+  const meetTasks=MEETING_TASKS.length;
+  const aiActs=AUDIT.filter(a=>histKind(a)==='ai').length;
+  const srcRows=[
+    ['Задачи в срок',onTime+'%','Задачи, где вы владелец, автор или соавтор. Формула: выполненные / (выполненные + просроченные) × 100.'],
+    ['Переносы',String(rq.length),'Запросы переноса встреч и сроков из блока «Задачи»; считаются только ваши входящие и исходящие.'],
+    ['Без ответственного или срока',String(open.filter(t=>!t.owner||!t.deadline).length),'Открытые задачи без владельца или дедлайна. Ассистент не назначает их сам — только предлагает.'],
+    ['Встречи с выжимкой',String(meetCount),'Записи встреч: локальная расшифровка Vosk + маскирование ПДн + DeepSeek. Аудио на сервере, наружу не уходит.'],
+    ['Задачи из встреч',String(meetTasks),'Задачи, подтверждённые пользователем из протокола встречи. Повторное создание блокируется идемпотентностью.'],
+    ['Действия ассистента',String(aiActs),'Журнал аудита: запросы к документам, отказы в доступе, правки выжимки и подтверждения задач.']
+  ];
   renderAudit();const hist=AUDIT.slice(0,STAT_ALL?99:7);
   $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1></div>
   <div class="st-tiles">
     <div class="glass st"><span class="st-l">Задачи в срок</span><b>${onTime}%</b><span class="st-d">${late.length?`просрочено ${late.length}: ${esc(late[0].title.slice(0,34))}${late.length>1?'…':''}`:'просрочек нет'}</span></div>
     <div class="glass st"><span class="st-l">Переносы</span><b>${rq.length}</b><span class="st-d">встреч ${rq.filter(r=>r.kind==='reschedule').length} · сроков ${rq.filter(r=>r.kind==='deadline').length} · ждут ответа ${rq.filter(r=>r.status==='pending').length}</span></div>
     <div class="glass st" data-go="tasks" style="cursor:pointer"><span class="st-l">Без ответственного или срока</span><b>${open.filter(t=>!t.owner||!t.deadline).length}</b><span class="st-d">${open.filter(t=>!t.owner||!t.deadline).map(t=>'«'+esc(t.title.slice(0,32))+'»').slice(0,1).join('')||'у всех задач есть владелец и срок'}</span></div>
+    <div class="glass st" data-go="meetings" style="cursor:pointer"><span class="st-l">Встречи с выжимкой</span><b>${meetCount}</b><span class="st-d">локальная расшифровка + DeepSeek</span><span class="st-src">Источник: записи встреч</span></div>
+    <div class="glass st" data-go="tasks" style="cursor:pointer"><span class="st-l">Задачи из встреч</span><b>${meetTasks}</b><span class="st-d">подтверждены пользователем</span><span class="st-src">Источник: протоколы встреч</span></div>
   </div>
   <div class="st-grid">
+    <div class="glass card" style="grid-column:1/-1"><h2>Что входит в статистику</h2><div class="st-hint">Каждая цифра считается из данных ниже. Нажмите на плитку выше, чтобы перейти к источнику.</div><div class="st-list">${srcRows.map(([t,v,d])=>`<div class="st-row"><div><b>${t}</b><small>${d}</small></div><span>${v}</span></div>`).join('')}</div><div class="small muted" style="margin-top:10px">Данные: задачи и запросы — в браузере, встречи и аудит — в SQLite на сервере. Обновлено ${pad(new Date().getHours())}:${pad(new Date().getMinutes())}.</div></div>
+    <div class="glass card" style="grid-column:1/-1"><h2>Управленческий обзор</h2><div class="st-hint">Просроченные решения с владельцем, сроком и источником. Источник показывает документ и дату основания.</div>${late.length?late.map(t=>`<div class="kr" data-tv="${t.id}" style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)"><i class="pdot" style="background:var(--err)"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?PEOPLE[t.owner]?.name||t.owner:'ответственный не назначен'} · срок ${t.deadline?fmtD(t.deadline):'не задан'}</span><span class="st-src">Источник: ${t.source&&t.source.ref?(t.source.type==='doc'?srcChip(t.source.ref):esc(t.source.label||t.source.ref)):'вручную'}</span></div><span class="kr-d overdue">просрочено</span></div>`).join(''):'<div class="small muted">Просроченных решений нет</div>'}</div>
     <div class="glass card"><h2>Цели по задачам</h2><div class="st-hint">Как поймём, что задача выполнена: метрика и значение, которые задали при постановке</div>${kpi.map(t=>`<div class="kr" data-tv="${t.id}"><i class="pdot" style="background:${PRIO[t.prio].c}"></i><div class="kr-x"><b>${esc(t.title)}</b><span>Цель: ${esc(t.kpi.m)} ${esc(t.kpi.t)}</span></div>${t.owner?av(t.owner,24):''}<span class="kr-d ${t.deadline&&t.deadline<TODAY?'overdue':''}">${t.deadline?fmtD(t.deadline):'без срока'}</span></div>`).join('')||'<div class="small muted">Нет задач с KPI</div>'}</div>
     <div class="glass card"><h2>История</h2><div class="hl">${hist.map(a=>{const k=histKind(a);const deny=k==='deny';return `<div class="hli ${deny?'deny':''}"><span class="ms">${deny?'lock':k==='ai'?'auto_awesome':'check_circle'}</span><div><div>${k==='ai'?'Ассистент '+(AI_TEXT[a.action]||a.action.replace(/^AI:\s*/,'').toLowerCase()):(a.u===me()?'Вы: ':PEOPLE[a.u].short+': ')+(HIST_TEXT[a.action]||a.action.toLowerCase())} ${a.obj&&a.obj!=='сессия'?`<span class="muted">«${esc(String(a.obj).slice(0,50))}»</span>`:''}</div>${deny?'<small>доступ закрыт для роли — документ не выдан</small>':''}</div><span class="hli-t">${pad(a.ts.getHours())}:${pad(a.ts.getMinutes())}</span></div>`}).join('')||'<div class="small muted">Пока пусто</div>'}${AUDIT.length>7&&!STAT_ALL?`<button class="lane-more" id="statAll">Показать всё (${AUDIT.length})</button>`:''}</div></div>
   </div>`;
@@ -2220,9 +2618,33 @@ document.addEventListener('click',e=>{
   const d=e.target.closest('[data-doc]');if(d&&!e.target.closest('.pop')){openDoc(d.dataset.doc);return}
   const c=e.target.closest('[data-copy]');if(c){const txt=$('.ai-card p')?.innerText||'';navigator.clipboard?.writeText(txt).then(()=>toast('Сводка скопирована')).catch(()=>toast('Не удалось скопировать — выделите текст вручную'));return}
 });
-function openDoc(id){const d=DOCS.find(x=>x.id===id);if(!canSee(d)){log('Доступ к документу',id,'ОТКЛОНЕНО: нет прав роли');toast('Нет доступа к '+id+' для вашей роли — попытка сохранена в истории');return}
+async function openDoc(id){
+  let d=DOCS.find(x=>x.id===id);
+  if(!d){
+    d=SERVER_DOCS.find(x=>x.id===id);
+    if(d&&!d.text){
+      try{
+        const r=await fetch('/api/docs/'+encodeURIComponent(id),{credentials:'same-origin'});
+        if(r.ok)d=await r.json();
+      }catch(e){}
+    }
+  }
+  if(!d){toast('Документ не найден');return}
+  const allowed=(ROLES[ROLE]&&ROLES[ROLE].access.includes(d.acl))||d.acl==='all';
+  if(!allowed){log('Доступ к документу',id,'ОТКЛОНЕНО: нет прав роли');toast('Нет доступа к '+id+' для вашей роли — попытка сохранена в истории');return}
   log('Просмотр документа',id+' · '+d.title);
-  modal(`${mh('description',d.id+' · '+esc(d.title))}<div class="mb"><div class="small muted" style="margin-bottom:10px">Версия от ${fmtD(d.date)} · доступ: ${{all:'все руководители',prod:'производство + дирекция',mkt:'маркетинг + дирекция',fin:'только дирекция',hr:'HR + дирекция'}[d.acl]}</div><div class="preview">${esc(d.text)}</div><p class="small muted">Тестовый документ. Инструкции внутри документов ассистент воспринимает как данные, не как команды.</p></div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'narrow')}
+  const custom=!!d.created_by;
+  modal(`${mh('description',d.id+' · '+esc(d.title))}<div class="mb"><div class="small muted" style="margin-bottom:10px">Версия от ${fmtD(d.date)} · доступ: ${ACL_NAMES[d.acl]||d.acl}${d.source_type==='email'?' · письмо':custom?' · загружен вручную':''}</div><div class="preview">${esc(d.text||'')}</div><p class="small muted">Инструкции внутри документов ассистент воспринимает как данные, не как команды.</p></div><div class="mf">${custom&&canManage()?`<button class="btn danger" id="docDel"><span class="ms">delete</span>Удалить</button><button class="btn" id="docEdit"><span class="ms">edit</span>Редактировать</button>`:''}<button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
+  if($('#docEdit'))$('#docEdit').onclick=()=>openDocEdit(d);
+  if($('#docDel'))$('#docDel').onclick=()=>confirmAct({title:'Удалить документ?',body:`<p>«${esc(d.title)}» будет удалён из базы знаний. Действие попадёт в аудит.</p>`,ok:'Удалить',danger:true,onOk:async()=>{
+    try{
+      const r=await fetch('/api/docs/'+encodeURIComponent(d.id),{method:'DELETE',credentials:'same-origin'});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOC_SEL.delete(d.id);DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Документ удалён');
+    }catch(err){toast('Не удалось: '+err.message)}
+  }});
+}
 
 /* notifications */
 let notifEl=null;
@@ -2266,18 +2688,45 @@ const HIST_TEXT={'Подключение почты':'подключили по�
  'Сохранение протокола + задач':'сохранили протокол встречи и задачи','Запись встречи':'начали запись встречи','Рассылка повестки':'разослали повестку',
  'Просмотр документа':'открыли документ','Доступ к документу':'пытались открыть закрытый документ','Доступ к документу через ассистента':'спросили ассистента о закрытом документе',
  'Запрос к ассистенту':'спросили ассистента','Оценка ответа ассистента':'оценили ответ ассистента','Обратная связь по AI':'оставили отзыв об ответе ассистента',
- 'Попытка обойти правила':'попросили ассистента обойти правила'
+ 'Попытка обойти правила':'попросили ассистента обойти правила',
+ 'Загрузка документа':'загрузили документ','Удаление документа':'удалили документ','Изменение документа':'изменили документ',
+ 'Создание папки':'создали папку','Правка выжимки':'исправили выжимку','Задачи из встречи':'создали задачи из встречи',
+ 'Обратная связь по AI':'оценили выжимку','Удаление выжимки':'удалили выжимку',
+ 'Доступ к встрече':'попытались открыть встречу другой роли'
 };
 const AI_TEXT={'AI: выжимка писем':'сделал выжимку писем и нашёл задачи','AI: разбор описания':'разобрал описание задачи','AI: подбор времени для переноса':'подобрал время для переноса','AI: подбор времени':'подобрал время для встречи','AI: подбор времени (чат)':'подобрал время для встречи','AI: подбор времени для переноса':'подобрал время для переноса',
  'AI: проект повестки':'подготовил проект повестки','AI: подготовка встречи':'подготовил материалы к встрече','AI: улучшение формулировки задачи':'предложил формулировку задачи',
- 'AI: протокол из расшифровки':'составил протокол по расшифровке','Ответ по документу':'ответил по документу','Ответ ассистента':'не нашёл ответа в документах и сказал об этом'};
-function histKind(a){if(/ОТКЛОН/.test(a.result))return'deny';if(AI_TEXT[a.action]||/^AI:/.test(a.action))return'ai';return'me'}
+ 'AI: протокол из расшифровки':'составил протокол по расшифровке','Ответ по документу':'ответил по документу','Ответ ассистента':'не нашёл ответа в документах и сказал об этом',
+ 'Запрос к ассистенту':'ответил по документам'};
+function histKind(a){if(/ОТКЛОН/.test(a.result))return'deny';if(AI_TEXT[a.action]||/^AI:/.test(a.action)||a.action==='Запрос к ассистенту')return'ai';return'me'}
+const SERVER_ACTION_TEXT={
+  'assistant.ask':'Запрос к ассистенту','assistant.doc_denied':'Доступ к документу через ассистента',
+  'assistant.pii_block':'Запрос к ассистенту','assistant.rate_limited':'Запрос к ассистенту',
+  'doc.upload':'Загрузка документа','doc.delete':'Удаление документа','doc.edit':'Изменение документа',
+  'doc.view':'Просмотр документа','doc.access_denied':'Доступ к документу',
+  'doc.folder_create':'Создание папки','meeting.record':'Запись встречи','meeting.edit':'Правка выжимки',
+  'meeting.tasks_create':'Задачи из встречи','meeting.feedback':'Обратная связь по AI',
+  'meeting.delete':'Удаление выжимки','meeting.access_denied':'Доступ к встрече',
+  'role.switch':'Смена роли','auth.auto':'Вход в систему','auth.logout':'Выход'
+};
+function mergeServerAudit(items){
+  const seen=new Set(AUDIT.map(a=>`${a.action}|${a.obj}|${Math.floor(a.ts.getTime()/60000)}`));
+  (items||[]).forEach(it=>{
+    const action=SERVER_ACTION_TEXT[it.action]||it.action;
+    const ts=new Date(it.ts);
+    const key=`${action}|${it.obj}|${Math.floor(ts.getTime()/60000)}`;
+    if(seen.has(key))return;
+    seen.add(key);
+    AUDIT.push({ts,u:it.user_id,action,obj:it.obj,result:it.result,server:true});
+  });
+  AUDIT.sort((a,b)=>b.ts-a.ts);
+}
 function renderAudit(){
   const L=AUDIT.filter(a=>histF==='all'||histKind(a)===histF);
   const today=L,groups=[['Сегодня',today]];
-  $('#histList').innerHTML=L.length?groups.map(([g,items])=>`<div class="hgroup">${g}</div>`+items.map(a=>{const k=histKind(a);const who=a.u===me()?'Вы':PEOPLE[a.u].short;
-    let verb=HIST_TEXT[a.action]||a.action.toLowerCase();if(a.u!==me()){const f=PEOPLE[a.u].g==='f';verb=verb.replace(/([а-яё]+)лись(?![а-яё])/g,(m,r)=>r+(f?'лась':'лся')).replace(/([а-яё]+)ли(?![а-яё])/g,(m,r)=>r+(f?'ла':'л'))}
-    const text=k==='ai'?`<b>Ассистент</b> ${AI_TEXT[a.action]||a.action.replace(/^AI:\s*/,'').toLowerCase()}`:`<b>${a.u===me()?'Вы':PEOPLE[a.u].name}</b> ${verb}`;
+  $('#histList').innerHTML=L.length?groups.map(([g,items])=>`<div class="hgroup">${g}</div>`+items.map(a=>{const k=histKind(a);const who=a.u===me()?'Вы':(PEOPLE[a.u]?.short||a.u);
+    let verb=HIST_TEXT[a.action]||a.action.toLowerCase();if(a.u!==me()&&PEOPLE[a.u]){const f=PEOPLE[a.u].g==='f';verb=verb.replace(/([а-яё]+)лись(?![а-яё])/g,(m,r)=>r+(f?'лась':'лся')).replace(/([а-яё]+)ли(?![а-яё])/g,(m,r)=>r+(f?'ла':'л'))}
+    const text=k==='ai'?`<b>Ассистент</b> ${AI_TEXT[a.action]||a.action.replace(/^AI:\s*/,'').toLowerCase()}`:`<b>${a.u===me()?'Вы':(PEOPLE[a.u]?.name||a.u)}</b> ${verb}`;
     const ic=k==='deny'?['lock','var(--err)','var(--err-bg)']:k==='ai'?['auto_awesome','#7b4fd6','#f3e8fd']:[/встреч|повестк|запис/i.test(a.action)?'event':/задач|заявк|статус/i.test(a.action)?'task_alt':/перен/i.test(a.action)?'event_repeat':'person','var(--primary)','var(--primary-soft)'];
     const res=a.result&&a.result!=='успешно'?a.result.replace(/ОТКЛОНЕНО:\s*/,'Отказано: '):'';
     return `<div class="hrow"><span class="hic" style="color:${ic[1]};background:${ic[2]}"><span class="ms">${ic[0]}</span></span><div class="htxt"><div>${text}${a.obj&&a.obj!=='сессия'?` <span class="hobj">«${esc(String(a.obj))}»</span>`:''}</div>${res?`<div class="small ${k==='deny'?'':'muted'}" style="${k==='deny'?'color:var(--err)':''}">${esc(res)}</div>`:''}</div><span class="htime">${pad(a.ts.getHours())}:${pad(a.ts.getMinutes())}</span></div>`}).join('')).join('')
@@ -2287,7 +2736,7 @@ function renderAudit(){
 /* ============ ROLE / AUDIT / GLOBAL ============ */
 function updateCounts(){const m=me();const n=REQUESTS.filter(r=>r.to===m&&r.status==='pending'&&r.kind!=='feedback').length;$('#cReq').textContent=n||'';$('#cReq').style.display=n?'':'none';$('#cTasks').textContent=TASKS.filter(t=>t.status!=='done'&&(t.owner===m)).length;}
 
-function refresh(keepModal){updateCounts();const v=currentView;if(v==='calendar')renderCal();if(v==='tasks')renderBoard();if(v==='meetings')renderMeetings();if(v==='stats')renderStats();if(!keepModal&&$('#scrim').classList.contains('on')&&!$('#okBtn')){}}
+function refresh(keepModal){updateCounts();const v=currentView;if(v==='calendar')renderCal();if(v==='tasks')renderBoard();if(v==='meetings')renderMeetings();if(v==='docs')renderDocs();if(v==='stats')renderStats();if(!keepModal&&$('#scrim').classList.contains('on')&&!$('#okBtn')){}}
 const OPEN={create:()=>openCreate(),meeting:()=>openMeeting(),task:()=>openTask(),request:()=>openRequest(),reschedule:()=>openReschedule()};
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){if($('#scrim').classList.contains('on'))closeModal();else{closePop();closeMenu();if(notifEl){notifEl.remove();notifEl=null}}return}
@@ -2300,7 +2749,7 @@ setInterval(()=>{if(currentView==='calendar'){const n=$('.now');if(n)n.style.top
 /* init */
 $('#meAvatar').style.background=PEOPLE.anna.color;$('#meAvatar').textContent='А';
 $('#inboxBtn').onclick=openInbox;updateCounts();
-const h0=(location.hash||'').slice(1);show(['calendar','today','tasks','requests','meetings','audit','stats'].includes(h0)?h0:'calendar');scrollToWork();
+const h0=(location.hash||'').slice(1);show(['calendar','today','tasks','requests','meetings','docs','audit','stats'].includes(h0)?h0:'calendar');scrollToWork();
 </script>
 <script src="/static/session.js" defer></script>
 </body>
