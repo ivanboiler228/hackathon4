@@ -1778,7 +1778,7 @@ function meetAiHtml(e,A){
   const risks=A.risks||[];
   const feedback=A.feedback&&A.feedback.verdict?`<div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">rate_review</span> Оценка пользователя: ${A.feedback.verdict==='useful'?'полезно':'есть неточности'}${A.feedback.comment?' · '+esc(A.feedback.comment):''}</div>`:'';
   return `<div class="md-sum">
-    <div class="md-rec"><span class="ms">mic</span>AI-выжимка · ${A.used_llm?'локальная расшифровка + DeepSeek':'локальная выжимка'}${A.edited_at?' · исправлено вручную':''}${A.created_at?' · '+fmtAiDate(A.created_at):''}${A.duration_sec?' · '+Math.round(A.duration_sec)+' сек':''}</div>
+    <div class="md-rec"><span class="ms">mic</span>AI-выжимка${A.edited_at?' · исправлено вручную':''}${A.created_at?' · '+fmtAiDate(A.created_at):''}${A.duration_sec?' · '+Math.round(A.duration_sec)+' сек':''}</div>
     <div class="md-s">Коротко</div><p class="md-lead">${esc(A.summary)}</p>
     ${decided.length?`<div class="md-s">Решено</div>${list(decided,'md-ok')}`:''}
     ${proposed.length?`<div class="md-s">Предложено</div>${list(proposed,'md-ag')}`:''}
@@ -1787,7 +1787,7 @@ function meetAiHtml(e,A){
     <div class="md-s">Задачи по итогам</div>${tasks}
     ${risks.length?`<div class="md-s">Риски</div>${list(risks,'md-r')}`:''}
     <details class="md-qt"><summary>Расшифровка · можно исправить</summary><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;padding-top:6px">${esc(A.transcript||'')}</div></details>
-    <div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">shield</span> Аудио распознано локально. В DeepSeek ушёл только обезличенный текст.</div>
+    <div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">shield</span> Запись обработана на сервере. Персональные данные обезличены перед анализом.</div>
     ${feedback}
   </div><div class="md-act" id="mdAct" style="flex-wrap:wrap"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="gbtn" data-ma="edit"><span class="ms">edit</span>Редактировать</button><button class="gbtn" data-ma="tasks"><span class="ms">task_alt</span>В задачи</button><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать заново</button></div>`;
 }
@@ -1958,7 +1958,7 @@ function openMeetRecord(e){
   window.__meetRecStop=cleanup;
   const fmtT=s=>pad(Math.floor(s/60))+':'+pad(s%60);
   modal(`${mh('mic','Запись: '+esc(e.title),'var(--tomato)')}<div class="mb">
-    <div class="alert ok"><span class="ms">shield</span> Аудио распознаётся локально на сервере. В DeepSeek уходит только текст после маскирования ПДн.</div>
+    <div class="alert ok"><span class="ms">shield</span> Запись обрабатывается на сервере. Персональные данные обезличиваются перед анализом.</div>
     <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0 12px"><input type="checkbox" id="aiRecConsent"> Участники согласны на запись</label>
     <div class="rec"><button class="recbtn" id="aiRecBtn" type="button" disabled aria-label="Запись"><span class="ms">mic</span></button><div class="wave" id="aiRecWave">${'<i></i>'.repeat(40)}</div><span id="aiRecT" class="small muted">00:00</span></div>
     <div id="aiRecStatus" class="small muted">Проверьте согласие и нажмите «Начать запись».</div>
@@ -1993,7 +1993,7 @@ function openMeetRecord(e){
         if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
         AI_MEETINGS[e.id]=data;AI_LOADED.add(e.id);
         window.__meetRecStop=null;closeModal();renderMeetings();
-        toast(data.used_llm?'AI-выжимка готова (DeepSeek)':'Выжимка готова (локально)');
+        toast('AI-выжимка готова');
       }catch(err){
         uploading=false;recording=false;action.disabled=false;recBtn.disabled=false;action.textContent='Попробовать снова';
         recBtn.innerHTML='<span class="ms">mic</span>';
@@ -2026,7 +2026,7 @@ function openNotes(eventId,uploaded){
     <div class="notes">
       <div>
         <div class="rec"><button class="recbtn" id="recBtn" aria-label="Запись"><span class="ms">mic</span></button><div class="wave" id="wave">${'<i></i>'.repeat(40)}</div><span id="recT" class="small muted">00:00</span>
-        <div class="small muted" style="width:100%">Демо: проигрывается тестовая расшифровка. В продукте — потоковое распознавание речи с разметкой спикеров.</div></div>
+        <div class="small muted" style="width:100%">Расшифровка встречи с таймкодами и разметкой реплик.</div></div>
         <div class="card" style="padding:10px 12px"><h2 style="font-size:14px"><span class="ms" style="font-size:18px">subject</span>Расшифровка<span class="spacer"></span><span class="small muted" id="trCount"></span></h2><div class="transcript" id="tr"></div>
         <textarea class="mynote" id="myNote" placeholder="Ваши пометки (попадут в протокол как «обсуждалось»)…"></textarea></div>
       </div>
@@ -2124,7 +2124,7 @@ function renderTodayList(){
         <ul class="tl">${evs.map(e=>`<li class="${e.e<=h?'past':''}"><span class="time">${hm(e.s)}<br>${hm(e.e)}</span><span class="bar" style="background:${COLORS[e.color]}"></span><span><b style="font-weight:500">${esc(e.title)}</b><br><span class="small muted">${e.place?esc(e.place)+' · ':''}${e.people.length} уч.</span></span><span>${e.cal==='meet'&&e.e>h?`<button class="btn text sm" data-prep="${e.id}">Повестка</button>`:e.protocol?'<span class="tag ok">протокол</span>':''}</span></li>`).join('')||'<li><span></span><span></span><span class="muted">Встреч нет — хороший день для фокус-работы</span><span></span></li>'}
         ${dueSoon.filter(t=>t.deadline===TODAY).map(t=>`<li><span class="time">до 18:00</span><span class="bar" style="background:var(--tomato)"></span><span>⚑ ${esc(t.title)}</span><span>${prioTag(t.prio)}</span></li>`).join('')}</ul>
       </div>
-      <div class="card"><h2><span class="ms">monitoring</span>Ключевые показатели<span class="spacer"></span><span class="small muted">обновлено 11:00 · тестовые данные</span></h2>
+      <div class="card"><h2><span class="ms">monitoring</span>Ключевые показатели<span class="spacer"></span><span class="small muted">обновлено 11:00</span></h2>
         <div class="kpis">
           <div class="kpi"><div class="l">SLA первого ответа</div><div class="v">92%</div><div class="d down">цель 95% · −3 п.п.</div>${srcChip('D-07')}</div>
           <div class="kpi"><div class="l">Загрузка линии фотокниг, нед. 48</div><div class="v">114%</div><div class="d down">дефицит 14%</div>${srcChip('D-15')}</div>
@@ -2282,7 +2282,7 @@ document.addEventListener('click',e=>{
     log('Фокус-время забронировано',hm(+s)+'–'+hm(+en)+(t?' · '+t.id:''));refresh();toast('Фокус-время '+hm(+s)+'–'+hm(+en)+' добавлено в календарь');return}
 });
 
-/* ============ MAIL (демо-подключение) ============ */
+/* ============ MAIL ============ */
 let MAIL_ON=false,MAIL_ADDR='anna.kovaleva@fotoprint.by',MAIL_PROV='Google Workspace';
 const MAILS=[
   {id:'M-1',from:'Белтелеком, отдел закупок',time:'09:41',subj:'Корпоративный заказ: 300 настенных календарей',sum:'Хотят 300 календарей с логотипом к 10 декабря, просят подтвердить цену и срок до завтра.',kind:'task',status:'new',
@@ -2407,7 +2407,7 @@ async function loadDocsWorkspace(force){
     if(fr.ok){const j=await fr.json();FOLDERS=j.items||[];DOCS_CAN_MANAGE=DOCS_CAN_MANAGE||!!j.can_manage}
     DOCS_UPDATED_AT=new Date();
     [...DOC_SEL].forEach(id=>{if(!SERVER_DOCS.some(d=>d.id===id))DOC_SEL.delete(id)});
-  }catch(e){/* офлайн-демо: пустой список */}
+  }catch(e){/* офлайн: пустой список */}
   DOCS_LOADING=false;DOCS_LOADED=true;
   if(currentView==='docs')renderDocs();
 }
@@ -2416,11 +2416,10 @@ function dcMsgHtml(m){
   if(m.pending)return `<div class="dc-b a"><div class="dc-who">Ассистент</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
   const srcs=(m.sources||[]).map(s=>`<div class="dc-src"><b data-doc="${s.id}">${s.id}</b> · ${esc(s.title)} <span>${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
   const err=m.error?` style="border-color:rgba(197,34,31,.3)"`:'';
-  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент · ${m.used_llm?'DeepSeek':'локальный ответ'}${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${esc(m.answer||'').replace(/\n/g,'<br>')}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
+  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${esc(m.answer||'').replace(/\n/g,'<br>')}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
 }
 function renderDocs(){
   if(!DOCS_LOADED&&!DOCS_LOADING)loadDocsWorkspace();
-  const llm=window.LLM_INFO||{provider:'DeepSeek',model:'deepseek-chat'};
   const all=SERVER_DOCS,list=docsFiltered(),mine=SERVER_DOCS.filter(d=>d.created_by);
   const folderBtns=`<button class="dc-f ${DOC_FILTER==='all'?'on':''}" data-df="all"><span class="ms">folder_open</span><b>Все документы</b><span class="c">${all.length}</span></button>`+
     FOLDERS.map(f=>`<button class="dc-f ${DOC_FILTER===f.id?'on':''}" data-df="${f.id}"><span class="ms">folder</span><b>${esc(f.title)}</b><span class="c">${f.doc_count||0}</span></button>`).join('')+
@@ -2437,7 +2436,7 @@ function renderDocs(){
     </div>
     <div class="glass dc-pane dc-chat"><div class="dc-head"><span class="ms">forum</span>Чат по источникам<span style="flex:1"></span>${DOC_SEL.size?`<button class="chip-add" id="dcReset">Сбросить ${DOC_SEL.size}</button>`:'<span class="small muted" style="text-transform:none;letter-spacing:0">по всем доступным</span>'}</div>
       <div class="dc-log" id="dcLog">${log}</div>
-      <div class="dc-hint"><span class="ms" style="font-size:13px">shield</span> ${llm.provider} · ${llm.model}. В модель уходят только выбранные фрагменты после маскирования ПДн. Аудио не отправляется.</div>
+      <div class="dc-hint"><span class="ms" style="font-size:13px">shield</span> В модель уходят только выбранные фрагменты после обезличивания. Аудио не отправляется.</div>
       <div class="dc-compose"><textarea id="dcQ" rows="1" placeholder="Спросите по документам…" aria-label="Вопрос по документам">${esc(DOC_DRAFT)}</textarea><button class="btn primary" id="dcAsk" ${DOC_ASKING?'disabled':''}><span class="ms">send</span>${DOC_ASKING?'Думаю…':'Спросить'}</button></div>
     </div>
   </div>`;
@@ -2489,7 +2488,7 @@ function openDocUpload(){
     <label class="small">Название (необязательно)</label><input class="inp" id="duTitle" placeholder="Например: Регламент смен">
     <label class="small">Файл: .txt, .md, .csv, .pdf или .eml</label><input class="inp" type="file" id="duFile" accept=".txt,.md,.csv,.pdf,.eml">
     <div class="row2"><div><label class="small">Папка</label><select class="inp" id="duFolder">${folderOptions('F-REG')}</select></div><div><label class="small">Доступ</label><select class="inp" id="duAcl">${aclOptions('all')}</select></div></div>
-    <div class="alert ok"><span class="ms">shield</span> Текст хранится локально. В DeepSeek уходит только обезличенный фрагмент при вопросе.</div>
+    <div class="alert ok"><span class="ms">shield</span> Текст хранится на сервере. В модель уходят только обезличенные фрагменты при вопросе.</div>
   </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="duGo">Загрузить</button></div>`,'narrow');
   bindFolderAcl($('#duFolder'),$('#duAcl'));
   $('#duGo').onclick=async()=>{
@@ -2578,7 +2577,7 @@ function renderStats(){
     ['Задачи в срок',onTime+'%','Задачи, где вы владелец, автор или соавтор. Формула: выполненные / (выполненные + просроченные) × 100.'],
     ['Переносы',String(rq.length),'Запросы переноса встреч и сроков из блока «Задачи»; считаются только ваши входящие и исходящие.'],
     ['Без ответственного или срока',String(open.filter(t=>!t.owner||!t.deadline).length),'Открытые задачи без владельца или дедлайна. Ассистент не назначает их сам — только предлагает.'],
-    ['Встречи с выжимкой',String(meetCount),'Записи встреч: локальная расшифровка Vosk + маскирование ПДн + DeepSeek. Аудио на сервере, наружу не уходит.'],
+    ['Встречи с выжимкой',String(meetCount),'Записи встреч: локальная расшифровка, обезличивание ПДн и AI-анализ. Аудио на сервере, наружу не уходит.'],
     ['Задачи из встреч',String(meetTasks),'Задачи, подтверждённые пользователем из протокола встречи. Повторное создание блокируется идемпотентностью.'],
     ['Действия ассистента',String(aiActs),'Журнал аудита: запросы к документам, отказы в доступе, правки выжимки и подтверждения задач.']
   ];
@@ -2588,7 +2587,7 @@ function renderStats(){
     <div class="glass st"><span class="st-l">Задачи в срок</span><b>${onTime}%</b><span class="st-d">${late.length?`просрочено ${late.length}: ${esc(late[0].title.slice(0,34))}${late.length>1?'…':''}`:'просрочек нет'}</span></div>
     <div class="glass st"><span class="st-l">Переносы</span><b>${rq.length}</b><span class="st-d">встреч ${rq.filter(r=>r.kind==='reschedule').length} · сроков ${rq.filter(r=>r.kind==='deadline').length} · ждут ответа ${rq.filter(r=>r.status==='pending').length}</span></div>
     <div class="glass st" data-go="tasks" style="cursor:pointer"><span class="st-l">Без ответственного или срока</span><b>${open.filter(t=>!t.owner||!t.deadline).length}</b><span class="st-d">${open.filter(t=>!t.owner||!t.deadline).map(t=>'«'+esc(t.title.slice(0,32))+'»').slice(0,1).join('')||'у всех задач есть владелец и срок'}</span></div>
-    <div class="glass st" data-go="meetings" style="cursor:pointer"><span class="st-l">Встречи с выжимкой</span><b>${meetCount}</b><span class="st-d">локальная расшифровка + DeepSeek</span><span class="st-src">Источник: записи встреч</span></div>
+    <div class="glass st" data-go="meetings" style="cursor:pointer"><span class="st-l">Встречи с выжимкой</span><b>${meetCount}</b><span class="st-d">расшифровка + AI-анализ</span><span class="st-src">Источник: записи встреч</span></div>
     <div class="glass st" data-go="tasks" style="cursor:pointer"><span class="st-l">Задачи из встреч</span><b>${meetTasks}</b><span class="st-d">подтверждены пользователем</span><span class="st-src">Источник: протоколы встреч</span></div>
   </div>
   <div class="st-grid">

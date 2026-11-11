@@ -61,23 +61,7 @@
         }
         if (typeof refresh === "function") refresh(true);
       } catch {
-        /* демо без бэкенда */
-      }
-
-      // Какая модель реально подключена — показываем в интерфейсе без хардкода.
-      try {
-        const hr = await fetch("/health", { credentials: "same-origin", cache: "no-store" });
-        if (hr.ok) {
-          const health = await hr.json();
-          window.LLM_INFO = {
-            provider: health.llm?.provider || "DeepSeek",
-            model: health.llm?.model || "deepseek-chat",
-            stt: health.stt?.model || "Vosk",
-          };
-          if (typeof refresh === "function") refresh(true);
-        }
-      } catch {
-        /* health недоступен */
+        /* без бэкенда */
       }
 
       const avatar = document.querySelector("#meAvatar");
@@ -96,7 +80,7 @@
       }
       setTimeout(focusActiveTab, 120);
     } catch {
-      /* статическая демонстрация без бэкенда */
+      /* статическая страница без бэкенда */
     }
   }
 

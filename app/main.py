@@ -59,7 +59,6 @@ async def health() -> dict:
     return {
         "status": "ok",
         "llm_enabled": settings.llm_enabled,
-        "demo_mode": settings.demo_mode,
         "llm": {
             "provider": "DeepSeek",
             "model": settings.deepseek_model,

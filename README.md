@@ -128,6 +128,9 @@ DEEPSEEK_MODEL=deepseek-chat
 curl http://127.0.0.1:8000/health
 ```
 
+В интерфейсе для жюри название провайдера не выводится — это техническая информация для
+проверки и раздела ТЗ о раскрытии внешнего AI.
+
 ```json
 {"llm":{"provider":"DeepSeek","model":"deepseek-chat","enabled":true},
  "stt":{"engine":"Vosk","model":"vosk-model-small-ru-0.22","local":true}}
