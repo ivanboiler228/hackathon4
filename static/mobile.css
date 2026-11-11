@@ -10,6 +10,9 @@
   #createBtn .ms { font-size: 22px; margin: 0; }
   .body { padding: 0 6px 8px; }
   .body > .main { border-radius: 20px; }
+  .view.on { overflow-y: auto !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .month-wrap { flex: none; height: auto; min-height: 0; overflow: visible; }
+  .mgrid { flex: none; min-height: 0; grid-template-rows: none !important; grid-auto-rows: minmax(96px, auto); }
   .cx { display: block; padding: 0; height: auto; overflow: visible; }
   .cx-main { min-width: 0; }
   .cx-cal { min-height: calc(100dvh - 150px); border-radius: 20px; }
