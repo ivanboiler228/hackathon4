@@ -329,6 +329,43 @@ def create_folder(title: str, acl: str, created_by: str) -> dict[str, Any]:
     return dict(row)
 
 
+def get_folder(folder_id: str) -> dict[str, Any] | None:
+    with db_conn() as conn:
+        row = conn.execute("SELECT * FROM folders WHERE id = ?", (folder_id,)).fetchone()
+    return dict(row) if row else None
+
+
+def count_folder_docs(folder_id: str) -> int:
+    with db_conn() as conn:
+        row = conn.execute("SELECT COUNT(*) AS n FROM docs WHERE folder_id = ?", (folder_id,)).fetchone()
+    return int(row["n"]) if row else 0
+
+
+def update_folder(folder_id: str, *, title: str | None = None, acl: str | None = None) -> dict[str, Any] | None:
+    fields: list[str] = []
+    values: list[Any] = []
+    if title is not None:
+        fields.append("title = ?")
+        values.append(title)
+    if acl is not None:
+        fields.append("acl = ?")
+        values.append(acl)
+    if not fields:
+        return get_folder(folder_id)
+    values.append(folder_id)
+    with db_conn() as conn:
+        conn.execute(f"UPDATE folders SET {', '.join(fields)} WHERE id = ?", tuple(values))
+        row = conn.execute("SELECT * FROM folders WHERE id = ?", (folder_id,)).fetchone()
+    return dict(row) if row else None
+
+
+def delete_folder(folder_id: str) -> bool:
+    with db_conn() as conn:
+        cursor = conn.execute("DELETE FROM folders WHERE id = ?", (folder_id,))
+        deleted = cursor.rowcount
+    return deleted > 0
+
+
 def create_doc(
     *,
     title: str,

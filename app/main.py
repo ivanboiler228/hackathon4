@@ -2,13 +2,15 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from contextlib import asynccontextmanager
+from datetime import date as date_cls, timedelta
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile, status
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import auth, db, documents, meeting_ai, retrieval, stt
+from . import auth, calendar_ai, db, documents, meeting_ai, retrieval, stt
 from .config import settings
 from .llm import LLMError, call_deepseek, fallback_answer, validate_and_restore
 from .meeting_ai import MeetingAIError
@@ -17,8 +19,10 @@ from .rate_limit import RateLimiter
 from .schemas import (
     AskRequest,
     AskResponse,
+    CalendarAdviceRequest,
     DocUpdate,
     FolderCreate,
+    FolderUpdate,
     MeetingEditRequest,
     MeetingFeedbackRequest,
     MeetingTasksRequest,
@@ -206,6 +210,333 @@ def _check_folder(user: dict, folder_id: str, acl: str) -> dict:
     return folder
 
 
+WORK_START = 9.0
+WORK_END = 18.0
+MIN_SLOT = 0.5
+
+
+def _calendar_date(value: str | None, label: str, default: date_cls) -> date_cls:
+    if not value:
+        return default
+    try:
+        return date_cls.fromisoformat(value)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=f"Некорректная дата: {label}.") from exc
+
+
+def _fmt_hour(value: float) -> str:
+    hour = int(value)
+    minute = int(round((value - hour) * 60))
+    if minute == 60:
+        hour += 1
+        minute = 0
+    return f"{hour:02d}:{minute:02d}"
+
+
+def _person_name(person_id: str) -> str:
+    user = db.get_user(person_id)
+    if user:
+        return user["name"].split()[0]
+    return {
+        "anna": "Анна",
+        "igor": "Игорь",
+        "maria": "Мария",
+        "olga": "Ольга",
+        "pavel": "Павел",
+        "dima": "Дмитрий",
+        "irina": "Ирина",
+    }.get(person_id, person_id)
+
+
+STATUS_LABELS = {
+    "new": "новая",
+    "progress": "в работе",
+    "review": "на проверке",
+    "done": "готово",
+}
+
+
+def _merge_intervals(intervals: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    merged: list[tuple[float, float]] = []
+    for start, end in sorted(intervals):
+        start = max(WORK_START, start)
+        end = min(WORK_END, end)
+        if end <= start:
+            continue
+        if merged and start <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], end))
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def _free_slots(
+    events: list,
+    busy: list,
+    date_from: date_cls,
+    date_to: date_cls,
+    participants: list[str],
+) -> list[dict]:
+    if not participants:
+        return []
+    people = set(participants)
+    slots: list[dict] = []
+    day = date_from
+    while day <= date_to and len(slots) < 8:
+        if day.weekday() < 5:
+            iso_day = day.isoformat()
+            intervals = [
+                (e.start, e.end)
+                for e in events
+                if e.date == iso_day and people.intersection(e.people)
+            ]
+            intervals += [
+                (b.start, b.end)
+                for b in busy
+                if b.date == iso_day and b.person in people
+            ]
+            cursor = WORK_START
+            for start, end in _merge_intervals(intervals):
+                if start - cursor >= MIN_SLOT:
+                    slots.append(
+                        {"date": iso_day, "start": cursor, "end": start}
+                    )
+                cursor = max(cursor, end)
+            if WORK_END - cursor >= MIN_SLOT:
+                slots.append({"date": iso_day, "start": cursor, "end": WORK_END})
+        day += timedelta(days=1)
+    return slots[:8]
+
+
+@app.post("/api/calendar/advice")
+async def calendar_advice(
+    payload: CalendarAdviceRequest,
+    user: dict = Depends(auth.current_user),
+):
+    key = f"{user['id']}:calendar"
+    if not limiter.allow(key):
+        retry = limiter.retry_after(key)
+        db.log_audit(
+            user_id=user["id"],
+            role=user["role"],
+            action="calendar.rate_limited",
+            result="отклонено",
+            meta={"retry_after": retry},
+        )
+        raise HTTPException(
+            status_code=429,
+            detail=f"Слишком много запросов к AI-советнику. Повторите через {retry} сек.",
+        )
+
+    today = date_cls.today()
+    date_from = _calendar_date(payload.date_from, "начало", today)
+    date_to = _calendar_date(payload.date_to, "конец", date_from + timedelta(days=13))
+    if date_to < date_from:
+        raise HTTPException(status_code=400, detail="Конец периода раньше начала.")
+    if (date_to - date_from).days > 60:
+        date_to = date_from + timedelta(days=60)
+    range_text = f"{date_from.isoformat()}..{date_to.isoformat()}"
+
+    is_boss = user["role"] == "boss"
+    events = [
+        e
+        for e in payload.events
+        if date_from.isoformat() <= e.date <= date_to.isoformat()
+        and (is_boss or user["id"] in e.people)
+    ]
+    events = sorted(events, key=lambda e: (e.date, e.start))[:200]
+    tasks = [
+        t
+        for t in payload.tasks
+        if is_boss or t.owner == user["id"] or t.created == user["id"] or user["id"] in t.co
+    ]
+    tasks = sorted(tasks, key=lambda t: (t.deadline or "9999-12-31", t.prio))[:120]
+    busy = [
+        b
+        for b in payload.busy
+        if is_boss or b.person == user["id"]
+    ][:400]
+
+    focus = next((e for e in events if e.id == payload.focus_event_id), None)
+    participants = list(focus.people) if focus else [user["id"]]
+    free_slots = _free_slots(events, busy, date_from, date_to, participants)
+
+    open_tasks = [t for t in tasks if t.status != "done"]
+    overdue = [t for t in open_tasks if t.deadline and t.deadline < today.isoformat()]
+    due_soon = [
+        t
+        for t in open_tasks
+        if t.deadline
+        and today.isoformat() <= t.deadline <= (today + timedelta(days=3)).isoformat()
+    ]
+    days = []
+    day = date_from
+    while day <= date_to:
+        iso_day = day.isoformat()
+        day_events = [e for e in events if e.date == iso_day]
+        days.append(
+            {
+                "date": iso_day,
+                "events": len(day_events),
+                "hours": round(sum(max(0.0, e.end - e.start) for e in day_events), 1),
+            }
+        )
+        day += timedelta(days=1)
+
+    conflicts = []
+    for index, first in enumerate(events):
+        for second in events[index + 1 :]:
+            if first.date != second.date:
+                continue
+            if first.start < second.end and second.start < first.end:
+                shared = sorted(set(first.people).intersection(second.people))
+                if shared and len(conflicts) < 15:
+                    conflicts.append(
+                        {
+                            "date": first.date,
+                            "first": first.title,
+                            "second": second.title,
+                            "people": shared,
+                            "start": max(first.start, second.start),
+                            "end": min(first.end, second.end),
+                        }
+                    )
+
+    context = {
+        "owner": {
+            "id": user["id"],
+            "name": user["name"],
+            "role": user["role_label"],
+            "dept": user["dept"],
+        },
+        "range": {"from": date_from.isoformat(), "to": date_to.isoformat()},
+        "today": today.isoformat(),
+        "stats": {
+            "events": len(events),
+            "events_hours": round(sum(max(0.0, e.end - e.start) for e in events), 1),
+            "tasks_open": len(open_tasks),
+            "tasks_overdue": len(overdue),
+            "tasks_due_soon": len(due_soon),
+            "conflicts": len(conflicts),
+        },
+        "days": days,
+        "events": [
+            {
+                "id": e.id,
+                "date": e.date,
+                "start": e.start,
+                "end": e.end,
+                "title": e.title,
+                "people": [_person_name(p) for p in e.people],
+                "place": e.place,
+                "cal": e.cal,
+            }
+            for e in events
+        ],
+        "tasks": [
+            {
+                "id": t.id,
+                "title": t.title,
+                "owner": _person_name(t.owner) if t.owner else None,
+                "deadline": t.deadline,
+                "status": STATUS_LABELS.get(t.status, t.status),
+                "prio": t.prio,
+            }
+            for t in tasks
+        ],
+        "conflicts": conflicts,
+        "free_slots": free_slots,
+        "focus": (
+            {
+                "id": focus.id,
+                "title": focus.title,
+                "date": focus.date,
+                "start": focus.start,
+                "end": focus.end,
+                "people": [_person_name(p) for p in focus.people],
+            }
+            if focus
+            else None
+        ),
+    }
+
+    masker = PIIMasker()
+    try:
+        masked_question = masker.mask(payload.question).masked
+        context["owner"]["name"] = masker.mask(context["owner"]["name"]).masked
+        for event in context["events"]:
+            event["title"] = masker.mask(event["title"]).masked
+            event["place"] = masker.mask(event["place"]).masked
+            event["people"] = [masker.mask(person).masked for person in event["people"]]
+        for task in context["tasks"]:
+            task["title"] = masker.mask(task["title"]).masked
+            if task["owner"]:
+                task["owner"] = masker.mask(task["owner"]).masked
+        if context["focus"]:
+            context["focus"]["title"] = masker.mask(context["focus"]["title"]).masked
+            context["focus"]["people"] = [
+                masker.mask(person).masked for person in context["focus"]["people"]
+            ]
+        for conflict in context["conflicts"]:
+            conflict["first"] = masker.mask(conflict["first"]).masked
+            conflict["second"] = masker.mask(conflict["second"]).masked
+        preview = (
+            f"Вопрос: {masked_question}\n"
+            + json.dumps(context, ensure_ascii=False)[:1600]
+        )
+        masker.assert_clean(preview)
+    except PIIError as exc:
+        db.log_audit(
+            user_id=user["id"],
+            role=user["role"],
+            action="calendar.pii_block",
+            result="ОТКЛОНЕНО: не удалось обезличить контекст",
+            meta={"error": exc.__class__.__name__},
+        )
+        raise HTTPException(status_code=422, detail="Не удалось безопасно обезличить календарь.") from exc
+
+    answer_masked, used_llm, llm_error = await calendar_ai.advise(masked_question, context)
+    try:
+        answer = validate_and_restore(answer_masked, masker)
+    except (LLMError, PIIError):
+        used_llm = False
+        llm_error = "validation"
+        answer = validate_and_restore(
+            calendar_ai.fallback_advice(context, masked_question), masker
+        )
+
+    db.log_audit(
+        user_id=user["id"],
+        role=user["role"],
+        action="calendar.advice",
+        obj=range_text,
+        result="ok" if used_llm else "fallback",
+        meta={
+            "events": len(events),
+            "tasks": len(tasks),
+            "free_slots": len(free_slots),
+            "focus": payload.focus_event_id or "",
+            "used_llm": used_llm,
+            "llm_error": llm_error,
+        },
+        masked_preview=preview[:1800],
+    )
+    return {
+        "answer": answer,
+        "used_llm": used_llm,
+        "llm_error": llm_error,
+        "context": {
+            "range": context["range"],
+            "events": len(events),
+            "tasks": len(tasks),
+            "free_slots": free_slots,
+            "overdue": len(overdue),
+            "conflicts": len(conflicts),
+            "focus": context["focus"],
+        },
+    }
+
+
 @app.get("/api/folders")
 async def folders(user: dict = Depends(auth.current_user)):
     return {
@@ -230,6 +561,64 @@ async def folder_create(payload: FolderCreate, user: dict = Depends(auth.current
         meta={"title": _mask_for_audit(title), "acl": payload.acl},
     )
     return folder
+
+
+@app.patch("/api/folders/{folder_id}")
+async def folder_update(
+    folder_id: str,
+    payload: FolderUpdate,
+    user: dict = Depends(auth.current_user),
+):
+    _require_boss(user, "doc.folder_edit_denied", folder_id)
+    folder = db.get_folder(folder_id)
+    if not folder:
+        raise HTTPException(status_code=404, detail="Папка не найдена.")
+    if not folder.get("created_by"):
+        raise HTTPException(status_code=400, detail="Встроенную папку менять нельзя.")
+    if payload.acl and payload.acl != folder["acl"] and db.count_folder_docs(folder_id):
+        raise HTTPException(
+            status_code=400,
+            detail="В папке есть документы. Сначала перенесите их, потом меняйте доступ.",
+        )
+    updated = db.update_folder(
+        folder_id,
+        title=payload.title.strip() if payload.title else None,
+        acl=payload.acl,
+    )
+    db.log_audit(
+        user_id=user["id"],
+        role=user["role"],
+        action="doc.folder_edit",
+        obj=folder_id,
+        result="папка изменена",
+        meta={"fields": [k for k in ("title", "acl") if getattr(payload, k, None)]},
+    )
+    return updated
+
+
+@app.delete("/api/folders/{folder_id}")
+async def folder_delete(folder_id: str, user: dict = Depends(auth.current_user)):
+    _require_boss(user, "doc.folder_delete_denied", folder_id)
+    folder = db.get_folder(folder_id)
+    if not folder:
+        raise HTTPException(status_code=404, detail="Папка не найдена.")
+    if not folder.get("created_by"):
+        raise HTTPException(status_code=400, detail="Встроенную папку удалить нельзя.")
+    if db.count_folder_docs(folder_id):
+        raise HTTPException(
+            status_code=400,
+            detail="В папке есть документы. Сначала перенесите или удалите их.",
+        )
+    db.delete_folder(folder_id)
+    db.log_audit(
+        user_id=user["id"],
+        role=user["role"],
+        action="doc.folder_delete",
+        obj=folder_id,
+        result="папка удалена",
+        meta={"title": _mask_for_audit(folder["title"])},
+    )
+    return {"ok": True, "deleted": folder_id}
 
 
 @app.get("/api/docs")

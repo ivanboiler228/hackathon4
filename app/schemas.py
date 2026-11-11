@@ -50,6 +50,11 @@ class FolderCreate(BaseModel):
     acl: str = Field("all", pattern="^(all|fin|hr|prod|mkt|support|legal)$")
 
 
+class FolderUpdate(BaseModel):
+    title: str | None = Field(None, min_length=1, max_length=80)
+    acl: str | None = Field(None, pattern="^(all|fin|hr|prod|mkt|support|legal)$")
+
+
 class DocUpdate(BaseModel):
     title: str | None = Field(None, min_length=1, max_length=200)
     text: str | None = Field(None, min_length=1, max_length=200_000)
@@ -93,3 +98,42 @@ class MeetingFeedbackRequest(BaseModel):
 class TaskStatusUpdate(BaseModel):
     status: str = Field(..., pattern="^(new|progress|review|done)$")
     owner_id: str | None = None
+
+
+class CalendarEventIn(BaseModel):
+    id: str = Field(..., max_length=40)
+    title: str = Field(..., max_length=300)
+    date: str = Field(..., max_length=10)
+    start: float
+    end: float
+    people: list[str] = Field(default_factory=list)
+    place: str = Field("", max_length=300)
+    cal: str = Field("meet", max_length=20)
+
+
+class CalendarTaskIn(BaseModel):
+    id: str = Field(..., max_length=40)
+    title: str = Field(..., max_length=300)
+    owner: str | None = None
+    co: list[str] = Field(default_factory=list)
+    deadline: str | None = None
+    status: str = Field("new", max_length=20)
+    prio: str = Field("P3", max_length=4)
+    created: str | None = None
+
+
+class BusyBlockIn(BaseModel):
+    person: str = Field(..., max_length=40)
+    date: str = Field(..., max_length=10)
+    start: float
+    end: float
+
+
+class CalendarAdviceRequest(BaseModel):
+    question: str = Field(..., min_length=1, max_length=1500)
+    date_from: str | None = None
+    date_to: str | None = None
+    focus_event_id: str | None = None
+    events: list[CalendarEventIn] = Field(default_factory=list, max_length=500)
+    tasks: list[CalendarTaskIn] = Field(default_factory=list, max_length=500)
+    busy: list[BusyBlockIn] = Field(default_factory=list, max_length=1000)

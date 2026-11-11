@@ -67,6 +67,7 @@
   .cx-bar #nextBtn { grid-column: 3; width: 36px; height: 36px; }
   .cx-bar .spacer { display: none; }
   .cx-bar .seg { grid-column: 1 / -1; justify-self: start; margin-top: 4px; }
+  .cx-bar #calAiBtn { grid-column: 1 / -1; justify-self: start; margin-top: 4px; }
   .rm-top { gap: 8px; }
   .rm-me { width: 100%; padding: 10px 14px 10px 10px; }
   .rm-me .avatar { width: 44px; height: 44px; font-size: 18px; }

@@ -971,7 +971,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
   .new-tab{margin-left:8px;padding:0 14px 0 10px}
 }
 </style>
-<link rel="stylesheet" href="/static/mobile.css?v=12">
+<link rel="stylesheet" href="/static/mobile.css?v=13">
 </head>
 <body>
 <div class="app">
@@ -999,6 +999,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
               <button class="icon-btn" id="prevBtn" aria-label="Назад"><span class="ms">chevron_left</span></button>
               <button class="icon-btn" id="nextBtn" aria-label="Вперёд"><span class="ms">chevron_right</span></button>
               <div class="spacer"></div>
+              <button class="btn tonal sm" id="calAiBtn" title="AI-советник по календарю"><span class="ms">auto_awesome</span>AI-советник</button>
               <div class="seg" id="rangeSeg" role="group" aria-label="Масштаб">
                 <button data-days="1">День</button><button data-days="7">Неделя</button><button data-days="month">Месяц</button>
               </div>
@@ -1040,6 +1041,9 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
 <script>
 const ICONS={"add": "<path d=\"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z\"/>", "add_task": "<path d=\"M22 5.18 10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8c1.57 0 3.04.46 4.28 1.25l1.45-1.45A10.02 10.02 0 0 0 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22l-1.5-1.5c-1 .46-2.11.72-3.28.72zm7-5h-3v2h3v3h2v-3h3v-2h-3v-3h-2v3z\"/>", "arrow_drop_down": "<path d=\"m7 10 5 5 5-5H7z\"/>", "attach_file": "<path d=\"M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5a2.5 2.5 0 0 0 5 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z\"/>", "auto_awesome": "<path d=\"m19 9 1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25zm0 6-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25zm-7.5-5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zm-1.51 3.49L9 15.17l-.99-2.18L5.83 12l2.18-.99L9 8.83l.99 2.18 2.18.99-2.18.99z\"/>", "back_hand": "<path d=\"M21 7a2.5 2.5 0 0 0-3-2.45V4a2.5 2.5 0 0 0-3.17-2.41A2.509 2.509 0 0 0 12.5 0c-1.23 0-2.25.89-2.46 2.06A2.5 2.5 0 0 0 7 4.5v5.89c-.34-.31-.76-.54-1.22-.66l-.77-.21c-.83-.23-1.7.09-2.19.83-.38.57-.4 1.31-.15 1.95l2.56 6.43A8.354 8.354 0 0 0 13 24c4.42 0 8-3.58 8-8V7zm-2 9c0 3.31-2.69 6-6 6-2.61 0-4.95-1.59-5.91-4.01l-2.6-6.54.53.14c.46.12.83.46 1 .9L7 15h2V4.5c0-.28.22-.5.5-.5s.5.22.5.5V12h2V2.5c0-.28.22-.5.5-.5s.5.22.5.5V12h2V4c0-.28.22-.5.5-.5s.5.22.5.5v8h2V7c0-.28.22-.5.5-.5s.5.22.5.5v9z\"/>", "calendar_month": "<path d=\"M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z\"/>", "check_circle": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z\"/>", "checklist": "<path d=\"M22 7h-9v2h9V7zm0 8h-9v2h9v-2zM5.54 11 2 7.46l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41L5.54 11zm0 8L2 15.46l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41L5.54 19z\"/>", "chevron_left": "<path d=\"M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z\"/>", "chevron_right": "<path d=\"M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z\"/>", "close": "<path d=\"M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z\"/>", "content_copy": "<path d=\"M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\"/>", "delete": "<path d=\"M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z\"/>", "description": "<path d=\"M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z\"/>", "do_not_disturb_on": "<path d=\"M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z\"/>", "edit": "<path d=\"m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83a.996.996 0 0 0 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z\"/>", "error": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z\"/>", "event": "<path d=\"M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z\"/>", "event_busy": "<path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5zm3.23 9.41 1.06 1.06 2.44-2.44 2.44 2.44 1.06-1.06-2.44-2.44 2.44-2.44-1.06-1.06-2.44 2.44-2.44-2.44-1.06 1.06 2.44 2.44z\"/>", "event_repeat": "<path d=\"M21 12V6c0-1.1-.9-2-2-2h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V10h14v2h2zm-2-4H5V6h14v2zm-3.36 12a3.504 3.504 0 0 0 6.86-1c0-1.93-1.57-3.5-3.5-3.5-.95 0-1.82.38-2.45 1H18V18h-4v-4h1.5v1.43c.9-.88 2.14-1.43 3.5-1.43 2.76 0 5 2.24 5 5a5.002 5.002 0 0 1-9.9 1h1.54z\"/>", "group": "<path d=\"M9 13.75c-2.34 0-7 1.17-7 3.5V19h14v-1.75c0-2.33-4.66-3.5-7-3.5zM4.34 17c.84-.58 2.87-1.25 4.66-1.25s3.82.67 4.66 1.25H4.34zM9 12c1.93 0 3.5-1.57 3.5-3.5S10.93 5 9 5 5.5 6.57 5.5 8.5 7.07 12 9 12zm0-5c.83 0 1.5.67 1.5 1.5S9.83 10 9 10s-1.5-.67-1.5-1.5S8.17 7 9 7zm7.04 6.81c1.16.84 1.96 1.96 1.96 3.44V19h4v-1.75c0-2.02-3.5-3.17-5.96-3.44zM15 12c1.93 0 3.5-1.57 3.5-3.5S16.93 5 15 5c-.54 0-1.04.13-1.5.35.63.89 1 1.98 1 3.15s-.37 2.26-1 3.15c.46.22.96.35 1.5.35z\"/>", "groups": "<path d=\"M4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zm-7.76-2.78c-1.17-.52-2.61-.9-4.24-.9-1.63 0-3.07.39-4.24.9A2.988 2.988 0 0 0 6 16.39V18h12v-1.61c0-1.18-.68-2.26-1.76-2.74zM8.07 16c.09-.23.13-.39.91-.69.97-.38 1.99-.56 3.02-.56s2.05.18 3.02.56c.77.3.81.46.91.69H8.07zM12 8c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m0-2c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z\"/>", "help": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z\"/>", "inbox": "<path d=\"M19 3H5c-1.1 0-2 .9-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5v-3h3.56c.69 1.19 1.97 2 3.45 2s2.75-.81 3.45-2H19v3zm0-5h-4.99c0 1.1-.9 2-2 2s-2-.9-2-2H5V5h14v9z\"/>", "info": "<path d=\"M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z\"/>", "link": "<path d=\"M17 7h-4v2h4c1.65 0 3 1.35 3 3s-1.35 3-3 3h-4v2h4c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-6 8H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-2zm-3-4h8v2H8z\"/>", "location_on": "<path d=\"M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z\"/><circle cx=\"12\" cy=\"9\" r=\"2.5\"/>", "lock": "<path d=\"M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z\"/>", "lock_open": "<path d=\"M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h2c0-1.66 1.34-3 3-3s3 1.34 3 3v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z\"/>", "menu": "<path d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"/>", "mic": "<path d=\"M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z\"/><path d=\"M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z\"/>", "monitoring": "<path d=\"M21 8c-1.45 0-2.26 1.44-1.93 2.51l-3.55 3.56c-.3-.09-.74-.09-1.04 0l-2.55-2.55C12.27 10.45 11.46 9 10 9c-1.45 0-2.27 1.44-1.93 2.52l-4.56 4.55C2.44 15.74 1 16.55 1 18c0 1.1.9 2 2 2 1.45 0 2.26-1.44 1.93-2.51l4.55-4.56c.3.09.74.09 1.04 0l2.55 2.55C12.73 16.55 13.54 18 15 18c1.45 0 2.27-1.44 1.93-2.52l3.56-3.55c1.07.33 2.51-.48 2.51-1.93 0-1.1-.9-2-2-2z\"/><path d=\"m15 9 .94-2.07L18 6l-2.06-.93L15 3l-.92 2.07L12 6l2.08.93zM3.5 11 4 9l2-.5L4 8l-.5-2L3 8l-2 .5L3 9z\"/>", "move_to_inbox": "<path d=\"M16 9h-2.55V6h-2.9v3H8l4 4zm3-6H4.99C3.88 3 3 3.9 3 5v14c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5v-3h3.56c.69 1.19 1.97 2 3.45 2s2.75-.81 3.45-2H19v3zm0-5h-4.99c0 1.1-.9 2-2 2s-2-.9-2-2H5l-.01-9H19v9z\"/>", "notifications": "<path d=\"M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z\"/>", "notifications_active": "<path d=\"M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zM7.58 4.08 6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2a8.445 8.445 0 0 1 3.55-6.42zm12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43a8.495 8.495 0 0 1 3.54 6.42z\"/>", "post_add": "<path d=\"M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z\"/><path d=\"M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z\"/>", "rate_review": "<path d=\"M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17l-.59.59-.58.58V4h16v12zm-9.5-2H18v-2h-5.5zm3.86-5.87c.2-.2.2-.51 0-.71l-1.77-1.77c-.2-.2-.51-.2-.71 0L6 11.53V14h2.47l5.89-5.87z\"/>", "refresh": "<path d=\"M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z\"/>", "schedule": "<path d=\"M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z\"/>", "search": "<path d=\"M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\"/>", "send": "<path d=\"m4.01 6.03 7.51 3.22-7.52-1 .01-2.22m7.5 8.72L4 17.97v-2.22l7.51-1M2.01 3 2 10l15 2-15 2 .01 7L23 12 2.01 3z\"/>", "shield": "<path d=\"M12 2 4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm6 9.09c0 4-2.55 7.7-6 8.83-3.45-1.13-6-4.82-6-8.83v-4.7l6-2.25 6 2.25v4.7z\"/>", "shield_person": "<g fill-rule=\"evenodd\"><circle cx=\"17\" cy=\"15.5\" r=\"1.12\"/><path d=\"M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z\"/><path d=\"M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\"/></g>", "stop": "<path d=\"M16 8v8H8V8h8m2-2H6v12h12V6z\"/>", "subject": "<path d=\"M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z\"/>", "task_alt": "<path d=\"M22 5.18 10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zm-2.21 5.04c.13.57.21 1.17.21 1.78 0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8c1.58 0 3.04.46 4.28 1.25l1.44-1.44A9.9 9.9 0 0 0 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z\"/>", "thumb_down": "<path d=\"M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm0 12-4.34 4.34L12 14H3v-2l3-7h9v10zm4-12h4v12h-4z\"/>", "thumb_up": "<path d=\"M9 21h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2zM9 9l4.34-4.34L12 10h9v2l-3 7H9V9zM1 9h4v12H1z\"/>", "update": "<path d=\"M11 8v5l4.25 2.52.77-1.28-3.52-2.09V8H11zm10 2V3l-2.64 2.64A8.937 8.937 0 0 0 12 3a9 9 0 1 0 9 9h-2c0 3.86-3.14 7-7 7s-7-3.14-7-7 3.14-7 7-7c1.93 0 3.68.79 4.95 2.05L14 10h7z\"/>", "upload_file": "<path d=\"M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z\"/>", "warning": "<path d=\"M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z\"/>", "wb_sunny": "<path d=\"m6.76 4.84-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495 1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115 1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96 1.41 1.41 1.79-1.8-1.41-1.41z\"/>", "block": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9A7.902 7.902 0 0 1 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1A7.902 7.902 0 0 1 20 12c0 4.42-3.58 8-8 8z\"/>", "fact_check": "<g fill-rule=\"evenodd\"><path d=\"M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H4V5h16v14z\"/><path d=\"M19.41 10.42 17.99 9l-3.17 3.17-1.41-1.42L12 12.16 14.82 15zM5 7h5v2H5zm0 4h5v2H5zm0 4h5v2H5z\"/></g>", "flag": "<path d=\"m12.36 6 .4 2H18v6h-3.36l-.4-2H7V6h5.36M14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6L14 4z\"/>", "forum": "<path d=\"M15 4v7H5.17L4 12.17V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z\"/>", "gavel": "<path d=\"M1 21h12v2H1v-2zM5.24 8.07l2.83-2.83 14.14 14.14-2.83 2.83L5.24 8.07zM12.32 1l5.66 5.66-2.83 2.83-5.66-5.66L12.32 1zM3.83 9.48l5.66 5.66-2.83 2.83L1 12.31l2.83-2.83z\"/>", "group_add": "<path d=\"M22 9V7h-2v2h-2v2h2v2h2v-2h2V9zM8 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 7c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6 5H2v-.99C2.2 16.29 5.3 15 8 15s5.8 1.29 6 2v1zM12.51 4.05C13.43 5.11 14 6.49 14 8s-.57 2.89-1.49 3.95C14.47 11.7 16 10.04 16 8s-1.53-3.7-3.49-3.95zm4.02 9.78C17.42 14.66 18 15.7 18 17v3h2v-3c0-1.45-1.59-2.51-3.47-3.17z\"/>", "lightbulb": "<path d=\"M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z\"/>", "star": "<path d=\"M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z\"/>"};
 Object.assign(ICONS,{"north_east": "<path d=\"M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z\"/>", "mic_off": "<path d=\"M10.8 4.9c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 3.91L15 10.6V5c0-1.66-1.34-3-3-3-1.54 0-2.79 1.16-2.96 2.65l1.76 1.76V4.9zM19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4.41 2.86 3 4.27l6 6V11c0 1.66 1.34 3 3 3 .23 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9l4.2 4.2 1.41-1.41L4.41 2.86z\"/>", "edit_note": "<path d=\"M3 10h11v2H3v-2zm0-2h11V6H3v2zm0 8h7v-2H3v2zm15.01-3.13.71-.71a.996.996 0 0 1 1.41 0l.71.71c.39.39.39 1.02 0 1.41l-.71.71-2.12-2.12zm-.71.71-5.3 5.3V21h2.12l5.3-5.3-2.12-2.12z\"/>", "mail": "<path d=\"M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z\"/>", "route": "<path d=\"M19 15.18V7c0-2.21-1.79-4-4-4s-4 1.79-4 4v10c0 1.1-.9 2-2 2s-2-.9-2-2V8.82C8.16 8.4 9 7.3 9 6c0-1.66-1.34-3-3-3S3 4.34 3 6c0 1.3.84 2.4 2 2.82V17c0 2.21 1.79 4 4 4s4-1.79 4-4V7c0-1.1.9-2 2-2s2 .9 2 2v8.18A2.996 2.996 0 0 0 18 21c1.66 0 3-1.34 3-3 0-1.3-.84-2.4-2-2.82zM6 7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 12c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z\"/>", "history": "<path d=\"M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z\"/>", "person": "<path d=\"M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/>", "filter_list": "<path d=\"M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z\"/>", "calendar_view_month": "<path d=\"M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM8 11H4V6h4v5zm6 0h-4V6h4v5zm6 0h-4V6h4v5zM8 18H4v-5h4v5zm6 0h-4v-5h4v5zm6 0h-4v-5h4v5z\"/>", "event_available": "<path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5zm5.56 10.46 5.93-5.93-1.06-1.06-4.87 4.87-2.11-2.11-1.06 1.06z\"/>", "task": "<path d=\"M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9.18-6.95L7.4 14.46 10.94 18l5.66-5.66-1.41-1.41-4.24 4.24-2.13-2.12z\"/>"});
+ICONS.folder='<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>';
+ICONS.folder_open='<path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>';
+ICONS.note_add='<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>';
 function hydrateIcons(root){(root.querySelectorAll?root:document).querySelectorAll('.ms:not([data-i])').forEach(el=>{const n=el.textContent.trim();const p=ICONS[n];el.setAttribute('data-i',n);el.setAttribute('aria-hidden','true');el.innerHTML=p?'<svg viewBox="0 0 24 24" focusable="false">'+p+'</svg>':''})}
 hydrateIcons(document);
 new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes)if(n.nodeType===1){if(n.classList&&n.classList.contains('ms'))hydrateIcons(n.parentNode||document);else hydrateIcons(n)}}).observe(document.body,{childList:true,subtree:true});
@@ -1058,9 +1062,6 @@ const ROLES={director:{me:'anna',label:'Директор',access:['all','fin','h
 const CAL={meet:{name:'Встречи',color:'var(--peacock)',hex:'#039be5',on:true},focus:{name:'Фокус-время',color:'var(--lavender)',hex:'#7986cb',on:true},deadline:{name:'Дедлайны задач',color:'var(--tomato)',hex:'#d50000',on:true},remind:{name:'Напоминания',color:'var(--banana)',hex:'#f6bf26',on:true}};
 const PASTEL={peacock:'#c3e4ff',sage:'#c8f1d5',grape:'#e2d2ff',tangerine:'#ffd6c4',lavender:'#dcdcff',basil:'#bfeccb',blueberry:'#cfd6ff',flamingo:'#ffd2de',graphite:'#e6e6ea',banana:'#fff1a6',tomato:'#ffcaca'};
 const COLORS={peacock:'#039be5',sage:'#33b679',grape:'#8e24aa',tangerine:'#f4511e',lavender:'#7986cb',basil:'#0b8043',blueberry:'#3f51b5',flamingo:'#e67c73',graphite:'#616161',banana:'#f6bf26',tomato:'#d50000'};
-ICONS.folder='<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>';
-ICONS.folder_open='<path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>';
-ICONS.note_add='<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>';
 const DOCS=[
   {id:'D-03',title:'Регламент производства фотокниг, ред. 4',date:'2026-10-14',acl:'prod',text:'Срок изготовления фотокниги — 3 рабочих дня. Модерация макета не дольше 4 часов. Перепечатка за счёт компании при браке >2 мм смещения.'},
   {id:'D-07',title:'Отчёт по SLA поддержки, октябрь',date:'2026-11-03',acl:'all',text:'SLA первого ответа 92% при цели 95%. Основные темы: сроки доставки (31%), качество печати (18%), промокоды (12%).'},
@@ -1146,6 +1147,7 @@ const log=(action,obj,result='успешно')=>{AUDIT.unshift({ts:new Date(),u:
 let currentView='calendar', DAYS=7, anchor=new Date(NOW);
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtAi=s=>esc(s||'').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/__(.+?)__/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
 const av=(p,size)=>{const P=PEOPLE[p];if(!P)return `<span class="avatar" style="background:#bdc1c6${size?';width:'+size+'px;height:'+size+'px':''}">?</span>`;return `<span class="avatar" title="${esc(P.name)}" style="background:${P.color}${size?';width:'+size+'px;height:'+size+'px;font-size:'+(size*.42)+'px':''}">${P.short[0]}</span>`};
 const pname=p=>p?PEOPLE[p].name:'—';
 const PRIO={P1:{l:'Важно · срочно',a:'Сделать сейчас',c:'#d93025',bg:'#fce8e6'},P2:{l:'Важно · не срочно',a:'Запланировать',c:'#0b57d0',bg:'#e8f0fe'},P3:{l:'Срочно · не важно',a:'Делегировать',c:'#b75b00',bg:'#fef3e0'},P4:{l:'Не важно · не срочно',a:'Отложить',c:'#5f6368',bg:'#f1f3f4'}};
@@ -1213,6 +1215,8 @@ window._todayBtn=()=>{anchor=new Date(NOW);renderCal()};
 const stepCal=d=>{if(MONTH)anchor=new Date(anchor.getFullYear(),anchor.getMonth()+d,1);else anchor=addDays(anchor,DAYS===1?d:7*d);renderCal()};
 $('#prevBtn').onclick=()=>stepCal(-1);
 $('#nextBtn').onclick=()=>stepCal(1);
+if($('#calAiBtn'))$('#calAiBtn').onclick=()=>openCalendarAI();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-calai]');if(b){openCalendarAI()}});
 $('#calHead').onclick=e=>{const d=e.target.closest('[data-goto]');if(d){anchor=parse(d.dataset.goto);DAYS=1;MONTH=false;renderCal();return}const t=e.target.closest('[data-task]');if(t)openTaskView(t.dataset.task)};
 
 /* drag to reschedule + click */
@@ -1270,6 +1274,7 @@ function openEventPop(id,el){
   ${e.cal==='meet'&&openT.length?`<div class="pop-row"><span class="ms">checklist</span><div class="small">${openT.map(t=>`<div style="margin-bottom:3px">${prioTag(t.prio)} ${esc(t.title)}</div>`).join('')}</div></div>`:''}
   ${e.cal==='meet'?`<div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px 0 60px">
     <button class="btn tonal sm" data-a="prep"><span class="ms">auto_awesome</span>Подготовить повестку</button>
+    <button class="btn sm" data-a="ai"><span class="ms">forum</span>AI-советник</button>
     <button class="btn sm" data-a="notes"><span class="ms">mic</span>${e.protocol?'Открыть протокол':'Вести заметки'}</button></div>`:''}`;
   p.onclick=ev=>{const b=ev.target.closest('[data-a],[data-x],[data-doc]');if(!b)return;ev.preventDefault();
     if(b.dataset.doc){openDoc(b.dataset.doc);return}
@@ -1277,6 +1282,7 @@ function openEventPop(id,el){
     if(a==='resch')openReschedule({eventId:e.id});
     if(a==='del')confirmAct({title:'Удалить встречу?',body:`<p>Событие «${esc(e.title)}» будет удалено, участникам (${e.people.length-1}) уйдёт уведомление об отмене.</p>`,ok:'Удалить и уведомить',danger:true,onOk:()=>{EVENTS=EVENTS.filter(x=>x!==e);log('Отмена встречи',e.title,'подтверждено, уведомления отправлены');renderCal();toast('Встреча отменена','Вернуть',()=>{EVENTS.push(e);renderCal()})}});
     if(a==='prep')openPrep(e.id);
+    if(a==='ai')openCalendarAI({focusId:e.id,question:`Что важно учесть на встрече «${e.title}»? Какие риски и что подготовить?`});
     if(a==='notes')openNotes(e.id);
     if(a==='req')show('requests');
   };
@@ -1454,8 +1460,9 @@ function openPrep(id){const e=EVENTS.find(x=>x.id===id);const st={title:e.title,
   <div class="row2"><div class="card"><h2>Открытые задачи участников</h2>${ag.tasks.map(t=>`<div class="small" style="margin-bottom:6px">${prioTag(t.prio)} ${esc(t.title)}<br><span class="muted">${t.owner?PEOPLE[t.owner].short:'нет владельца'} · ${t.deadline?fmtD(t.deadline):'срок не задан'}</span></div>`).join('')||'<div class="small muted">Нет</div>'}</div>
   <div class="card"><h2>Вопросы</h2><ul class="small" style="margin:0;padding-left:18px">${ag.q.map(q=>`<li>${esc(q)}</li>`).join('')||'<li class="muted">Требует уточнения</li>'}</ul></div></div>
   ${ag.denied?`<div class="hint"><span class="ms" style="font-size:14px">lock</span> ${ag.denied} документ(а) недоступны вашей роли и не использованы.</div>`:''}
-  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button><button class="btn tonal" id="shareAg"><span class="ms">send</span>Разослать повестку участникам</button></div>`,'wide');
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button><button class="btn tonal" id="prepAi"><span class="ms">auto_awesome</span>AI-советник</button><button class="btn tonal" id="shareAg"><span class="ms">send</span>Разослать повестку участникам</button></div>`,'wide');
   log('AI: подготовка встречи',e.title,'источники: '+ag.src.join(', '));
+  $('#prepAi').onclick=()=>{closeModal();openCalendarAI({focusId:id,question:`Подготовь меня к встрече «${e.title}»: что обсудить, какие риски и что стоит перенести?`})};
   $('#shareAg').onclick=()=>confirmAct({title:'Разослать повестку?',body:`<p>Повестка уйдёт ${e.people.length-1} участникам встречи «${esc(e.title)}».</p>`,ok:'Отправить',onOk:()=>{log('Рассылка повестки',e.title,'подтверждено');toast('Повестка отправлена участникам')}});
 }
 
@@ -2372,6 +2379,7 @@ function renderSide(){
   $('#cxSide').innerHTML=`<div class="brief">
     <div class="br-h"><b>Сводка дня</b><span>${WDL[(NOW.getDay()+6)%7]}, ${fmtD(NOW)} · ${hm(h)}</span></div>
     <p class="br-lead">${lead}</p>
+    <button class="gbtn" data-calai style="margin:4px 0 8px"><span class="ms">auto_awesome</span>Спросить AI-советника</button>
     ${mailBlock()}
     ${prep?`<div class="br-s">Подготовиться к встречам</div>${prep}`:''}
     ${todo.length?`<div class="br-s">Решить сегодня</div><div class="br-todo">${todo.slice(0,4).map(([i,t,a,l])=>`<div class="bt"><span class="ms">${i}</span><span class="bt-x">${t}</span><button class="gbtn sm" ${a}>${l}</button></div>`).join('')}${todo.length>4?`<button class="side-more" data-go="tasks">и ещё ${todo.length-4} →</button>`:''}</div>`:''}
@@ -2379,6 +2387,71 @@ function renderSide(){
   </div>`;
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}});
+
+/* ============ CALENDAR AI ADVISOR ============ */
+let CAL_AI_FOCUS=null,CAL_AI_CHAT=[],CAL_AI_BUSY=false;
+function calendarSnapshot(focusId){
+  const from=TODAY,to=iso(addDays(NOW,13));
+  return {
+    date_from:from,
+    date_to:to,
+    focus_event_id:focusId||null,
+    events:EVENTS.filter(e=>e.date>=from&&e.date<=to).map(e=>({id:e.id,title:e.title,date:e.date,start:e.s,end:e.e,people:e.people,place:e.place||'',cal:e.cal})),
+    tasks:TASKS.map(t=>({id:t.id,title:t.title,owner:t.owner,co:t.co||[],deadline:t.deadline||null,status:t.status,prio:t.prio,created:t.created||null})),
+    busy:BUSY.map(b=>({person:b.p,date:b.date,start:b.s,end:b.e}))
+  };
+}
+function calAiMsgHtml(m){
+  if(m.role==='user')return `<div class="dc-b u">${esc(m.text).replace(/\n/g,'<br>')}</div>`;
+  if(m.pending)return `<div class="dc-b a"><div class="dc-who">AI-советник</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
+  const c=m.context;
+  const meta=c?`<div class="small muted" style="margin-top:8px">${c.events} событий · ${c.tasks} задач · ${(c.free_slots||[]).length} свободных окон · ${c.overdue||0} просрочено</div>`:'';
+  return `<div class="dc-b a"${m.error?' style="border-color:rgba(197,34,31,.3)"':''}><div class="dc-who">AI-советник</div><div>${fmtAi(m.answer)}</div>${meta}</div>`;
+}
+function renderCalAiLog(){
+  const log=$('#calAiLog');if(!log)return;
+  log.innerHTML=CAL_AI_CHAT.length?CAL_AI_CHAT.map(calAiMsgHtml).join(''):`<div class="dc-empty"><span class="ms">auto_awesome</span><b>Спросите про свой календарь</b>Ассистент видит встречи, задачи, дедлайны, конфликты и свободные окна за ближайшие две недели.<div class="dc-sample"><button data-caiq="Что важнее всего на этой неделе?">Что важнее всего?</button><button data-caiq="Найди два часа на фокус-работу">Найти 2 часа</button><button data-caiq="Где риск сорвать дедлайн?">Риски дедлайнов</button></div></div>`;
+  $$('[data-caiq]').forEach(b=>b.onclick=()=>{const q=b.dataset.caiq;const inp=$('#calAiQ');if(inp)inp.value=q;askCalendarAI(q)});
+  log.scrollTop=log.scrollHeight;
+}
+async function askCalendarAI(question){
+  if(CAL_AI_BUSY)return;
+  const text=String(question||$('#calAiQ')?.value||'').trim();
+  if(!text){toast('Введите вопрос');return}
+  CAL_AI_BUSY=true;CAL_AI_CHAT.push({role:'user',text});CAL_AI_CHAT.push({role:'ai',pending:true});
+  const inp=$('#calAiQ');if(inp)inp.value='';
+  const btn=$('#calAiGo');if(btn){btn.disabled=true;btn.textContent='Думаю…'}
+  renderCalAiLog();
+  try{
+    const r=await fetch('/api/calendar/advice',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({question:text,...calendarSnapshot(CAL_AI_FOCUS)})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+    CAL_AI_CHAT[CAL_AI_CHAT.length-1]={role:'ai',...data};
+  }catch(err){
+    CAL_AI_CHAT[CAL_AI_CHAT.length-1]={role:'ai',error:err.message,answer:'Не удалось получить совет: '+err.message};
+  }
+  CAL_AI_BUSY=false;
+  if(btn){btn.disabled=false;btn.innerHTML='<span class="ms">send</span>Спросить'}
+  renderCalAiLog();
+}
+function openCalendarAI(opts={}){
+  CAL_AI_FOCUS=opts.focusId||null;CAL_AI_CHAT=[];
+  const focus=CAL_AI_FOCUS?EVENTS.find(e=>e.id===CAL_AI_FOCUS):null;
+  const snap=calendarSnapshot(CAL_AI_FOCUS);
+  const myEvents=me()==='anna'?snap.events:snap.events.filter(e=>e.people.includes(me()));
+  const myTasks=me()==='anna'?snap.tasks:snap.tasks.filter(t=>t.owner===me()||t.created===me()||(t.co||[]).includes(me()));
+  modal(`${mh('auto_awesome','AI-советник по календарю','#7b4fd6')}<div class="mb" style="padding-bottom:0">
+    <div class="small muted" style="margin-bottom:8px">${focus?`Встреча: «${esc(focus.title)}» · `:''}${myEvents.length} событий и ${myTasks.length} задач в контексте · ${me()==='anna'?'все календари':PEOPLE[me()].short}</div>
+    <div class="dc-log" id="calAiLog" style="max-height:340px;min-height:120px;padding:8px 0"></div>
+    <div class="dc-hint" style="padding:8px 0"><span class="ms" style="font-size:13px">shield</span> Совет по вашим событиям и задачам. Значимые действия — только после подтверждения.</div>
+    <div class="dc-compose" style="padding:8px 0 0;border-top:0"><textarea id="calAiQ" rows="1" placeholder="Что важно на неделе? Где найти время?" aria-label="Вопрос AI-советнику">${esc(opts.question||'')}</textarea><button class="btn primary" id="calAiGo"><span class="ms">send</span>Спросить</button></div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
+  renderCalAiLog();
+  $('#calAiGo').onclick=()=>askCalendarAI();
+  $('#calAiQ').onkeydown=ev=>{if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();askCalendarAI()}};
+  if(opts.question)askCalendarAI(opts.question);
+}
+
 function renderStatTop(){renderStats()}
 /* ============ DOCUMENTS WORKSPACE ============ */
 const ACL_NAMES={all:'Все руководители',prod:'Производство + дирекция',mkt:'Маркетинг + дирекция',fin:'Только дирекция',hr:'HR + дирекция',support:'Поддержка + дирекция',legal:'Юридическое + дирекция'};
@@ -2416,7 +2489,7 @@ function dcMsgHtml(m){
   if(m.pending)return `<div class="dc-b a"><div class="dc-who">Ассистент</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
   const srcs=(m.sources||[]).map(s=>`<div class="dc-src"><b data-doc="${s.id}">${s.id}</b> · ${esc(s.title)} <span>${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
   const err=m.error?` style="border-color:rgba(197,34,31,.3)"`:'';
-  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${esc(m.answer||'').replace(/\n/g,'<br>')}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
+  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${fmtAi(m.answer)}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
 }
 function renderDocs(){
   if(!DOCS_LOADED&&!DOCS_LOADING)loadDocsWorkspace();
@@ -2429,7 +2502,7 @@ function renderDocs(){
   const manage=DOCS_CAN_MANAGE?`<button class="gbtn" id="dcNewFolder"><span class="ms">folder</span>Папка</button><button class="gbtn" id="dcNewMail"><span class="ms">mail</span>Письмо</button><button class="btn primary" id="dcUpload"><span class="ms">upload_file</span>Загрузить</button>`:`<span class="small muted" style="display:inline-flex;align-items:center;gap:4px"><span class="ms" style="font-size:15px">lock</span>Загрузка — только директор</span>`;
   $('#docsPage').innerHTML=`<div class="ph"><h1>Документы</h1><span class="small muted">${all.length} доступно · ${DOC_SEL.size} выбрано</span><span class="spacer" style="flex:1"></span>${manage}</div>
   <div class="dc-grid">
-    <div class="glass dc-pane"><div class="dc-head"><span class="ms">folder_open</span>Папки</div><div class="dc-list">${folderBtns}</div></div>
+    <div class="glass dc-pane"><div class="dc-head"><span class="ms">folder_open</span>Папки<span style="flex:1"></span>${DOCS_CAN_MANAGE?'<button class="icon-btn" id="dcManageFolders" title="Управление папками" aria-label="Управление папками"><span class="ms">edit</span></button>':''}</div><div class="dc-list">${folderBtns}</div></div>
     <div class="glass dc-pane"><div class="dc-head"><span class="ms">description</span>Источники<span style="flex:1"></span><button class="icon-btn" id="dcRefresh" title="Обновить" aria-label="Обновить"><span class="ms">refresh</span></button></div>
       <div class="dc-search"><span class="ms">search</span><input id="dcSearch" placeholder="Поиск по названию" aria-label="Поиск по документам" value="${esc(DOC_QUERY)}"></div>
       <div class="dc-list" id="dcList">${docsHtml}</div>
@@ -2450,6 +2523,7 @@ function renderDocs(){
   if($('#dcUpload'))$('#dcUpload').onclick=openDocUpload;
   if($('#dcNewMail'))$('#dcNewMail').onclick=openDocEmail;
   if($('#dcNewFolder'))$('#dcNewFolder').onclick=openFolderCreate;
+  if($('#dcManageFolders'))$('#dcManageFolders').onclick=openFolderManage;
   $$('[data-dcq]').forEach(b=>b.onclick=()=>{DOC_DRAFT=b.dataset.dcq;renderDocs();askDocs()});
   const lg=$('#dcLog');if(lg)lg.scrollTop=lg.scrollHeight;
 }
@@ -2543,6 +2617,43 @@ function openFolderCreate(){
       DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Папка создана');
     }catch(err){btn.disabled=false;toast('Не удалось: '+err.message)}
   };
+}
+function openFolderManage(){
+  if(!DOCS_CAN_MANAGE){toast('Папки меняет директор');return}
+  const custom=FOLDERS.filter(f=>f.created_by);
+  if(!custom.length){toast('Своих папок пока нет — создайте кнопкой «Папка»');return}
+  modal(`${mh('folder','Мои папки')}<div class="mb">
+    <div class="small muted" style="margin-bottom:8px">Встроенные папки защищены. Здесь можно переименовать или удалить свои.</div>
+    <div class="dc-list">${custom.map(f=>`<div class="dc-doc" style="grid-template-columns:minmax(0,1fr) auto;align-items:center"><div><b style="cursor:default">${esc(f.title)}</b><small>${ACL_NAMES[f.acl]||f.acl} · документов: ${f.doc_count||0}</small></div><button class="btn sm" data-fed="${f.id}">Изменить</button></div>`).join('')}</div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'narrow');
+  $$('[data-fed]').forEach(b=>b.onclick=()=>{const f=FOLDERS.find(x=>x.id===b.dataset.fed);if(f)openFolderEdit(f)});
+}
+function openFolderEdit(f){
+  const hasDocs=(f.doc_count||0)>0;
+  modal(`${mh('edit','Папка: '+esc(f.title))}<div class="mb">
+    <label class="small">Название</label><input class="inp" id="feTitle" value="${esc(f.title)}">
+    <label class="small">Кому доступна</label><select class="inp" id="feAcl" ${hasDocs?'disabled':''}>${aclOptions(f.acl)}</select>
+    ${hasDocs?`<div class="small muted" style="margin-top:4px">В папке ${f.doc_count} документ(а). Чтобы сменить доступ, сначала перенесите их в другую папку.</div>`:''}
+  </div><div class="mf">${hasDocs?'':'<button class="btn danger" id="feDel"><span class="ms">delete</span>Удалить папку</button>'}<button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="feGo">Сохранить</button></div>`,'narrow');
+  $('#feGo').onclick=async()=>{
+    const title=$('#feTitle').value.trim();if(!title){toast('Введите название');return}
+    const btn=$('#feGo');btn.disabled=true;
+    try{
+      const body={title};if(!hasDocs)body.acl=$('#feAcl').value;
+      const r=await fetch('/api/folders/'+encodeURIComponent(f.id),{method:'PATCH',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Папка обновлена');
+    }catch(err){btn.disabled=false;toast('Не удалось: '+err.message)}
+  };
+  if($('#feDel'))$('#feDel').onclick=()=>confirmAct({title:'Удалить папку?',body:`<p>Папка «${esc(f.title)}» будет удалена. Документов в ней нет.</p>`,danger:true,ok:'Удалить',onOk:async()=>{
+    try{
+      const r=await fetch('/api/folders/'+encodeURIComponent(f.id),{method:'DELETE',credentials:'same-origin'});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+      DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Папка удалена');
+    }catch(err){toast('Не удалось: '+err.message)}
+  }});
 }
 function openDocEdit(d){
   modal(`${mh('edit','Изменить документ '+d.id)}<div class="mb">

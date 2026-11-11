@@ -45,26 +45,17 @@ def build_context(masked_docs: list[dict[str, str]]) -> str:
     return "\n".join(parts)
 
 
-async def call_deepseek(masked_question: str, masked_docs: list[dict[str, str]]) -> str:
+async def call_chat(system_prompt: str, user_prompt: str, max_tokens: int | None = None) -> str:
     if not settings.llm_enabled:
         raise LLMError("DEEPSEEK_API_KEY не задан")
-
-    context = build_context(masked_docs)
     payload = {
         "model": settings.deepseek_model,
         "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": (
-                    f"Вопрос: {masked_question}\n\n"
-                    f"Контекст:\n{context}\n\n"
-                    "Ответь только по контексту. Если ответа нет — так и скажи."
-                ),
-            },
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
         ],
         "temperature": 0.2,
-        "max_tokens": settings.llm_max_tokens,
+        "max_tokens": max_tokens or settings.llm_max_tokens,
         "stream": False,
     }
     headers = {
@@ -92,6 +83,18 @@ async def call_deepseek(masked_question: str, masked_docs: list[dict[str, str]])
     if not isinstance(content, str) or not content.strip():
         raise LLMError("DeepSeek вернул пустой ответ")
     return content.strip()
+
+
+async def call_deepseek(masked_question: str, masked_docs: list[dict[str, str]]) -> str:
+    context = build_context(masked_docs)
+    return await call_chat(
+        SYSTEM_PROMPT,
+        (
+            f"Вопрос: {masked_question}\n\n"
+            f"Контекст:\n{context}\n\n"
+            "Ответь только по контексту. Если ответа нет — так и скажи."
+        ),
+    )
 
 
 def fallback_answer(query: str, masked_docs: list[dict[str, str]]) -> str:

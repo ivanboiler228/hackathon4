@@ -85,6 +85,65 @@ def test_boss_creates_folder(client):
     assert any(item["id"] == folder["id"] for item in folders)
 
 
+def test_each_builtin_folder_accepts_matching_documents(client):
+    pairs = [
+        ("F-REG", "all"),
+        ("F-SUP", "support"),
+        ("F-PROD", "prod"),
+        ("F-MKT", "mkt"),
+        ("F-FIN", "fin"),
+        ("F-HR", "hr"),
+        ("F-LEGAL", "legal"),
+    ]
+    created = []
+    for index, (folder_id, acl) in enumerate(pairs):
+        response = client.post(
+            "/api/docs",
+            files={"file": (f"note{index}.txt", b"text", "text/plain")},
+            data={"acl": acl, "folder_id": folder_id, "title": f"Документ {folder_id}"},
+        )
+        assert response.status_code == 200, response.text
+        doc = response.json()
+        assert doc["folder_id"] == folder_id
+        created.append(doc["id"])
+
+    client.post("/api/switch-role", json={"user_id": "igor"})
+    visible = {item["id"] for item in client.get("/api/docs").json()["items"]}
+    assert created[0] in visible  # all
+    assert created[1] not in visible  # support
+    assert created[2] in visible  # prod
+    assert created[3] not in visible  # mkt
+    assert created[4] not in visible  # fin
+    assert created[5] not in visible  # hr
+    assert created[6] not in visible  # legal
+
+
+def test_folder_can_be_renamed_and_deleted_when_empty(client):
+    folder = client.post("/api/folders", json={"title": "Временная", "acl": "all"}).json()
+    renamed = client.patch(f"/api/folders/{folder['id']}", json={"title": "Постоянная", "acl": "legal"})
+    assert renamed.status_code == 200
+    assert renamed.json()["title"] == "Постоянная"
+    assert renamed.json()["acl"] == "legal"
+    deleted = client.delete(f"/api/folders/{folder['id']}")
+    assert deleted.status_code == 200
+    assert client.patch(f"/api/folders/{folder['id']}", json={"title": "Нет"}).status_code == 404
+
+
+def test_folder_with_documents_cannot_change_acl_or_be_deleted(client):
+    folder = client.post("/api/folders", json={"title": "С документами", "acl": "all"}).json()
+    client.post(
+        "/api/docs",
+        files={"file": ("note.txt", b"text", "text/plain")},
+        data={"acl": "all", "folder_id": folder["id"]},
+    )
+    blocked_acl = client.patch(f"/api/folders/{folder['id']}", json={"acl": "fin"})
+    assert blocked_acl.status_code == 400
+    blocked_delete = client.delete(f"/api/folders/{folder['id']}")
+    assert blocked_delete.status_code == 400
+    renamed = client.patch(f"/api/folders/{folder['id']}", json={"title": "Переименована"})
+    assert renamed.status_code == 200
+
+
 def test_email_becomes_source_in_mail_folder(client):
     response = client.post(
         "/api/docs",
