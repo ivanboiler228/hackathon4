@@ -24,6 +24,10 @@ class AskResponse(BaseModel):
     llm_error: str | None = None
 
 
+class SwitchRequest(BaseModel):
+    user_id: str | None = None
+
+
 class AuditItem(BaseModel):
     id: int
     ts: str

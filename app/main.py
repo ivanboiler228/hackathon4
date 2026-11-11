@@ -13,7 +13,7 @@ from .config import settings
 from .llm import LLMError, call_deepseek, fallback_answer, validate_and_restore
 from .pii import PIIError, PIIMasker
 from .rate_limit import RateLimiter
-from .schemas import AskRequest, AskResponse, Source
+from .schemas import AskRequest, AskResponse, Source, SwitchRequest
 
 APP_HTML = settings.base_dir / "fotoprint-ai-assistant (1).html"
 limiter = RateLimiter(settings.rate_limit_per_minute)
@@ -61,8 +61,8 @@ def _login_page(message: str = "") -> HTMLResponse:
   .hint{{font-size:13px;color:#6b706f;margin-top:18px}}
 </style>
 <body><div class="card"><div class="ico">▣</div><h1>Вход по QR</h1>
-<p>Отсканируйте QR-код, который выдал организатор демо. Он одноразовый и задаёт вашу роль.</p>
-<p>После сканирования вы вернётесь в ассистента.</p>{msg}
+<p>Отсканируйте QR-код демо. Он одноразовый и входит в аккаунт директора.</p>
+<p>Из профиля директора можно переключиться на сотрудника.</p>{msg}
 <p class="hint">Если QR нет — запросите его у команды на стенде.</p></div></body></html>"""
     )
 
@@ -80,7 +80,8 @@ async def login_page() -> HTMLResponse:
 @app.get("/")
 async def index(request: Request):
     token = request.cookies.get(settings.session_cookie)
-    user_id = auth.read_session_token(token) if token else None
+    data = auth.read_session_token(token) if token else None
+    user_id = str(data["uid"]) if data else None
     user = db.get_user(user_id) if user_id else None
     if not user:
         return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -116,7 +117,8 @@ async def logout(request: Request):
     user: dict | None = None
     token = request.cookies.get(settings.session_cookie)
     if token:
-        uid = auth.read_session_token(token)
+        data = auth.read_session_token(token)
+        uid = str(data["uid"]) if data else None
         user = db.get_user(uid) if uid else None
     if user:
         db.log_audit(user_id=user["id"], role=user["role"], action="auth.logout", result="успешно")
@@ -125,9 +127,50 @@ async def logout(request: Request):
     return response
 
 
+def _switch_options() -> list[dict]:
+    return [
+        {"id": u["id"], "name": u["name"], "role_label": u["role_label"], "dept": u["dept"]}
+        for u in db.list_users()
+        if u["role"] == "employee"
+    ]
+
+
 @app.get("/api/me")
 async def me(user: dict = Depends(auth.current_user)):
-    return auth.public_user(user)
+    data = auth.public_user(user)
+    if data["can_switch"]:
+        data["switch_options"] = _switch_options()
+    return data
+
+
+@app.post("/api/switch-role")
+async def switch_role(payload: SwitchRequest, user: dict = Depends(auth.current_user)):
+    """Директор может смотреть систему от имени сотрудника и вернуться обратно."""
+    if user.get("_real_role") != "boss":
+        raise HTTPException(status_code=403, detail="Переключение ролей доступно только директору.")
+
+    real_id = str(user["_real_id"])
+    target_id = payload.user_id or real_id
+    if target_id == real_id:
+        act_as = None
+        target = db.get_user(real_id)
+    else:
+        target = db.get_user(target_id)
+        if not target or target["role"] != "employee":
+            raise HTTPException(status_code=400, detail="Можно переключиться только на сотрудника.")
+        act_as = target_id
+
+    db.log_audit(
+        user_id=real_id,
+        role="boss",
+        action="role.switch",
+        obj=target["id"] if target else "",
+        result="просмотр как сотрудник" if act_as else "возврат в директора",
+        meta={"effective_role": target["role_label"] if target else ""},
+    )
+    response = JSONResponse({"ok": True, "effective_user": target["id"] if target else real_id})
+    auth.set_session_cookie(response, real_id, act_as=act_as)
+    return response
 
 
 @app.get("/api/docs")

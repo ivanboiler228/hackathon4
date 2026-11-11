@@ -49,3 +49,29 @@ def test_pii_masking_in_api(tmp_path, monkeypatch):
         audit = client.get("/api/audit").json()
         assert audit["items"]
         assert any(item["action"] == "assistant.ask" for item in audit["items"])
+
+
+def test_director_can_switch_to_employee_and_back(tmp_path, monkeypatch):
+    monkeypatch.setattr(settings, "db_path", tmp_path / "test3.db")
+    monkeypatch.setattr(settings, "deepseek_api_key", "")
+    db.init_db()
+
+    with TestClient(app) as client:
+        _login(client, "anna")
+        assert client.get("/api/me").json()["role"] == "boss"
+
+        switched = client.post("/api/switch-role", json={"user_id": "igor"})
+        assert switched.status_code == 200
+        me = client.get("/api/me").json()
+        assert me["role"] == "employee"
+        assert me["is_impersonating"] is True
+        assert me["can_switch"] is True
+
+        denied = client.post("/api/assistant/ask", json={"q": "Что в D-12?"})
+        assert denied.status_code == 403
+
+        back = client.post("/api/switch-role", json={"user_id": None})
+        assert back.status_code == 200
+        me = client.get("/api/me").json()
+        assert me["role"] == "boss"
+        assert me["is_impersonating"] is False
