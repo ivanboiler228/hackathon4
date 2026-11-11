@@ -190,6 +190,46 @@ def test_assistant_uses_only_selected_sources(client):
     assert "48" in data["answer"]
 
 
+def test_assistant_can_analyze_folder_and_my_uploads(client):
+    folder = client.post("/api/folders", json={"title": "Анализ папки", "acl": "all"}).json()
+    uploaded = client.post(
+        "/api/docs",
+        files={"file": ("inside.txt", "В папке лежит регламент ночной смены недели 48.".encode(), "text/plain")},
+        data={"acl": "all", "folder_id": folder["id"], "title": "Документ внутри папки"},
+    ).json()
+
+    by_folder = client.post(
+        "/api/assistant/ask",
+        json={"q": "Проанализируй документы в этой папке", "folder_id": folder["id"]},
+    )
+    assert by_folder.status_code == 200
+    assert [source["id"] for source in by_folder.json()["sources"]] == [uploaded["id"]]
+
+    mine = client.post(
+        "/api/assistant/ask",
+        json={"q": "Что в моих загрузках?", "mine": True},
+    )
+    assert mine.status_code == 200
+    assert uploaded["id"] in [source["id"] for source in mine.json()["sources"]]
+
+    empty = client.post("/api/folders", json={"title": "Пустая папка", "acl": "all"}).json()
+    empty_answer = client.post(
+        "/api/assistant/ask",
+        json={"q": "Что тут?", "folder_id": empty["id"]},
+    )
+    assert empty_answer.status_code == 200
+    assert "пока нет документов" in empty_answer.json()["answer"]
+
+
+def test_employee_cannot_analyze_closed_folder(client):
+    _switch(client, "igor")
+    response = client.post(
+        "/api/assistant/ask",
+        json={"q": "Что в финансах?", "folder_id": "F-FIN"},
+    )
+    assert response.status_code == 403
+
+
 def test_selected_forbidden_source_is_denied_and_audited(client):
     _switch(client, "igor")
     response = client.post(

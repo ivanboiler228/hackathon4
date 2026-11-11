@@ -9,6 +9,9 @@ class AskRequest(BaseModel):
     q: str = Field(..., min_length=1, max_length=2000)
     # Если список задан, ассистент отвечает только по выбранным источникам.
     doc_ids: list[str] | None = None
+    # Иначе можно спросить по всей папке или по своим загрузкам.
+    folder_id: str | None = None
+    mine: bool = False
 
 
 class Source(BaseModel):

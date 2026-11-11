@@ -85,12 +85,18 @@ async def call_chat(system_prompt: str, user_prompt: str, max_tokens: int | None
     return content.strip()
 
 
-async def call_deepseek(masked_question: str, masked_docs: list[dict[str, str]]) -> str:
+async def call_deepseek(
+    masked_question: str,
+    masked_docs: list[dict[str, str]],
+    context_note: str = "",
+) -> str:
     context = build_context(masked_docs)
+    note = f"Область: {context_note}\n\n" if context_note else ""
     return await call_chat(
         SYSTEM_PROMPT,
         (
             f"Вопрос: {masked_question}\n\n"
+            f"{note}"
             f"Контекст:\n{context}\n\n"
             "Ответь только по контексту. Если ответа нет — так и скажи."
         ),

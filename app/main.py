@@ -1344,7 +1344,9 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
 
     docs = []
     selection = "search"
-    if payload.doc_ids is not None:
+    scope_note = ""
+    no_docs_answer = "В доступных документах ответа нет."
+    if payload.doc_ids:
         selection = "manual"
         seen: set[str] = set()
         ordered: list[str] = []
@@ -1376,6 +1378,40 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
                     detail=f"Нет доступа к {doc['id']}. Выбор источника зафиксирован в аудите.",
                 )
             docs.append(doc)
+    elif payload.folder_id or payload.mine:
+        allowed = db.list_docs(user["acls"])
+        if payload.folder_id:
+            folder = db.get_folder(payload.folder_id)
+            if not folder:
+                raise HTTPException(status_code=404, detail="Папка не найдена.")
+            if folder["acl"] != "all" and folder["acl"] not in user["acls"]:
+                db.log_audit(
+                    user_id=user["id"],
+                    role=user["role"],
+                    action="assistant.folder_denied",
+                    obj=folder["id"],
+                    result="ОТКЛОНЕНО: папка недоступна роли",
+                    meta={"acl": folder["acl"], "role": user["role"]},
+                )
+                raise HTTPException(
+                    status_code=403,
+                    detail="Нет доступа к этой папке. Попытка зафиксирована в аудите.",
+                )
+            selection = "folder"
+            scope_note = f"папка «{folder['title']}»"
+            no_docs_answer = f"В папке «{folder['title']}» пока нет документов."
+            docs = [doc for doc in allowed if doc.get("folder_id") == folder["id"]]
+            docs.sort(key=lambda doc: doc.get("date", ""), reverse=True)
+            if len(docs) > 8:
+                scope_note += " (первые 8 документов по дате)"
+            docs = docs[:8]
+        else:
+            selection = "mine"
+            scope_note = "мои загрузки"
+            no_docs_answer = "В «Моих загрузках» пока нет документов."
+            docs = [doc for doc in allowed if doc.get("created_by") == user["id"]]
+            docs.sort(key=lambda doc: doc.get("date", ""), reverse=True)
+            docs = docs[:8]
     else:
         docs = retrieval.search(query, user["acls"], limit=4)
         if explicit:
@@ -1384,6 +1420,7 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
     masker = PIIMasker()
     try:
         masked_question = masker.mask(query).masked
+        masked_scope = masker.mask(scope_note).masked if scope_note else ""
         masked_docs: list[dict[str, str]] = []
         for doc in docs:
             masked_docs.append(
@@ -1399,6 +1436,8 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
         preview = f"Вопрос: {masked_question}\n\nКонтекст:\n" + "\n".join(
             f"[{d['id']}] {d['title']}: {d['text']}" for d in masked_docs
         )
+        if masked_scope:
+            preview = f"Область: {masked_scope}\n" + preview
         masker.assert_clean(preview)
     except PIIError as exc:
         db.log_audit(
@@ -1427,7 +1466,7 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
 
     if docs and settings.llm_enabled:
         try:
-            raw = await call_deepseek(masked_question, masked_docs)
+            raw = await call_deepseek(masked_question, masked_docs, masked_scope)
             answer = validate_and_restore(raw, masker)
             used_llm = True
         except (LLMError, PIIError) as exc:
@@ -1441,7 +1480,7 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
         answer = validate_and_restore(answer, masker)
 
     if not docs:
-        answer = "В доступных документах ответа нет."
+        answer = no_docs_answer
         llm_error = llm_error or "no_context"
 
     result = "ok" if docs else "no_data"
@@ -1459,6 +1498,8 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
             "pii_found": dict(masker.found),
             "sources": [d["id"] for d in docs],
             "selection": selection,
+            "folder_id": payload.folder_id or "",
+            "mine": payload.mine,
         },
         masked_preview=preview,
     )
