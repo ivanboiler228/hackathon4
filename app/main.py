@@ -1,11 +1,10 @@
-"""FastAPI-бэкенд демо: QR-вход, RBAC, PII-маскирование и аудит."""
+"""FastAPI-бэкенд демо: автовход директора, RBAC, PII-маскирование и аудит."""
 from __future__ import annotations
 
-import html
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, status
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from . import auth, db, retrieval
@@ -42,39 +41,9 @@ async def security_headers(request: Request, call_next):
     return response
 
 
-def _login_page(message: str = "") -> HTMLResponse:
-    msg = f"<p class='msg'>{html.escape(message)}</p>" if message else ""
-    return HTMLResponse(
-        f"""<!doctype html>
-<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Вход · Фотопринт</title>
-<style>
-  *{{box-sizing:border-box}} body{{margin:0;min-height:100vh;display:grid;place-items:center;
-  font-family:Inter,Roboto,system-ui,sans-serif;color:#1d1d1f;
-  background:radial-gradient(120% 60% at 15% 108%,#86b45e 0,#9fc779 30%,transparent 62%),
-             radial-gradient(110% 55% at 85% 112%,#7fae58 0,#a8cd82 34%,transparent 64%),
-             linear-gradient(180deg,#9fbfdc 0%,#c4d7e6 28%,#e3ebe8 52%,#cfe1bf 74%,#b3d18e 100%)}}
-  .card{{width:min(440px,calc(100vw - 32px));background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.85);
-  border-radius:28px;padding:32px;text-align:center;backdrop-filter:blur(26px);box-shadow:0 20px 60px rgba(40,64,40,.16)}}
-  h1{{font-size:28px;margin:0 0 8px;font-weight:650;letter-spacing:-.02em}} p{{color:#55595e;line-height:1.5;margin:10px 0}}
-  .ico{{font-size:38px;margin-bottom:8px}} .msg{{color:#b42318;background:#fef3f2;border-radius:12px;padding:10px;font-size:14px}}
-  .hint{{font-size:13px;color:#6b706f;margin-top:18px}}
-</style>
-<body><div class="card"><div class="ico">▣</div><h1>Вход по QR</h1>
-<p>Отсканируйте QR-код демо. Он одноразовый и входит в аккаунт директора.</p>
-<p>Из профиля директора можно переключиться на сотрудника.</p>{msg}
-<p class="hint">Если QR нет — запросите его у команды на стенде.</p></div></body></html>"""
-    )
-
-
 @app.get("/health")
 async def health() -> dict:
     return {"status": "ok", "llm_enabled": settings.llm_enabled, "demo_mode": settings.demo_mode}
-
-
-@app.get("/login")
-async def login_page() -> HTMLResponse:
-    return _login_page()
 
 
 @app.get("/")
@@ -84,32 +53,20 @@ async def index(request: Request):
     user_id = str(data["uid"]) if data else None
     user = db.get_user(user_id) if user_id else None
     if not user:
-        return RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
-    return FileResponse(APP_HTML)
-
-
-@app.get("/auth/qr")
-async def auth_qr(code: str = Query(..., min_length=8)):
-    user_id = db.consume_qr_token(code)
-    if not user_id:
-        return HTMLResponse(
-            "<h1>Ссылка недействительна</h1><p>QR-код уже использован или истёк. Запросите новый у организатора.</p>",
-            status_code=status.HTTP_400_BAD_REQUEST,
+        demo = db.get_user(settings.demo_user)
+        if not demo:
+            raise HTTPException(status_code=503, detail="Демо-пользователь не найден")
+        response = RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+        auth.set_session_cookie(response, demo["id"])
+        db.log_audit(
+            user_id=demo["id"],
+            role=demo["role"],
+            action="auth.auto",
+            result="демо-вход директора",
+            meta={"role_label": demo["role_label"]},
         )
-    user = db.get_user(user_id)
-    if not user:
-        return HTMLResponse("<h1>Пользователь не найден</h1>", status_code=status.HTTP_400_BAD_REQUEST)
-    db.log_audit(
-        user_id=user["id"],
-        role=user["role"],
-        action="auth.qr",
-        obj="сессия",
-        result="успешно",
-        meta={"role_label": user["role_label"]},
-    )
-    response = RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
-    auth.set_session_cookie(response, user["id"])
-    return response
+        return response
+    return FileResponse(APP_HTML)
 
 
 @app.post("/api/logout")

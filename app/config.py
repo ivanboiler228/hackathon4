@@ -30,7 +30,7 @@ class Settings:
     llm_timeout: float = float(os.getenv("LLM_TIMEOUT", "30"))
     llm_max_tokens: int = int(os.getenv("LLM_MAX_TOKENS", "700"))
 
-    public_base_url: str = os.getenv("PUBLIC_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
+    demo_user: str = os.getenv("DEMO_USER", "anna")
     rate_limit_per_minute: int = int(os.getenv("RATE_LIMIT_PER_MINUTE", "20"))
     demo_mode: bool = os.getenv("DEMO_MODE", "1") == "1"
 

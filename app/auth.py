@@ -51,13 +51,13 @@ def current_user(request: Request) -> dict:
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Нет сессии. Откройте QR-ссылку для входа.",
+            detail="Нет активной сессии. Обновите страницу.",
         )
     data = read_session_token(token)
     if not data:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Сессия истекла. Откройте QR-ссылку заново.",
+            detail="Сессия истекла. Обновите страницу.",
         )
 
     real = db.get_user(str(data["uid"]))

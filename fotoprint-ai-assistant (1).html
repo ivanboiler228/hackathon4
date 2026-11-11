@@ -2031,12 +2031,12 @@ function openMailAll(){
   $('#modal').onclick=mailClick;
 }
 function openMe(){const el=$('#meAvatar');closePop();const p=document.createElement('div');p.className='pop me-pop';const U=window.APP_USER;
-  if(!U){p.innerHTML=`<div class="mp-h"><span class="avatar" style="background:#9aa0a6;width:40px;height:40px;font-size:14px">?</span><div><b>Гость</b><span>Нет активной сессии</span></div></div><div class="mp-r"><span class="ms">lock</span><div><b>Вход по QR</b><span>Откройте ссылку от организатора демо</span></div></div>`;}
+  if(!U){p.innerHTML=`<div class="mp-h"><span class="avatar" style="background:#9aa0a6;width:40px;height:40px;font-size:14px">?</span><div><b>Гость</b><span>Нет активной сессии</span></div></div><div class="mp-r"><span class="ms">lock</span><div><b>Нет сессии</b><span>Обновите страницу</span></div></div>`;}
   else{
     const nm=U.name||'Пользователь';const ini=nm.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
     const opts=(U.switch_options||[]).map(o=>`<option value="${o.id}" ${o.id===U.id?'selected':''}>${esc(o.name)} · ${esc(o.dept)}</option>`).join('');
     const roleRow=U.can_switch?`<div class="mp-r"><span class="ms">swap_horiz</span><div><b>Просмотр как</b><span>${U.is_impersonating?esc('Из аккаунта '+U.real_name):'Директор'}</span></div><select id="fpRoleSwitch" aria-label="Просмотр как" style="height:32px;border:1px solid var(--line);border-radius:9px;padding:0 8px;background:#fff;max-width:150px"><option value="__self" ${U.is_impersonating?'':'selected'}>Директор</option>${opts}</select></div>`:'';
-    p.innerHTML=`<div class="mp-h"><span class="avatar" style="background:#1a73e8;width:40px;height:40px;font-size:14px">${esc(ini)}</span><div><b>${esc(nm)}</b><span>${esc(U.role_label)} · Фотопринт</span></div></div>${roleRow}<div class="mp-r"><span class="ms">mail</span><div>${MAIL_ON?`<b>Почта подключена</b><span>${esc(MAIL_ADDR)}</span>`:'<b>Почта не подключена</b><span>выжимка писем и задачи из почты</span>'}</div>${MAIL_ON?'<button class="gbtn sm" data-mailoff>Отключить</button>':'<button class="gbtn sm" data-mailconnect>Подключить</button>'}</div><div class="mp-r"><span class="ms">badge</span><div><b>${U.role==='boss'?'Полный доступ':'Ограниченный доступ'}</b><span>${U.acls.map(esc).join(' · ')}</span></div></div><div class="mp-r"><span class="ms">logout</span><div><b>Сессия</b><span>QR-вход</span></div><button class="gbtn sm" id="fpLogout">Выйти</button></div>`;
+    p.innerHTML=`<div class="mp-h"><span class="avatar" style="background:#1a73e8;width:40px;height:40px;font-size:14px">${esc(ini)}</span><div><b>${esc(nm)}</b><span>${esc(U.role_label)} · Фотопринт</span></div></div>${roleRow}<div class="mp-r"><span class="ms">mail</span><div>${MAIL_ON?`<b>Почта подключена</b><span>${esc(MAIL_ADDR)}</span>`:'<b>Почта не подключена</b><span>выжимка писем и задачи из почты</span>'}</div>${MAIL_ON?'<button class="gbtn sm" data-mailoff>Отключить</button>':'<button class="gbtn sm" data-mailconnect>Подключить</button>'}</div><div class="mp-r"><span class="ms">badge</span><div><b>${U.role==='boss'?'Полный доступ':'Ограниченный доступ'}</b><span>${U.acls.map(esc).join(' · ')}</span></div></div><div class="mp-r"><span class="ms">logout</span><div><b>Сессия</b><span>Демо-вход</span></div><button class="gbtn sm" id="fpLogout">Выйти</button></div>`;
   }
   document.body.appendChild(p);popEl=p;const r=el.getBoundingClientRect();p.style.left=Math.max(8,Math.min(r.left,innerWidth-360))+'px';p.style.top=(r.bottom+8)+'px';p.style.width='340px';
   p.onclick=e=>{if(e.target.closest('[data-mailoff]')){MAIL_ON=false;log('Отключение почты',MAIL_ADDR);closePop();refresh();toast('Почта отключена');return}if(e.target.closest('#fpLogout')){fetch('/api/logout',{method:'POST'}).finally(()=>location.reload());return}};
@@ -2201,7 +2201,6 @@ setInterval(()=>{if(currentView==='calendar'){const n=$('.now');if(n)n.style.top
 
 /* init */
 $('#meAvatar').style.background=PEOPLE.anna.color;$('#meAvatar').textContent='А';
-log('Вход в систему','сессия','роль: Директор');
 $('#inboxBtn').onclick=openInbox;updateCounts();
 const h0=(location.hash||'').slice(1);show(['calendar','today','tasks','requests','meetings','audit','stats'].includes(h0)?h0:'calendar');scrollToWork();
 </script>

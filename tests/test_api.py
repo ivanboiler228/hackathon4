@@ -5,20 +5,23 @@ from app.config import settings
 from app.main import app
 
 
-def _login(client: TestClient, user_id: str) -> None:
-    code = db.create_qr_token(user_id, ttl_seconds=60)
-    r = client.get(f"/auth/qr?code={code}", follow_redirects=False)
+def _login(client: TestClient) -> None:
+    """Демо-автовход: директор открывает / и получает сессию."""
+    r = client.get("/", follow_redirects=False)
     assert r.status_code == 303
     assert settings.session_cookie in client.cookies
+    assert client.get("/api/me").json()["role"] == "boss"
 
 
-def test_qr_login_and_employee_denied(tmp_path, monkeypatch):
+def test_employee_denied_after_switch(tmp_path, monkeypatch):
     monkeypatch.setattr(settings, "db_path", tmp_path / "test.db")
     monkeypatch.setattr(settings, "deepseek_api_key", "")
     db.init_db()
 
     with TestClient(app) as client:
-        _login(client, "igor")
+        _login(client)
+        switched = client.post("/api/switch-role", json={"user_id": "igor"})
+        assert switched.status_code == 200
         me = client.get("/api/me").json()
         assert me["role"] == "employee"
         assert "prod" in me["acls"]
@@ -34,7 +37,7 @@ def test_pii_masking_in_api(tmp_path, monkeypatch):
     db.init_db()
 
     with TestClient(app) as client:
-        _login(client, "anna")
+        _login(client)
         r = client.post(
             "/api/assistant/ask",
             json={"q": "Позвони Ивану Иванову на +375291112233 по вопросу доставки, что говорит регламент?"},
@@ -57,7 +60,7 @@ def test_director_can_switch_to_employee_and_back(tmp_path, monkeypatch):
     db.init_db()
 
     with TestClient(app) as client:
-        _login(client, "anna")
+        _login(client)
         assert client.get("/api/me").json()["role"] == "boss"
 
         switched = client.post("/api/switch-role", json={"user_id": "igor"})

@@ -1,12 +1,10 @@
-"""SQLite-хранилище: пользователи, документы, QR-токены и аудит."""
+"""SQLite-хранилище: пользователи, документы и аудит."""
 from __future__ import annotations
 
 import json
-import hashlib
-import secrets
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -107,13 +105,6 @@ def init_db() -> None:
                 acl TEXT NOT NULL,
                 text TEXT NOT NULL
             );
-            CREATE TABLE IF NOT EXISTS qr_tokens (
-                code TEXT PRIMARY KEY,
-                user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                expires_at TEXT NOT NULL,
-                used_at TEXT,
-                created_at TEXT NOT NULL
-            );
             CREATE TABLE IF NOT EXISTS audit (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ts TEXT NOT NULL,
@@ -213,50 +204,6 @@ def all_docs() -> list[dict[str, Any]]:
     with db_conn() as conn:
         rows = conn.execute("SELECT * FROM docs ORDER BY id").fetchall()
     return [dict(row) for row in rows]
-
-
-def _hash_qr(code: str) -> str:
-    return hashlib.sha256(code.encode("utf-8")).hexdigest()
-
-
-def create_qr_token(user_id: str, ttl_seconds: int = 24 * 3600) -> str:
-    code = secrets.token_urlsafe(32)
-    now = utc_now()
-    expires = now + timedelta(seconds=ttl_seconds)
-    with db_conn() as conn:
-        conn.execute(
-            "INSERT INTO qr_tokens (code, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)",
-            (_hash_qr(code), user_id, expires.isoformat(), now.isoformat()),
-        )
-    return code
-
-
-def clear_qr_tokens() -> None:
-    """Инвалидирует все старые QR перед новой генерацией."""
-    with db_conn() as conn:
-        conn.execute("DELETE FROM qr_tokens")
-
-
-def consume_qr_token(code: str) -> str | None:
-    """Атомарно гасит одноразовый QR-код и возвращает user_id. В БД хранится только хэш."""
-    now = utc_now()
-    token_hash = _hash_qr(code)
-    with db_conn() as conn:
-        row = conn.execute(
-            "SELECT user_id, expires_at, used_at FROM qr_tokens WHERE code = ?",
-            (token_hash,),
-        ).fetchone()
-        if row is None or row["used_at"] is not None:
-            return None
-        if datetime.fromisoformat(row["expires_at"]) < now:
-            return None
-        updated = conn.execute(
-            "UPDATE qr_tokens SET used_at = ? WHERE code = ? AND used_at IS NULL",
-            (now.isoformat(), token_hash),
-        )
-        if updated.rowcount != 1:
-            return None
-        return str(row["user_id"])
 
 
 def log_audit(
