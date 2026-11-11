@@ -18,7 +18,11 @@
   .ph h1, .page h1 { font-size: 24px; }
   .st-tiles { grid-template-columns: 1fr 1fr; gap: 10px; }
   .st-grid { grid-template-columns: 1fr; }
-  .mt-grid { grid-template-columns: 1fr; }
+  .mt-grid { grid-template-columns: minmax(0, 1fr); }
+  .mt-grid, .mcol, .mlist2, .mi { min-width: 0; max-width: 100%; }
+  .mlist2 { overflow: hidden; }
+  .mi-x { min-width: 0; overflow: hidden; }
+  .mi-b { max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .mlist2 { margin-bottom: 10px; }
   .board { grid-template-columns: 1fr; }
   .toolbar .search { min-width: 0; flex: 1 1 100%; }
@@ -30,6 +34,31 @@
   .md-2 { grid-template-columns: 1fr; }
   .md-h h2 { font-size: 22px; }
   .me-pop { max-width: calc(100vw - 16px); }
+}
+@media (max-width: 700px) {
+  .rm-page { padding: 0 10px 16px; }
+  .rm-board { min-height: 0; border: 0; border-radius: 0; background: transparent; overflow: visible; }
+  .rm-scroll { overflow: visible; padding: 4px 0 0; scroll-snap-type: none; }
+  .rm-lane { display: block; width: auto; min-height: 0; padding: 0; }
+  .rm-track, .rm-nowpin, .rm-col::before, .rm-row::before, .rm-row::after { display: none; }
+  .rm-col { width: auto; padding: 0; scroll-snap-align: none; }
+  .rm-node { display: none; }
+  .rm-h { position: static; margin: 16px 0 8px; padding: 0; }
+  .rm-h b { font-size: 18px; }
+  .rm-row { display: block; margin: 0 0 12px; }
+  .rm-pills { flex-direction: row; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .rm-pill { width: auto; max-width: 100%; height: 38px; padding-right: 10px; }
+  .rm-pill .pi { width: 38px; height: 38px; }
+  .rm-pill .pt b, .rm-pill .pt small { white-space: normal; }
+  .rm-card { width: 100%; padding: 12px 14px; border-radius: 18px; }
+  .rm-card .rm-ch b { font-size: 16px; }
+  .rm-scrub { margin: 8px 0 0; }
+  .rm-top { gap: 8px; }
+  .rm-me { width: 100%; padding: 10px 14px 10px 10px; }
+  .rm-me .avatar { width: 44px; height: 44px; font-size: 18px; }
+  .rm-stats { min-width: 0; width: 100%; }
+  .rm-nums { gap: 16px; }
+  .rm-mode { margin-left: 0; }
 }
 @media (max-width: 520px) {
   .st-tiles { grid-template-columns: 1fr; }

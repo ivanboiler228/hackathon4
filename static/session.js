@@ -46,9 +46,27 @@
           if (day) day.click();
         }, 0);
       }
+      setTimeout(focusActiveTab, 120);
     } catch {
       /* статическая демонстрация без бэкенда */
     }
+  }
+
+  function focusActiveTab() {
+    if (window.innerWidth > 900) return;
+    const nav = document.querySelector("#nav");
+    const active = nav && nav.querySelector("a.active");
+    if (!nav || !active) return;
+    const nr = nav.getBoundingClientRect();
+    const ar = active.getBoundingClientRect();
+    if (ar.left < nr.left + 6 || ar.right > nr.right - 6) {
+      nav.scrollLeft += ar.left - nr.left - 8;
+    }
+  }
+
+  const navEl = document.querySelector("#nav");
+  if (navEl) {
+    navEl.addEventListener("click", () => setTimeout(focusActiveTab, 30));
   }
 
   if (document.readyState === "loading") {
