@@ -5,12 +5,13 @@ import asyncio
 import json
 from contextlib import asynccontextmanager
 from datetime import date as date_cls, timedelta
+from typing import Any
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile, status
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import auth, calendar_ai, db, documents, meeting_ai, retrieval, stt
+from . import auth, calendar_ai, db, documents, meeting_ai, overview_ai, retrieval, stt
 from .config import settings
 from .llm import LLMError, call_deepseek, fallback_answer, validate_and_restore
 from .meeting_ai import MeetingAIError
@@ -26,6 +27,7 @@ from .schemas import (
     MeetingEditRequest,
     MeetingFeedbackRequest,
     MeetingTasksRequest,
+    OverviewRequest,
     Source,
     SwitchRequest,
     TaskStatusUpdate,
@@ -533,6 +535,229 @@ async def calendar_advice(
             "overdue": len(overdue),
             "conflicts": len(conflicts),
             "focus": context["focus"],
+        },
+    }
+
+
+@app.post("/api/overview/advice")
+async def overview_advice(
+    payload: OverviewRequest,
+    user: dict = Depends(auth.current_user),
+):
+    key = f"{user['id']}:overview"
+    if not limiter.allow(key):
+        retry = limiter.retry_after(key)
+        db.log_audit(
+            user_id=user["id"],
+            role=user["role"],
+            action="overview.rate_limited",
+            result="отклонено",
+            meta={"retry_after": retry},
+        )
+        raise HTTPException(
+            status_code=429,
+            detail=f"Слишком много запросов к AI-обзору. Повторите через {retry} сек.",
+        )
+
+    today = date_cls.today()
+    is_boss = user["role"] == "boss"
+    tasks = [
+        t
+        for t in payload.tasks
+        if is_boss or t.owner == user["id"] or t.created == user["id"] or user["id"] in t.co
+    ][:300]
+    events = [
+        e for e in payload.events if is_boss or user["id"] in e.people
+    ][:300]
+    meetings = [
+        m for m in payload.meetings if is_boss or m.created_by == user["id"]
+    ][:40]
+
+    open_tasks = [t for t in tasks if t.status != "done"]
+    overdue = [
+        t for t in open_tasks if t.deadline and t.deadline < today.isoformat()
+    ]
+    due_soon = [
+        t
+        for t in open_tasks
+        if t.deadline
+        and today.isoformat() <= t.deadline <= (today + timedelta(days=3)).isoformat()
+    ]
+    unassigned = [t for t in open_tasks if not t.owner]
+
+    owner_stats: dict[str, dict[str, Any]] = {}
+    for task in tasks:
+        owner = _person_name(task.owner) if task.owner else "Без владельца"
+        item = owner_stats.setdefault(owner, {"owner": owner, "open": 0, "overdue": 0, "done": 0})
+        if task.status == "done":
+            item["done"] += 1
+        else:
+            item["open"] += 1
+            if task.deadline and task.deadline < today.isoformat():
+                item["overdue"] += 1
+    by_owner = sorted(owner_stats.values(), key=lambda item: (-item["open"], item["owner"]))[:15]
+
+    docs = db.list_docs(user["acls"])
+    audit = db.list_audit(user, 200)
+    denials = sum(
+        1
+        for item in audit
+        if "ОТКЛОН" in str(item.get("result", ""))
+        or str(item.get("action", "")).endswith(("denied", "block", "required"))
+    )
+
+    context = {
+        "scope": "company" if is_boss else "personal",
+        "owner": {
+            "name": user["name"],
+            "role": user["role_label"],
+            "dept": user["dept"],
+        },
+        "today": today.isoformat(),
+        "stats": {
+            "tasks_total": len(tasks),
+            "tasks_open": len(open_tasks),
+            "tasks_done": sum(1 for task in tasks if task.status == "done"),
+            "tasks_review": sum(1 for task in tasks if task.status == "review"),
+            "overdue": len(overdue),
+            "unassigned": len(unassigned),
+            "due_soon": len(due_soon),
+            "meetings": len(meetings),
+            "meetings_with_summary": sum(1 for meeting in meetings if meeting.summary),
+            "meeting_tasks": sum(meeting.tasks_count for meeting in meetings),
+            "meeting_risks": sum(meeting.risks_count for meeting in meetings),
+            "docs_total": len(docs),
+            "pending_requests": payload.pending_requests,
+            "audit_denials": denials,
+        },
+        "tasks": [
+            {
+                "id": task.id,
+                "title": task.title,
+                "owner": _person_name(task.owner) if task.owner else None,
+                "deadline": task.deadline,
+                "status": STATUS_LABELS.get(task.status, task.status),
+                "prio": task.prio,
+            }
+            for task in tasks
+        ],
+        "overdue": [
+            {
+                "title": task.title,
+                "owner": _person_name(task.owner) if task.owner else None,
+                "deadline": task.deadline,
+                "prio": task.prio,
+            }
+            for task in overdue[:15]
+        ],
+        "by_owner": by_owner,
+        "events": [
+            {
+                "title": event.title,
+                "date": event.date,
+                "start": event.start,
+                "end": event.end,
+                "people": [_person_name(person) for person in event.people],
+                "place": event.place,
+            }
+            for event in events[:40]
+        ],
+        "meetings": [
+            {
+                "title": meeting.title,
+                "date": meeting.date,
+                "summary": meeting.summary,
+                "decisions": meeting.decisions_count,
+                "tasks": meeting.tasks_count,
+                "risks": meeting.risks_count,
+            }
+            for meeting in meetings[:12]
+        ],
+        "docs": [
+            {"id": doc["id"], "title": doc["title"], "date": doc["date"], "acl": doc["acl"]}
+            for doc in docs[:8]
+        ],
+        "recent_audit": [
+            {"action": item["action"], "obj": item["obj"], "result": item["result"]}
+            for item in audit[:6]
+        ],
+    }
+
+    masker = PIIMasker()
+    try:
+        masked_question = masker.mask(payload.question).masked
+        context["owner"]["name"] = masker.mask(context["owner"]["name"]).masked
+        for task in context["tasks"]:
+            task["title"] = masker.mask(task["title"]).masked
+            if task["owner"]:
+                task["owner"] = masker.mask(task["owner"]).masked
+        for task in context["overdue"]:
+            task["title"] = masker.mask(task["title"]).masked
+            if task["owner"]:
+                task["owner"] = masker.mask(task["owner"]).masked
+        for item in context["by_owner"]:
+            item["owner"] = masker.mask(item["owner"]).masked
+        for event in context["events"]:
+            event["title"] = masker.mask(event["title"]).masked
+            event["place"] = masker.mask(event["place"]).masked
+            event["people"] = [masker.mask(person).masked for person in event["people"]]
+        for meeting in context["meetings"]:
+            meeting["title"] = masker.mask(meeting["title"]).masked
+            meeting["summary"] = masker.mask(meeting["summary"]).masked
+        for doc in context["docs"]:
+            doc["title"] = masker.mask(doc["title"]).masked
+        preview = (
+            f"Вопрос: {masked_question}\n"
+            + json.dumps(context, ensure_ascii=False)[:1800]
+        )
+        masker.assert_clean(preview)
+    except PIIError as exc:
+        db.log_audit(
+            user_id=user["id"],
+            role=user["role"],
+            action="overview.pii_block",
+            result="ОТКЛОНЕНО: не удалось обезличить обзор",
+            meta={"error": exc.__class__.__name__},
+        )
+        raise HTTPException(status_code=422, detail="Не удалось безопасно обезличить обзор.") from exc
+
+    answer_masked, used_llm, llm_error = await overview_ai.advise(masked_question, context)
+    try:
+        answer = validate_and_restore(answer_masked, masker)
+    except (LLMError, PIIError):
+        used_llm = False
+        llm_error = "validation"
+        answer = validate_and_restore(overview_ai.fallback_overview(context), masker)
+
+    db.log_audit(
+        user_id=user["id"],
+        role=user["role"],
+        action="overview.advice",
+        obj=context["scope"],
+        result="ok" if used_llm else "fallback",
+        meta={
+            "tasks": len(tasks),
+            "meetings": len(meetings),
+            "docs": len(docs),
+            "overdue": len(overdue),
+            "used_llm": used_llm,
+            "llm_error": llm_error,
+        },
+        masked_preview=preview[:1800],
+    )
+    return {
+        "answer": answer,
+        "used_llm": used_llm,
+        "llm_error": llm_error,
+        "context": {
+            "scope": context["scope"],
+            "tasks": len(tasks),
+            "open": len(open_tasks),
+            "overdue": len(overdue),
+            "unassigned": len(unassigned),
+            "meetings": len(meetings),
+            "docs": len(docs),
+            "audit_denials": denials,
         },
     }
 

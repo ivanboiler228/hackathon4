@@ -137,3 +137,27 @@ class CalendarAdviceRequest(BaseModel):
     events: list[CalendarEventIn] = Field(default_factory=list, max_length=500)
     tasks: list[CalendarTaskIn] = Field(default_factory=list, max_length=500)
     busy: list[BusyBlockIn] = Field(default_factory=list, max_length=1000)
+
+
+class OverviewMeetingIn(BaseModel):
+    id: str = Field(..., max_length=40)
+    title: str = Field(..., max_length=300)
+    date: str = Field("", max_length=10)
+    summary: str = Field("", max_length=2000)
+    created_by: str = Field("", max_length=40)
+    decisions_count: int = 0
+    tasks_count: int = 0
+    risks_count: int = 0
+
+
+class OverviewRequest(BaseModel):
+    question: str = Field(
+        "Дай управленческий обзор: что горит, кто перегружен и что делегировать.",
+        min_length=1,
+        max_length=1500,
+    )
+    tasks: list[CalendarTaskIn] = Field(default_factory=list, max_length=500)
+    events: list[CalendarEventIn] = Field(default_factory=list, max_length=500)
+    meetings: list[OverviewMeetingIn] = Field(default_factory=list, max_length=200)
+    pending_requests: int = 0
+    audit_denials: int = 0

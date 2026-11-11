@@ -1017,7 +1017,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
       </section>
       <!-- TASKS -->
       <section class="view" id="v-tasks"><div class="page">
-        <div class="ph"><h1>Задачи</h1><button class="inbox-pill" id="inboxBtn"><span class="ms">move_to_inbox</span><span id="inboxN">Входящие</span></button></div>
+        <div class="ph"><h1>Задачи</h1><button class="gbtn" data-company-ai><span class="ms">auto_awesome</span>AI-обзор</button><button class="inbox-pill" id="inboxBtn"><span class="ms">move_to_inbox</span><span id="inboxN">Входящие</span></button></div>
         <div class="toolbar">
           <div class="search"><span class="ms muted">search</span><input id="taskSearch" placeholder="Поиск по задачам" aria-label="Поиск по задачам"></div>
           <div class="seg" id="boardMode" role="group" aria-label="Вид задач"><button data-bm="kanban" aria-pressed="true">По статусу</button><button data-bm="matrix" aria-pressed="false">По важности</button></div>
@@ -2386,7 +2386,7 @@ function renderSide(){
     ${gap?`<div class="br-f"><span>Свободное окно ${hm(gap.s)}–${hm(gap.e)}</span><button class="gbtn sm" data-rmfocus="${gap.s}|${Math.min(gap.e,gap.s+1.5)}|">Занять фокусом</button></div>`:''}
   </div>`;
 }
-document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}});
+document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}if(e.target.closest('[data-company-ai]')){openCompanyAI()}});
 
 /* ============ CALENDAR AI ADVISOR ============ */
 let CAL_AI_FOCUS=null,CAL_AI_CHAT=[],CAL_AI_BUSY=false;
@@ -2453,6 +2453,77 @@ function openCalendarAI(opts={}){
 }
 
 function renderStatTop(){renderStats()}
+/* ============ COMPANY AI OVERVIEW ============ */
+let COMPANY_AI_CHAT=[],COMPANY_AI_BUSY=false;
+function companySnapshot(){
+  const meetings=Object.values(AI_MEETINGS||{}).map(m=>({
+    id:m.event_id,
+    title:m.title||'Встреча',
+    date:(m.created_at||'').slice(0,10),
+    summary:m.summary||'',
+    created_by:m.created_by||'',
+    decisions_count:((m.protocol&&m.protocol.decided)||m.decisions||[]).length,
+    tasks_count:(m.tasks||[]).length,
+    risks_count:(m.risks||[]).length
+  }));
+  return {
+    tasks:TASKS.map(t=>({id:t.id,title:t.title,owner:t.owner,co:t.co||[],deadline:t.deadline||null,status:t.status,prio:t.prio,created:t.created||null})),
+    events:EVENTS.map(e=>({id:e.id,title:e.title,date:e.date,start:e.s,end:e.e,people:e.people,place:e.place||'',cal:e.cal})),
+    meetings,
+    pending_requests:REQUESTS.filter(r=>(r.to===me()||r.from===me())&&r.status==='pending'&&r.kind!=='feedback').length,
+    audit_denials:AUDIT.filter(a=>histKind(a)==='deny').length
+  };
+}
+function companyMsgHtml(m){
+  if(m.role==='user')return `<div class="dc-b u">${esc(m.text).replace(/\n/g,'<br>')}</div>`;
+  if(m.pending)return `<div class="dc-b a"><div class="dc-who">AI-обзор</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
+  const c=m.context;
+  const meta=c?`<div class="small muted" style="margin-top:8px">${c.tasks} задач · ${c.open} открытых · ${c.overdue} просрочено · ${c.meetings} встреч · ${c.docs} документов</div>`:'';
+  return `<div class="dc-b a"${m.error?' style="border-color:rgba(197,34,31,.3)"':''}><div class="dc-who">AI-обзор · ${canManage()?'компания':'мои задачи'}</div><div>${fmtAi(m.answer)}</div>${meta}</div>`;
+}
+function renderCompanyLog(){
+  const log=$('#companyAiLog');if(!log)return;
+  log.innerHTML=COMPANY_AI_CHAT.length?COMPANY_AI_CHAT.map(companyMsgHtml).join(''):`<div class="dc-empty"><span class="ms">monitoring</span><b>AI-обзор</b>Задачи, встречи, документы и аудит в одном ответе.<div class="dc-sample"><button data-coiq="Что горит прямо сейчас?">Что горит?</button><button data-coiq="Кто перегружен и у кого нет владельца?">Кто перегружен?</button><button data-coiq="Что делегировать на этой неделе?">Что делегировать?</button></div></div>`;
+  $$('[data-coiq]').forEach(b=>b.onclick=()=>askCompanyAI(b.dataset.coiq));
+  log.scrollTop=log.scrollHeight;
+}
+async function askCompanyAI(question){
+  if(COMPANY_AI_BUSY)return;
+  const text=String(question||$('#companyAiQ')?.value||'').trim();
+  if(!text){toast('Введите вопрос');return}
+  COMPANY_AI_BUSY=true;COMPANY_AI_CHAT.push({role:'user',text});COMPANY_AI_CHAT.push({role:'ai',pending:true});
+  const inp=$('#companyAiQ');if(inp)inp.value='';
+  const btn=$('#companyAiGo');if(btn){btn.disabled=true;btn.textContent='Собираю…'}
+  renderCompanyLog();
+  try{
+    const r=await fetch('/api/overview/advice',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({question:text,...companySnapshot()})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+    COMPANY_AI_CHAT[COMPANY_AI_CHAT.length-1]={role:'ai',...data};
+  }catch(err){
+    COMPANY_AI_CHAT[COMPANY_AI_CHAT.length-1]={role:'ai',error:err.message,answer:'Не удалось получить обзор: '+err.message};
+  }
+  COMPANY_AI_BUSY=false;
+  if(btn){btn.disabled=false;btn.innerHTML='<span class="ms">send</span>Спросить'}
+  renderCompanyLog();
+}
+function openCompanyAI(){
+  COMPANY_AI_CHAT=[];
+  const snap=companySnapshot();
+  const boss=canManage();
+  modal(`${mh('monitoring','AI-обзор','#7b4fd6')}<div class="mb" style="padding-bottom:0">
+    <div class="small muted" style="margin-bottom:8px">${boss?'Вся компания':'Ваши задачи и встречи'} · ${snap.tasks.length} задач · ${snap.meetings.length} встреч · документы по вашим правам</div>
+    <div class="dc-log" id="companyAiLog" style="max-height:360px;min-height:140px;padding:8px 0"></div>
+    <div class="dc-hint" style="padding:8px 0"><span class="ms" style="font-size:13px">shield</span> AI видит задачи, встречи, документы и аудит. Значимые действия — только после подтверждения.</div>
+    <div class="dc-compose" style="padding:8px 0 0;border-top:0"><textarea id="companyAiQ" rows="1" placeholder="Спросите про задачи, людей, сроки…" aria-label="Вопрос AI-обзору"></textarea><button class="btn primary" id="companyAiGo"><span class="ms">send</span>Спросить</button></div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
+  renderCompanyLog();
+  $('#companyAiGo').onclick=()=>askCompanyAI();
+  $('#companyAiQ').onkeydown=ev=>{if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();askCompanyAI()}};
+  askCompanyAI(boss?'Дай управленческий обзор: что горит, кто перегружен и что делегировать.':'Дай обзор моих задач: что горит и что делать сначала.');
+}
+
+
 /* ============ DOCUMENTS WORKSPACE ============ */
 const ACL_NAMES={all:'Все руководители',prod:'Производство + дирекция',mkt:'Маркетинг + дирекция',fin:'Только дирекция',hr:'HR + дирекция',support:'Поддержка + дирекция',legal:'Юридическое + дирекция'};
 let SERVER_DOCS=[],FOLDERS=[],DOC_SEL=new Set(),DOC_CHAT=[],DOC_FILTER='all',DOC_QUERY='',DOC_DRAFT='';
@@ -2693,7 +2764,7 @@ function renderStats(){
     ['Действия ассистента',String(aiActs),'Журнал аудита: запросы к документам, отказы в доступе, правки выжимки и подтверждения задач.']
   ];
   renderAudit();const hist=AUDIT.slice(0,STAT_ALL?99:7);
-  $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1></div>
+  $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1><button class="gbtn" data-company-ai><span class="ms">auto_awesome</span>AI-обзор</button></div>
   <div class="st-tiles">
     <div class="glass st"><span class="st-l">Задачи в срок</span><b>${onTime}%</b><span class="st-d">${late.length?`просрочено ${late.length}: ${esc(late[0].title.slice(0,34))}${late.length>1?'…':''}`:'просрочек нет'}</span></div>
     <div class="glass st"><span class="st-l">Переносы</span><b>${rq.length}</b><span class="st-d">встреч ${rq.filter(r=>r.kind==='reschedule').length} · сроков ${rq.filter(r=>r.kind==='deadline').length} · ждут ответа ${rq.filter(r=>r.status==='pending').length}</span></div>

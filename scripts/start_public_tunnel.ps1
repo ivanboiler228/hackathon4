@@ -12,6 +12,14 @@ $ErrLog = Join-Path $Tools "tunnel.err.log"
 New-Item -ItemType Directory -Force -Path $Tools | Out-Null
 Remove-Item $OutLog, $ErrLog -ErrorAction SilentlyContinue
 
+if (Test-Path $PidFile) {
+    $OldPid = Get-Content $PidFile | Select-Object -First 1
+    if ($OldPid -and (Get-Process -Id ([int]$OldPid) -ErrorAction SilentlyContinue)) {
+        Stop-Process -Id ([int]$OldPid) -Force -ErrorAction SilentlyContinue
+    }
+    Remove-Item $PidFile -ErrorAction SilentlyContinue
+}
+
 $Ssh = Get-Command ssh -ErrorAction SilentlyContinue
 if (-not $Ssh) {
     throw "Не найден ssh. Включите OpenSSH Client в Windows: Settings -> Optional Features."
