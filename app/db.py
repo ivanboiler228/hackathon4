@@ -118,6 +118,19 @@ def init_db() -> None:
             );
             CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit(ts DESC);
             CREATE INDEX IF NOT EXISTS idx_audit_user ON audit(user_id, ts DESC);
+            CREATE TABLE IF NOT EXISTS meeting_ai (
+                event_id TEXT PRIMARY KEY,
+                created_at TEXT NOT NULL,
+                title TEXT NOT NULL,
+                transcript TEXT NOT NULL,
+                summary TEXT NOT NULL,
+                decisions TEXT NOT NULL,
+                tasks TEXT NOT NULL,
+                risks TEXT NOT NULL,
+                open_questions TEXT NOT NULL,
+                stt TEXT NOT NULL,
+                llm TEXT NOT NULL
+            );
             """
         )
         for user in SEED_USERS:
@@ -251,3 +264,59 @@ def list_audit(user: dict[str, Any], limit: int = 50) -> list[dict[str, Any]]:
         item["meta"] = json.loads(item["meta"] or "{}")
         out.append(item)
     return out
+
+
+def save_meeting_ai(
+    event_id: str,
+    title: str,
+    transcript: str,
+    result: dict[str, Any],
+    stt_engine: str = "vosk",
+) -> dict[str, Any]:
+    created_at = utc_now().isoformat()
+    llm = "deepseek" if result.get("used_llm") else "fallback"
+    with db_conn() as conn:
+        conn.execute(
+            """
+            INSERT INTO meeting_ai
+                (event_id, created_at, title, transcript, summary, decisions, tasks, risks, open_questions, stt, llm)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(event_id) DO UPDATE SET
+                created_at=excluded.created_at,
+                title=excluded.title,
+                transcript=excluded.transcript,
+                summary=excluded.summary,
+                decisions=excluded.decisions,
+                tasks=excluded.tasks,
+                risks=excluded.risks,
+                open_questions=excluded.open_questions,
+                stt=excluded.stt,
+                llm=excluded.llm
+            """,
+            (
+                event_id,
+                created_at,
+                title,
+                transcript,
+                result.get("summary", ""),
+                json.dumps(result.get("decisions", []), ensure_ascii=False),
+                json.dumps(result.get("tasks", []), ensure_ascii=False),
+                json.dumps(result.get("risks", []), ensure_ascii=False),
+                json.dumps(result.get("open_questions", []), ensure_ascii=False),
+                stt_engine,
+                llm,
+            ),
+        )
+    return get_meeting_ai(event_id) or {}
+
+
+def get_meeting_ai(event_id: str) -> dict[str, Any] | None:
+    with db_conn() as conn:
+        row = conn.execute("SELECT * FROM meeting_ai WHERE event_id = ?", (event_id,)).fetchone()
+    if not row:
+        return None
+    item = dict(row)
+    for key in ("decisions", "tasks", "risks", "open_questions"):
+        item[key] = json.loads(item[key] or "[]")
+    item["used_llm"] = item["llm"] == "deepseek"
+    return item

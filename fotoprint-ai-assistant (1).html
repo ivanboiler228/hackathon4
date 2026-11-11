@@ -911,7 +911,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
 .mp-r{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:12px 4px 2px}
 .mp-r .ms{color:var(--ink2)}.mp-r b{display:block;font-size:13px;font-weight:600}.mp-r span:not(.ms){font-size:12px;color:var(--ink2)}
 </style>
-<link rel="stylesheet" href="/static/mobile.css?v=10">
+<link rel="stylesheet" href="/static/mobile.css?v=11">
 </head>
 <body>
 <div class="app">
@@ -1283,7 +1283,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if
 
 /* ============ MODAL ============ */
 function modal(html,cls=''){$('#modal').onclick=null;$('#modal').className='modal '+cls;$('#modal').innerHTML=html;$('#scrim').classList.add('on');setTimeout(()=>{const f=$('#modal').querySelector('[autofocus]')||$('#modal').querySelector('input,textarea,button');f&&f.focus()},30)}
-function closeModal(){if(modal.dirty&&!modal.force){modal.force=true;toast('Есть несохранённые изменения. Нажмите Esc ещё раз, чтобы закрыть без сохранения.');setTimeout(()=>modal.force=false,3000);return}$('#scrim').classList.remove('on');modal.dirty=false;modal.force=false;stopRec()}
+function closeModal(){if(window.__meetRecStop){try{window.__meetRecStop()}catch(e){}}if(modal.dirty&&!modal.force){modal.force=true;toast('Есть несохранённые изменения. Нажмите Esc ещё раз, чтобы закрыть без сохранения.');setTimeout(()=>modal.force=false,3000);return}$('#scrim').classList.remove('on');modal.dirty=false;modal.force=false;stopRec()}
 $('#scrim').addEventListener('mousedown',e=>{if(e.target.id==='scrim')closeModal()});
 $('#modal').addEventListener('input',()=>modal.dirty=true);
 const mh=(icon,title,color)=>`<div class="mh"><span class="ms" style="color:${color||'var(--primary)'}">${icon}</span><h2>${title}</h2><button class="icon-btn" onclick="closeModal()" aria-label="Закрыть"><span class="ms">close</span></button></div>`;
@@ -1678,29 +1678,56 @@ const MEET_SUM={
 };
 let MEET_SEL=null;
 const MEET_OPEN={};
+let AI_MEETINGS={};
+const AI_LOADED=new Set();
+function fmtAiDate(iso){try{const d=new Date(iso);return d.toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+async function loadMeetingAI(id){
+  if(!id||AI_LOADED.has(id))return;
+  AI_LOADED.add(id);
+  try{const r=await fetch(`/api/meetings/${encodeURIComponent(id)}/ai`,{credentials:'same-origin'});if(r.ok){AI_MEETINGS[id]=await r.json();if(currentView==='meetings'&&MEET_SEL===id)renderMeetings()}}catch(e){}
+}
+function meetAiHtml(e,A){
+  const tasks=(A.tasks||[]).map(t=>`<div class="kr"><i class="pdot" style="background:var(--ink)"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?esc(t.owner):'ответственный не назначен'}${t.deadline?' · '+esc(t.deadline):' · без срока'}</span></div></div>`).join('')||'<div class="small muted">Задач нет</div>';
+  const decisions=(A.decisions||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const risks=(A.risks||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const open=(A.open_questions||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  return `<div class="md-sum">
+    <div class="md-rec"><span class="ms">mic</span>AI-выжимка · ${A.used_llm?'локальная расшифровка + DeepSeek':'локальная выжимка'}${A.created_at?' · '+fmtAiDate(A.created_at):''}${A.duration_sec?' · '+Math.round(A.duration_sec)+' сек':''}</div>
+    <div class="md-s">Коротко</div><p class="md-lead">${esc(A.summary)}</p>
+    ${decisions?`<div class="md-s">Решения</div><ul class="md-ok">${decisions}</ul>`:''}
+    <div class="md-s">Задачи по итогам</div>${tasks}
+    ${open||risks?`<div class="md-2">${open?`<div><div class="md-s">Открытые вопросы</div><ul class="md-q">${open}</ul></div>`:''}${risks?`<div><div class="md-s">Риски</div><ul class="md-r">${risks}</ul></div>`:''}</div>`:''}
+    <details class="md-qt"><summary>Расшифровка</summary><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;padding-top:6px">${esc(A.transcript||'')}</div></details>
+    <div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">shield</span> Аудио распознано локально. В DeepSeek ушёл только обезличенный текст.</div>
+  </div><div class="md-act" id="mdAct"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="gbtn" data-ma="ai-rec"><span class="ms">mic</span>Записать заново</button></div>`;
+}
 function renderMeetings(){
   const mine=EVENTS.filter(e=>e.cal==='meet'&&e.people.includes(me())).sort((a,b)=>(a.date+pad(a.s)).localeCompare(b.date+pad(b.s)));
   const isPast=e=>e.date<TODAY||(e.date===TODAY&&e.e<=nowH());
   const past=mine.filter(isPast).reverse(),up=mine.filter(e=>!isPast(e));
   if(!MEET_SEL||!mine.some(e=>e.id===MEET_SEL))MEET_SEL=(past.find(e=>MEET_SUM[e.id])||past[0]||up[0]||{}).id;
-  const has=e=>MEET_SUM[e.id]||(PROTOCOLS[e.id]&&PROTOCOLS[e.id].saved);
+  const has=e=>MEET_SUM[e.id]||(PROTOCOLS[e.id]&&PROTOCOLS[e.id].saved)||AI_MEETINGS[e.id];
   const row=e=>`<button class="mi ${e.id===MEET_SEL?'on':''}" data-msel="${e.id}"><i class="pdot" style="background:${COLORS[e.color]}"></i><span class="mi-x"><b>${esc(e.title)}</b><small>${fmtDW(e.date)}, ${hm(e.s)}</small></span>${has(e)?'<span class="mi-b">выжимка</span>':''}</button>`;
   const lim=k=>MEET_OPEN[k]?99:4,more=(k,L)=>L.length>lim(k)?`<button class="lane-more" data-meet-more="${k}">Ещё ${L.length-lim(k)}</button>`:'';
   const e=EVENTS.find(x=>x.id===MEET_SEL);
-  $('#meetPage').innerHTML=`<div class="ph"><h1>Встречи</h1><span class="spacer" style="flex:1"></span><label class="gbtn" style="cursor:pointer" title="Загрузите .txt — ассистент сделает выжимку"><span class="ms">upload_file</span>Загрузить расшифровку<input type="file" accept=".txt,.vtt,.srt" id="upTr" hidden></label></div>
+  $('#meetPage').innerHTML=`<div class="ph"><h1>Встречи</h1><span class="spacer" style="flex:1"></span><button class="btn primary" id="meetRec"><span class="ms">mic</span>Записать</button><label class="gbtn" style="cursor:pointer" title="Загрузите .txt — ассистент сделает выжимку"><span class="ms">upload_file</span>Загрузить расшифровку<input type="file" accept=".txt,.vtt,.srt" id="upTr" hidden></label></div>
   <div class="mt-grid"><div class="mcol"><div class="glass mlist2"><div class="ml-s">Ближайшие</div>${up.slice(0,lim('up')).map(row).join('')||'<div class="small muted">Нет</div>'}${more('up',up)}</div><div class="glass mlist2"><div class="ml-s">Прошедшие</div>${past.slice(0,lim('past')).map(row).join('')||'<div class="small muted">Нет</div>'}${more('past',past)}</div></div>
   <div class="glass mdet">${e?meetDetail(e,isPast(e)):'<div class="muted">Выберите встречу</div>'}</div></div>`;
   $$('[data-meet-more]').forEach(b=>b.onclick=()=>{MEET_OPEN[b.dataset.meetMore]=true;renderMeetings()});
   $$('[data-msel]').forEach(b=>b.onclick=()=>{MEET_SEL=b.dataset.msel;renderMeetings()});
   $('#upTr').onchange=ev=>{const f=ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>openNotes(null,rd.result);rd.readAsText(f)};
+  if($('#meetRec'))$('#meetRec').onclick=()=>{const ev=EVENTS.find(x=>x.id===MEET_SEL);if(!ev){toast('Выберите встречу');return}openMeetRecord(ev)};
+  loadMeetingAI(MEET_SEL);
   const act=$('#mdAct');if(act)act.onclick=ev=>{const b=ev.target.closest('[data-ma]');if(!b)return;const a=b.dataset.ma;
-    if(a==='rec')openNotes(e.id);if(a==='resched')openReschedule({eventId:e.id});
+    if(a==='rec')openNotes(e.id);if(a==='ai-rec')openMeetRecord(e);if(a==='resched')openReschedule({eventId:e.id});
     if(a==='copy'){navigator.clipboard?.writeText($('.md-sum')?.innerText||'').then(()=>toast('Выжимка скопирована')).catch(()=>toast('Не удалось скопировать'))}
     if(a==='send'){log('Рассылка выжимки',e.title,'участникам: '+(e.people.length-1));toast('Выжимка отправлена участникам ('+(e.people.length-1)+')')}};
 }
 function meetDetail(e,past){
   const head=`<div class="md-h"><div><h2>${esc(e.title)}</h2><div class="md-m">${fmtDW(e.date)}, ${hm(e.s)}–${hm(e.e)}${e.place?' · '+esc(e.place):''}</div></div><span class="rm-avs">${e.people.map(p=>av(p)).join('')}</span></div>`;
   const S=MEET_SUM[e.id];const P=PROTOCOLS[e.id]&&PROTOCOLS[e.id].saved?PROTOCOLS[e.id]:null;
+  const A=AI_MEETINGS[e.id];
+  if(A)return head+meetAiHtml(e,A);
   if(past&&(S||P)){
     const sum=S?S.summary:`Ассистент разобрал запись: ${P.decided.length} решени${P.decided.length===1?'е':'я'}, ${P.tasks.length} задач, ${P.unclear.length} вопрос(а) остались открытыми.`;
     const decided=S?S.decided:P.decided.map(x=>x.txt);const open=S?S.open:P.unclear.map(x=>x.txt);const risks=S?S.risks:P.risks.map(x=>x.txt);
@@ -1714,11 +1741,81 @@ function meetDetail(e,past){
       ${open.length||risks.length?`<div class="md-2">${open.length?`<div><div class="md-s">Осталось открытым</div><ul class="md-q">${open.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${risks.length?`<div><div class="md-s">Риски</div><ul class="md-r">${risks.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}</div>`:''}
       <details class="md-qt"><summary>Ключевые фразы из записи</summary>${quotes.map(([p,t])=>`<div><b>${PEOPLE[p]?.short||'Спикер'}:</b> ${esc(t)}</div>`).join('')}</details>
     </div><div class="md-act" id="mdAct"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="btn primary" data-ma="send"><span class="ms">send</span>Отправить участникам</button></div>`}
-  if(past)return `${head}<div class="md-empty"><span class="ms">mic_off</span><b>Записи этой встречи нет</b><span>Загрузите расшифровку — ассистент сделает выжимку: решения, задачи с ответственными, открытые вопросы.</span></div><div class="md-act" id="mdAct"><button class="btn primary" data-ma="rec"><span class="ms">edit_note</span>Добавить заметки</button></div>`;
+  if(past)return `${head}<div class="md-empty"><span class="ms">mic_off</span><b>Записи этой встречи нет</b><span>Нажмите «Записать» — локальная расшифровка и AI-выжимка появятся здесь.</span></div><div class="md-act" id="mdAct"><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать</button></div>`;
   const ag=buildAgenda({title:e.title,topic:e.topic||'',people:e.people,linkTask:''});
   return `${head}<div class="md-s">Повестка</div><ol class="md-ag">${(e.agenda||ag.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${ag.src.length?`<div class="md-s">Документы</div><div>${ag.src.map(srcChip).join('')}</div>`:''}
-    <div class="md-act" id="mdAct"><button class="gbtn" data-ma="resched"><span class="ms">event_repeat</span>Перенести</button><button class="btn primary" data-ma="rec"><span class="ms">mic</span>Начать запись</button></div>`;
+    <div class="md-act" id="mdAct"><button class="gbtn" data-ma="resched"><span class="ms">event_repeat</span>Перенести</button><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать</button></div>`;
 }
+function openMeetRecord(e){
+  if(!e){toast('Выберите встречу');return}
+  let stream=null,recorder=null,chunks=[],timer=null,waveTimer=null,seconds=0,uploading=false,recording=false,discard=false;
+  const stopTracks=()=>{if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}};
+  const stopTimers=()=>{if(timer){clearInterval(timer);timer=null}if(waveTimer){clearInterval(waveTimer);waveTimer=null}};
+  const cleanup=()=>{
+    discard=true;stopTimers();stopTracks();
+    if(recorder&&recorder.state!=='inactive'){recorder.onstop=null;try{recorder.stop()}catch(err){}}
+    recorder=null;window.__meetRecStop=null;
+  };
+  window.__meetRecStop=cleanup;
+  const fmtT=s=>pad(Math.floor(s/60))+':'+pad(s%60);
+  modal(`${mh('mic','Запись: '+esc(e.title),'var(--tomato)')}<div class="mb">
+    <div class="alert ok"><span class="ms">shield</span> Аудио распознаётся локально на сервере. В DeepSeek уходит только текст после маскирования ПДн.</div>
+    <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0 12px"><input type="checkbox" id="aiRecConsent"> Участники согласны на запись</label>
+    <div class="rec"><button class="recbtn" id="aiRecBtn" type="button" disabled aria-label="Запись"><span class="ms">mic</span></button><div class="wave" id="aiRecWave">${'<i></i>'.repeat(40)}</div><span id="aiRecT" class="small muted">00:00</span></div>
+    <div id="aiRecStatus" class="small muted">Проверьте согласие и нажмите «Начать запись».</div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button><button class="btn primary" id="aiRecAction" disabled>Начать запись</button></div>`,'wide');
+  const consent=$('#aiRecConsent'),action=$('#aiRecAction'),recBtn=$('#aiRecBtn'),status=$('#aiRecStatus');
+  const sync=()=>{const on=!!consent.checked;if(!uploading&&!recording){action.disabled=!on;recBtn.disabled=!on}};
+  consent.onchange=sync;sync();
+  const setStatus=(t,err)=>{status.textContent=t;status.style.color=err?'var(--err)':'var(--muted)'};
+  const start=async()=>{
+    if(!consent.checked){toast('Подтвердите согласие участников');return}
+    if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){setStatus('Микрофон доступен только на HTTPS или localhost. Откройте приложение на ноутбуке по http://127.0.0.1:8000.',true);return}
+    try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
+    catch(err){setStatus('Не удалось получить доступ к микрофону: '+err.name+'. Разрешите микрофон в браузере.',true);return}
+    const types=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'];
+    const mime=types.find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported(t))||'';
+    try{recorder=mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream)}
+    catch(err){stopTracks();setStatus('Браузер не поддерживает запись аудио.',true);return}
+    chunks=[];seconds=0;discard=false;recording=true;uploading=false;
+    recorder.ondataavailable=ev=>{if(ev.data&&ev.data.size)chunks.push(ev.data)};
+    recorder.onstop=async()=>{
+      stopTimers();stopTracks();recording=false;
+      if(discard)return;
+      const blob=new Blob(chunks,{type:recorder.mimeType||mime||'audio/webm'});
+      if(blob.size<800){setStatus('Запись слишком короткая.',true);action.disabled=false;recBtn.disabled=false;action.textContent='Попробовать снова';recBtn.innerHTML='<span class="ms">mic</span>';return}
+      uploading=true;action.disabled=true;recBtn.disabled=true;action.textContent='Обрабатываю…';
+      setStatus('Распознаю локально и готовлю AI-выжимку… Это может занять до минуты.');
+      const ext=mime.includes('mp4')?'m4a':mime.includes('ogg')?'ogg':'webm';
+      const fd=new FormData();fd.append('audio',blob,'meeting.'+ext);fd.append('consent','true');fd.append('title',e.title);
+      try{
+        const r=await fetch(`/api/meetings/${encodeURIComponent(e.id)}/record`,{method:'POST',body:fd,credentials:'same-origin'});
+        const data=await r.json().catch(()=>({}));
+        if(!r.ok)throw new Error(data.detail||('Ошибка '+r.status));
+        AI_MEETINGS[e.id]=data;AI_LOADED.add(e.id);
+        window.__meetRecStop=null;closeModal();renderMeetings();
+        toast(data.used_llm?'AI-выжимка готова (DeepSeek)':'Выжимка готова (локально)');
+      }catch(err){
+        uploading=false;recording=false;action.disabled=false;recBtn.disabled=false;action.textContent='Попробовать снова';
+        recBtn.innerHTML='<span class="ms">mic</span>';
+        setStatus('Ошибка: '+err.message,true);
+      }
+    };
+    recorder.start(1000);action.textContent='Остановить и обработать';recBtn.innerHTML='<span class="ms">stop</span>';
+    setStatus('Идёт запись… Говорите.');
+    timer=setInterval(()=>{seconds+=1;$('#aiRecT').textContent=fmtT(seconds)},1000);
+    waveTimer=setInterval(()=>{$$('#aiRecWave i').forEach(i=>i.style.height=(4+Math.random()*24)+'px')},120);
+  };
+  const stop=()=>{
+    if(!recording||!recorder)return;
+    stopTimers();recording=false;action.disabled=true;recBtn.disabled=true;action.textContent='Обрабатываю…';
+    setStatus('Останавливаю запись и отправляю на распознавание…');
+    try{recorder.stop()}catch(err){setStatus('Не удалось остановить запись: '+err.message,true)}
+  };
+  action.onclick=()=>recording?stop():start();
+  recBtn.onclick=()=>recording?stop():start();
+}
+
 function openNotes(eventId,uploaded){
   const e=EVENTS.find(x=>x.id===eventId);
   if(e&&e.protocol&&!PROTOCOLS[e.id]){rec.lines=DEMO_TRANSCRIPT.map((l,i)=>({p:l[0],txt:l[1],ts:i*40}));PROTOCOLS[e.id]=extract(rec.lines,e);PROTOCOLS[e.id].saved=true}

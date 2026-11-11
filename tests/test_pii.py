@@ -44,3 +44,12 @@ def test_raw_pii_is_blocked():
         pass
     else:
         raise AssertionError("Сырой телефон должен блокироваться")
+
+
+def test_known_employee_name_is_masked_even_lowercase():
+    masker = PIIMasker()
+    result = masker.mask("игорь подготовит график смен до пятницы")
+    assert "игорь" not in result.masked
+    assert "⟦PERSON_1⟧" in result.masked
+    assert masker.unmask(result.masked) == "игорь подготовит график смен до пятницы"
+

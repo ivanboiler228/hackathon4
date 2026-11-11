@@ -78,3 +78,19 @@ def test_director_can_switch_to_employee_and_back(tmp_path, monkeypatch):
         me = client.get("/api/me").json()
         assert me["role"] == "boss"
         assert me["is_impersonating"] is False
+
+
+def test_meeting_record_requires_consent(tmp_path, monkeypatch):
+    monkeypatch.setattr(settings, "db_path", tmp_path / "test4.db")
+    db.init_db()
+
+    with TestClient(app) as client:
+        _login(client)
+        r = client.post(
+            "/api/meetings/E-8/record",
+            files={"audio": ("test.webm", b"not-audio", "audio/webm")},
+            data={"consent": "false", "title": "Тест"},
+        )
+        assert r.status_code == 400
+        assert "согласие" in r.json()["detail"].lower()
+

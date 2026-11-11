@@ -28,6 +28,14 @@ FIRST_NAMES = {
     "тимофей", "ульяна", "юлия", "яна", "ярослав",
 }
 
+# Имена сотрудников из демо-базы. Их маскируем даже по одному слову:
+# Vosk отдаёт расшифровку без заглавных букв и без отчеств.
+EMPLOYEE_NAMES = {"анна", "игорь", "ольга", "дмитрий", "мария", "павел", "ирина"}
+KNOWN_PERSON_RE = re.compile(
+    r"(?<![а-яёa-z])(?:" + "|".join(sorted(EMPLOYEE_NAMES, key=len, reverse=True)) + r")(?![а-яёa-z])",
+    re.IGNORECASE,
+)
+
 # Названия, которые не являются персональными данными и важны для ответов.
 ORG_ALLOWLIST = {"фотопринт", "picpac", "picpac.by"}
 
@@ -178,6 +186,7 @@ class PIIMasker:
             return prefix + self._tag("PERSON", value)
 
         masked = NAME_RE.sub(name_repl, masked)
+        masked = KNOWN_PERSON_RE.sub(lambda m: self._tag("PERSON", m.group(0)), masked)
 
         # Контроль: после маскирования не должно остаться известных шаблонов.
         self.assert_clean(masked)
@@ -198,6 +207,8 @@ class PIIMasker:
         for match in NAME_RE.finditer(text):
             if _looks_like_person(match):
                 raise PIILeakError("В маскированном тексте осталось имя")
+        if KNOWN_PERSON_RE.search(text):
+            raise PIILeakError("В маскированном тексте осталось имя сотрудника")
 
     def unmask(self, text: str) -> str:
         if not text:

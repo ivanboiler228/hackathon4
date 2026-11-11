@@ -1,15 +1,17 @@
 """FastAPI-бэкенд демо: автовход директора, RBAC, PII-маскирование и аудит."""
 from __future__ import annotations
 
+import asyncio
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, HTTPException, Query, Request, status
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile, status
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import auth, db, retrieval
+from . import auth, db, meeting_ai, retrieval, stt
 from .config import settings
 from .llm import LLMError, call_deepseek, fallback_answer, validate_and_restore
+from .meeting_ai import MeetingAIError
 from .pii import PIIError, PIIMasker
 from .rate_limit import RateLimiter
 from .schemas import AskRequest, AskResponse, Source, SwitchRequest
@@ -163,6 +165,77 @@ async def doc_detail(doc_id: str, user: dict = Depends(auth.current_user)):
         meta={"acl": doc["acl"]},
     )
     return doc
+
+
+@app.get("/api/meetings/{event_id}/ai")
+async def meeting_ai_get(event_id: str, user: dict = Depends(auth.current_user)):
+    item = db.get_meeting_ai(event_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="AI-выжимки для этой встречи нет")
+    return item
+
+
+@app.post("/api/meetings/{event_id}/record")
+async def meeting_record(
+    event_id: str,
+    audio: UploadFile = File(...),
+    consent: bool = Form(False),
+    title: str = Form("Встреча"),
+    user: dict = Depends(auth.current_user),
+):
+    if not consent:
+        raise HTTPException(status_code=400, detail="Нужно подтвердить согласие участников на запись.")
+
+    data = await audio.read()
+    max_bytes = settings.meeting_max_audio_mb * 1024 * 1024
+    if not data:
+        raise HTTPException(status_code=400, detail="Пустой аудиофайл.")
+    if len(data) > max_bytes:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Аудио больше {settings.meeting_max_audio_mb} МБ. Сократите запись.",
+        )
+
+    try:
+        transcript, duration = await asyncio.to_thread(
+            stt.transcribe_audio, data, audio.content_type or ""
+        )
+    except stt.STTError as exc:
+        db.log_audit(
+            user_id=user["id"],
+            role=user["role"],
+            action="meeting.transcribe",
+            obj=event_id,
+            result="ошибка распознавания",
+            meta={"size_mb": round(len(data) / 1024 / 1024, 2)},
+        )
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    llm_error = None
+    try:
+        result = await meeting_ai.summarize(transcript, title)
+    except MeetingAIError as exc:
+        llm_error = str(exc)
+        result = meeting_ai.fallback_summary(transcript, llm_error)
+
+    saved = db.save_meeting_ai(event_id, title, transcript, result, stt_engine="vosk")
+    db.log_audit(
+        user_id=user["id"],
+        role=user["role"],
+        action="meeting.record",
+        obj=event_id,
+        result="выжимка сохранена" if result.get("used_llm") else "локальная выжимка",
+        meta={
+            "duration_sec": round(duration, 1),
+            "size_mb": round(len(data) / 1024 / 1024, 2),
+            "chars": len(transcript),
+            "used_llm": bool(result.get("used_llm")),
+            "llm_error": llm_error,
+        },
+    )
+    saved["llm_error"] = llm_error
+    saved["duration_sec"] = round(duration, 1)
+    return saved
 
 
 @app.post("/api/assistant/ask", response_model=AskResponse)

@@ -30,6 +30,11 @@ class Settings:
     llm_timeout: float = float(os.getenv("LLM_TIMEOUT", "30"))
     llm_max_tokens: int = int(os.getenv("LLM_MAX_TOKENS", "700"))
 
+    vosk_model_path: Path = Path(
+        os.getenv("VOSK_MODEL_PATH", str(BASE_DIR / "models" / "vosk-model-small-ru-0.22"))
+    )
+    meeting_max_audio_mb: int = int(os.getenv("MEETING_MAX_AUDIO_MB", "30"))
+
     demo_user: str = os.getenv("DEMO_USER", "anna")
     rate_limit_per_minute: int = int(os.getenv("RATE_LIMIT_PER_MINUTE", "20"))
     demo_mode: bool = os.getenv("DEMO_MODE", "1") == "1"

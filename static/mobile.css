@@ -18,6 +18,8 @@
   .cx-cal { min-height: calc(100dvh - 150px); border-radius: 20px; }
   .cx-side { display: none; }
   .page { padding: 16px 12px 30px; }
+  .ph { flex-wrap: wrap; gap: 8px; }
+  .ph .spacer { display: none; }
   .ph h1, .page h1 { font-size: 24px; }
   .st-tiles { grid-template-columns: 1fr 1fr; gap: 10px; }
   .st-grid { grid-template-columns: 1fr; }
