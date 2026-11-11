@@ -361,6 +361,12 @@
     if (document.querySelector("#v-stats") && document.querySelector("#v-stats").classList.contains("on")) {
       setTimeout(loadServerAudit, 0);
     }
+    if (window.innerWidth <= 700) {
+      setTimeout(() => {
+        const day = document.querySelector('#rangeSeg button[data-days="1"]');
+        if (day) day.click();
+      }, 0);
+    }
   }
 
   if (document.readyState === "loading") {
