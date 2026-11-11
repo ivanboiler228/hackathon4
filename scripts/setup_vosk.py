@@ -1,4 +1,9 @@
-"""Скачивает небольшую русскую модель Vosk для локальной расшифровки."""
+"""Скачивает русскую модель Vosk для локальной расшифровки.
+
+Примеры:
+    python scripts\\setup_vosk.py
+    python scripts\\setup_vosk.py vosk-model-ru-0.42
+"""
 from __future__ import annotations
 
 import sys
@@ -8,19 +13,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MODELS = ROOT / "models"
-NAME = "vosk-model-small-ru-0.22"
-URL = f"https://alphacephei.com/vosk/models/{NAME}.zip"
+DEFAULT_NAME = "vosk-model-small-ru-0.22"
 
 
 def main() -> None:
+    name = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_NAME
+    url = f"https://alphacephei.com/vosk/models/{name}.zip"
     MODELS.mkdir(exist_ok=True)
-    target = MODELS / NAME
+    target = MODELS / name
     if (target / "am" / "final.mdl").exists():
         print(f"Модель уже есть: {target}")
         return
-    archive = MODELS / f"{NAME}.zip"
-    print(f"Скачиваю {URL} …")
-    urllib.request.urlretrieve(URL, archive)
+    archive = MODELS / f"{name}.zip"
+    print(f"Скачиваю {url} …")
+    urllib.request.urlretrieve(url, archive)
     print("Распаковываю…")
     with zipfile.ZipFile(archive) as zf:
         zf.extractall(MODELS)
