@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from contextlib import asynccontextmanager
 from datetime import date as date_cls, timedelta
 from typing import Any
@@ -164,6 +165,10 @@ async def switch_role(payload: SwitchRequest, user: dict = Depends(auth.current_
 
 
 VALID_ACLS = {"all", "fin", "hr", "prod", "mkt", "support", "legal"}
+FOLDER_META_RE = re.compile(
+    r"(папк|содержим|что лежит|проанализ|обзор|о ч[её]м|список документ|какие документ)",
+    re.IGNORECASE,
+)
 ACL_TITLES = {
     "all": "Все руководители",
     "fin": "Только дирекция",
@@ -1025,6 +1030,16 @@ def _mask_for_audit(value: str, limit: int = 200) -> str:
         return "[скрыто: не удалось обезличить]"
 
 
+def _folder_overview(masked_docs: list[dict[str, str]], scope: str) -> str:
+    lines = [f"В области «{scope}» {len(masked_docs)} документ(ов):"]
+    for doc in masked_docs:
+        first = re.split(r"(?<=[.!?])\s+", doc["text"].strip(), maxsplit=1)[0]
+        if len(first) > 170:
+            first = first[:167].rstrip() + "…"
+        lines.append(f"• [{doc['id']}] {doc['title']} ({doc['date']}) — {first}")
+    return "\n".join(lines)
+
+
 @app.get("/api/meetings/ai")
 async def meeting_ai_list(user: dict = Depends(auth.current_user)):
     return {"items": db.list_meeting_ai(user)}
@@ -1402,16 +1417,18 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
             no_docs_answer = f"В папке «{folder['title']}» пока нет документов."
             docs = [doc for doc in allowed if doc.get("folder_id") == folder["id"]]
             docs.sort(key=lambda doc: doc.get("date", ""), reverse=True)
-            if len(docs) > 8:
-                scope_note += " (первые 8 документов по дате)"
+            truncated = len(docs) > 8
             docs = docs[:8]
+            scope_note = f"папка «{folder['title']}», документов: {len(docs)}"
+            if truncated:
+                scope_note += " (первые 8 по дате)"
         else:
             selection = "mine"
-            scope_note = "мои загрузки"
             no_docs_answer = "В «Моих загрузках» пока нет документов."
             docs = [doc for doc in allowed if doc.get("created_by") == user["id"]]
             docs.sort(key=lambda doc: doc.get("date", ""), reverse=True)
             docs = docs[:8]
+            scope_note = f"мои загрузки, документов: {len(docs)}"
     else:
         docs = retrieval.search(query, user["acls"], limit=4)
         if explicit:
@@ -1482,6 +1499,23 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
     if not docs:
         answer = no_docs_answer
         llm_error = llm_error or "no_context"
+
+    if (
+        docs
+        and selection in ("folder", "mine")
+        and FOLDER_META_RE.search(query)
+        and (
+            not used_llm
+            or re.search(
+                r"нет сведений|ответа нет|не найдено|нет информации|не содержится|не удалось найти|не указано",
+                answer,
+                re.IGNORECASE,
+            )
+        )
+    ):
+        answer = masker.unmask(_folder_overview(masked_docs, masked_scope))
+        used_llm = False
+        llm_error = llm_error or "folder_fallback"
 
     result = "ok" if docs else "no_data"
     if llm_error and used_llm is False and docs:

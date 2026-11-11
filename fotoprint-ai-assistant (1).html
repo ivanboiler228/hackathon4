@@ -2579,7 +2579,7 @@ function renderDocs(){
       <div class="dc-search"><span class="ms">search</span><input id="dcSearch" placeholder="Поиск по названию" aria-label="Поиск по документам" value="${esc(DOC_QUERY)}"></div>
       <div class="dc-list" id="dcList">${docsHtml}</div>
     </div>
-    <div class="glass dc-pane dc-chat"><div class="dc-head"><span class="ms">forum</span>Чат по источникам<span style="flex:1"></span>${DOC_SEL.size?`<span class="small muted" style="text-transform:none;letter-spacing:0">выбрано ${DOC_SEL.size}</span>${DOC_FILTER!=='all'?'<button class="chip-add" id="dcUseFolder">Вся папка</button>':''}<button class="chip-add" id="dcReset">Сбросить</button>`:`<span class="small muted" style="text-transform:none;letter-spacing:0">${esc(scopeName)}</span>`}</div>
+    <div class="glass dc-pane dc-chat"><div class="dc-head"><span class="ms">forum</span>Чат по источникам<span style="flex:1"></span><button class="icon-btn" id="dcHelp" title="Как спрашивать" aria-label="Как спрашивать"><span class="ms">help</span></button>${DOC_SEL.size?`<span class="small muted" style="text-transform:none;letter-spacing:0">выбрано ${DOC_SEL.size}</span>${DOC_FILTER!=='all'?'<button class="chip-add" id="dcUseFolder">Вся папка</button>':''}<button class="chip-add" id="dcReset">Сбросить</button>`:`<span class="small muted" style="text-transform:none;letter-spacing:0">${esc(scopeName)}</span>`}</div>
       <div class="dc-log" id="dcLog">${log}</div>
       <div class="dc-hint"><span class="ms" style="font-size:13px">shield</span> В модель уходят только выбранные фрагменты после обезличивания. Аудио не отправляется.</div>
       <div class="dc-compose"><textarea id="dcQ" rows="1" placeholder="Спросите по документам…" aria-label="Вопрос по документам">${esc(DOC_DRAFT)}</textarea><button class="btn primary" id="dcAsk" ${DOC_ASKING?'disabled':''}><span class="ms">send</span>${DOC_ASKING?'Думаю…':'Спросить'}</button></div>
@@ -2590,6 +2590,7 @@ function renderDocs(){
   const search=$('#dcSearch');if(search)search.oninput=()=>{DOC_QUERY=search.value;$$('#dcList .dc-doc').forEach(el=>{el.style.display=(el.dataset.q||'').includes(DOC_QUERY.trim().toLowerCase())?'':'none'})};
   const q=$('#dcQ');if(q){q.oninput=()=>{DOC_DRAFT=q.value};q.onkeydown=ev=>{if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();askDocs()}}}
   if($('#dcAsk'))$('#dcAsk').onclick=askDocs;
+  if($('#dcHelp'))$('#dcHelp').onclick=openDocsHelp;
   if($('#dcReset'))$('#dcReset').onclick=()=>{DOC_SEL.clear();renderDocs()};
   if($('#dcUseFolder'))$('#dcUseFolder').onclick=()=>{DOC_SEL.clear();renderDocs()};
   if($('#dcRefresh'))$('#dcRefresh').onclick=()=>{DOCS_LOADED=false;loadDocsWorkspace(true)};
@@ -2728,6 +2729,27 @@ function openFolderEdit(f){
       DOCS_LOADED=false;await loadDocsWorkspace(true);closeModal();renderDocs();toast('Папка удалена');
     }catch(err){toast('Не удалось: '+err.message)}
   }});
+}
+function openDocsHelp(){
+  modal(`${mh('help','Как спрашивать ассистента')}<div class="mb">
+    <div class="alert ok"><span class="ms">info</span> Сначала выберите область: папку, «Мои загрузки» или конкретные документы галочками. Ассистент отвечает только по выбранному.</div>
+    <div class="md-s">Хорошие запросы</div>
+    <div class="small" style="line-height:1.7">
+      <div>• «Проанализируй папку „Мои загрузки“: о чём документы и что важно?»</div>
+      <div>• «Сравни D-15 и D-16: где риск для недели 48?»</div>
+      <div>• «Кто отвечает за ночную смену и к какому сроку?»</div>
+      <div>• «Найди в письмах сроки поставки и ответственного».</div>
+      <div>• «Какие решения и задачи есть в протоколе встречи?»</div>
+    </div>
+    <div class="md-s">Правила</div>
+    <div class="small" style="line-height:1.6">
+      <div>1. Спрашивайте конкретно: кто, что, когда, где основание.</div>
+      <div>2. Если нужна вся папка — нажмите папку слева, а не одну галочку.</div>
+      <div>3. Если выбраны галочки — ассистент видит только их.</div>
+      <div>4. Просите источник и дату: «покажи документ и дату».</div>
+      <div>5. Если данных нет — ассистент скажет «ответа нет», это нормально.</div>
+    </div>
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'narrow');
 }
 function openDocEdit(d){
   modal(`${mh('edit','Изменить документ '+d.id)}<div class="mb">

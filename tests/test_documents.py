@@ -204,6 +204,7 @@ def test_assistant_can_analyze_folder_and_my_uploads(client):
     )
     assert by_folder.status_code == 200
     assert [source["id"] for source in by_folder.json()["sources"]] == [uploaded["id"]]
+    assert "Документ внутри папки" in by_folder.json()["answer"]
 
     mine = client.post(
         "/api/assistant/ask",
