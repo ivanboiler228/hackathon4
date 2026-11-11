@@ -8,6 +8,7 @@ from __future__ import annotations
 import io
 import re
 from email import message_from_bytes
+from email.header import decode_header, make_header
 from email.message import Message
 from pathlib import Path
 
@@ -64,10 +65,20 @@ def _email_body(message: Message) -> str:
     return str(message.get_payload() or "")
 
 
+def _header(message: Message, name: str, default: str = "") -> str:
+    raw = message.get(name)
+    if not raw:
+        return default
+    try:
+        return str(make_header(decode_header(str(raw)))).strip()
+    except (LookupError, UnicodeDecodeError):
+        return str(raw).strip()
+
+
 def parse_email_bytes(data: bytes) -> tuple[str, str]:
     message = message_from_bytes(data)
-    subject = str(message.get("Subject") or "Без темы").strip()
-    sender = str(message.get("From") or "").strip()
+    subject = _header(message, "Subject", "Без темы")
+    sender = _header(message, "From")
     body = _email_body(message)
     header = f"От: {sender}\nТема: {subject}\n\n" if sender else f"Тема: {subject}\n\n"
     return f"Письмо: {subject[:120]}", _clean(header + body)

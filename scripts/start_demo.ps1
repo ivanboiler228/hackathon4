@@ -43,4 +43,4 @@ if (-not $Ready) {
 }
 
 Write-Host "Сервер готов: http://127.0.0.1:8000" -ForegroundColor Green
-& (Join-Path $PSScriptRoot "start_public_tunnel.ps1")
+& (Join-Path $PSScriptRoot "keep_tunnel.ps1")

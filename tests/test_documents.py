@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 import pytest
 
-from app import db
+from app import db, documents
 from app.config import settings
 from app.main import app
 
@@ -73,6 +75,15 @@ def test_employee_cannot_upload_or_create_folder(client):
     assert upload.status_code == 403
     folder = client.post("/api/folders", json={"title": "Секреты", "acl": "all"})
     assert folder.status_code == 403
+
+
+def test_sample_email_subject_and_body_are_decoded():
+    data = (Path(__file__).resolve().parent.parent / "sample_docs" / "08_client_email.eml").read_bytes()
+    title, text = documents.parse_email_bytes(data)
+    assert "Сроки поставки" in title
+    assert "Иван Петров" in text
+    assert "+375291112233" in text
+    assert "=?utf-8?" not in text
 
 
 def test_boss_creates_folder(client):
