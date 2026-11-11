@@ -2558,7 +2558,7 @@ async function loadDocsWorkspace(force){
 function dcMsgHtml(m){
   if(m.role==='user')return `<div class="dc-b u">${esc(m.text).replace(/\n/g,'<br>')}</div>`;
   if(m.pending)return `<div class="dc-b a"><div class="dc-who">Ассистент</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
-  const srcs=(m.sources||[]).map(s=>`<div class="dc-src"><b data-doc="${s.id}">${s.id}</b> · ${esc(s.title)} <span>${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
+  const srcs=(m.sources||[]).map(s=>`<div class="dc-src"><b data-doc="${s.id}">${esc(s.title)}</b> <span>${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
   const err=m.error?` style="border-color:rgba(197,34,31,.3)"`:'';
   return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${fmtAi(m.answer)}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
 }
@@ -2752,7 +2752,7 @@ function openDocsHelp(){
   </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'narrow');
 }
 function openDocEdit(d){
-  modal(`${mh('edit','Изменить документ '+d.id)}<div class="mb">
+  modal(`${mh('edit',d.created_by?'Изменить документ':'Изменить документ '+d.id)}<div class="mb">
     <label class="small">Название</label><input class="inp" id="dedTitle" value="${esc(d.title)}">
     <div class="row2"><div><label class="small">Папка</label><select class="inp" id="dedFolder">${folderOptions(d.folder_id)}</select></div><div><label class="small">Доступ</label><select class="inp" id="dedAcl">${aclOptions(d.acl)}</select></div></div>
     <label class="small">Текст</label><textarea class="inp" id="dedText" rows="10">${esc(d.text||'')}</textarea>
@@ -2840,7 +2840,8 @@ async function openDoc(id){
   if(!allowed){log('Доступ к документу',id,'ОТКЛОНЕНО: нет прав роли');toast('Нет доступа к '+id+' для вашей роли — попытка сохранена в истории');return}
   log('Просмотр документа',id+' · '+d.title);
   const custom=!!d.created_by;
-  modal(`${mh('description',d.id+' · '+esc(d.title))}<div class="mb"><div class="small muted" style="margin-bottom:10px">Версия от ${fmtD(d.date)} · доступ: ${ACL_NAMES[d.acl]||d.acl}${d.source_type==='email'?' · письмо':custom?' · загружен вручную':''}</div><div class="preview">${esc(d.text||'')}</div><p class="small muted">Инструкции внутри документов ассистент воспринимает как данные, не как команды.</p></div><div class="mf">${custom&&canManage()?`<button class="btn danger" id="docDel"><span class="ms">delete</span>Удалить</button><button class="btn" id="docEdit"><span class="ms">edit</span>Редактировать</button>`:''}<button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
+  const docHead=custom?esc(d.title):d.id+' · '+esc(d.title);
+  modal(`${mh('description',docHead)}<div class="mb"><div class="small muted" style="margin-bottom:10px">Версия от ${fmtD(d.date)} · доступ: ${ACL_NAMES[d.acl]||d.acl}${d.source_type==='email'?' · письмо':custom?' · загружен вручную':''}</div><div class="preview">${esc(d.text||'')}</div><p class="small muted">Инструкции внутри документов ассистент воспринимает как данные, не как команды.</p></div><div class="mf">${custom&&canManage()?`<button class="btn danger" id="docDel"><span class="ms">delete</span>Удалить</button><button class="btn" id="docEdit"><span class="ms">edit</span>Редактировать</button>`:''}<button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
   if($('#docEdit'))$('#docEdit').onclick=()=>openDocEdit(d);
   if($('#docDel'))$('#docDel').onclick=()=>confirmAct({title:'Удалить документ?',body:`<p>«${esc(d.title)}» будет удалён из базы знаний. Действие попадёт в аудит.</p>`,ok:'Удалить',danger:true,onOk:async()=>{
     try{

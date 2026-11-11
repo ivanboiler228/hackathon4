@@ -205,6 +205,7 @@ def test_assistant_can_analyze_folder_and_my_uploads(client):
     assert by_folder.status_code == 200
     assert [source["id"] for source in by_folder.json()["sources"]] == [uploaded["id"]]
     assert "Документ внутри папки" in by_folder.json()["answer"]
+    assert uploaded["id"] not in by_folder.json()["answer"]
 
     mine = client.post(
         "/api/assistant/ask",
@@ -220,6 +221,29 @@ def test_assistant_can_analyze_folder_and_my_uploads(client):
     )
     assert empty_answer.status_code == 200
     assert "пока нет документов" in empty_answer.json()["answer"]
+
+
+def test_custom_document_citation_is_humanized(client, monkeypatch):
+    uploaded = client.post(
+        "/api/docs",
+        files={"file": ("named.txt", "Регламент ночной смены.".encode(), "text/plain")},
+        data={"acl": "all", "folder_id": "F-REG", "title": "Ночная смена: регламент"},
+    ).json()
+
+    async def fake_deepseek(question, docs, note=""):
+        return f"Смотри документ [{uploaded['id']}]."
+
+    monkeypatch.setattr("app.main.call_deepseek", fake_deepseek)
+    monkeypatch.setattr(settings, "deepseek_api_key", "test-key")
+
+    response = client.post(
+        "/api/assistant/ask",
+        json={"q": "Что в регламенте?", "doc_ids": [uploaded["id"]]},
+    )
+    assert response.status_code == 200
+    answer = response.json()["answer"]
+    assert uploaded["id"] not in answer
+    assert "Ночная смена: регламент" in answer
 
 
 def test_employee_cannot_analyze_closed_folder(client):

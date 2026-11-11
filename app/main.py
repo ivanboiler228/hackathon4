@@ -169,6 +169,7 @@ FOLDER_META_RE = re.compile(
     r"(папк|содержим|что лежит|проанализ|обзор|о ч[её]м|список документ|какие документ)",
     re.IGNORECASE,
 )
+CUSTOM_DOC_RE = re.compile(r"(?<![A-Za-z0-9])(U-[A-Za-z0-9]{3,})(?![A-Za-z0-9])", re.IGNORECASE)
 ACL_TITLES = {
     "all": "Все руководители",
     "fin": "Только дирекция",
@@ -1036,8 +1037,22 @@ def _folder_overview(masked_docs: list[dict[str, str]], scope: str) -> str:
         first = re.split(r"(?<=[.!?])\s+", doc["text"].strip(), maxsplit=1)[0]
         if len(first) > 170:
             first = first[:167].rstrip() + "…"
-        lines.append(f"• [{doc['id']}] {doc['title']} ({doc['date']}) — {first}")
+        lines.append(f"• «{doc['title']}» ({doc['date']}) — {first}")
     return "\n".join(lines)
+
+
+def _humanize_citations(answer: str, docs: list[dict[str, Any]]) -> str:
+    """Убирает технические U-идентификаторы из ответа, оставляя названия."""
+    titles = {str(doc["id"]).upper(): doc["title"] for doc in docs}
+
+    def replace(match: re.Match) -> str:
+        title = titles.get(match.group(1).upper())
+        return f"«{title}»" if title else ""
+
+    answer = CUSTOM_DOC_RE.sub(replace, answer)
+    answer = re.sub(r"\*\*«(.+?)»\*\*\s*—\s*«\1»", r"**«\1»**", answer)
+    answer = re.sub(r"«(.+?)»\s*—\s*«\1»", r"«\1»", answer)
+    return answer
 
 
 @app.get("/api/meetings/ai")
@@ -1516,6 +1531,9 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
         answer = masker.unmask(_folder_overview(masked_docs, masked_scope))
         used_llm = False
         llm_error = llm_error or "folder_fallback"
+
+    if docs:
+        answer = _humanize_citations(answer, docs)
 
     result = "ok" if docs else "no_data"
     if llm_error and used_llm is False and docs:
