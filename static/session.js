@@ -40,7 +40,7 @@
           : `${user.name} · ${user.role_label}`;
       }
 
-      if (window.innerWidth <= 700) {
+      if (window.innerWidth <= 900) {
         setTimeout(() => {
           const day = document.querySelector('#rangeSeg button[data-days="1"]');
           if (day) day.click();

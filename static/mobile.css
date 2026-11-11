@@ -35,7 +35,7 @@
   .md-h h2 { font-size: 22px; }
   .me-pop { max-width: calc(100vw - 16px); }
 }
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .rm-page { padding: 0 10px 16px; }
   .rm-board { min-height: 0; border: 0; border-radius: 0; background: transparent; overflow: visible; }
   .rm-scroll { overflow: visible; padding: 4px 0 0; scroll-snap-type: none; }
@@ -52,7 +52,16 @@
   .rm-pill .pt b, .rm-pill .pt small { white-space: normal; }
   .rm-card { width: 100%; padding: 12px 14px; border-radius: 18px; }
   .rm-card .rm-ch b { font-size: 16px; }
+  .rm-kpi-b { left: auto !important; right: 0 !important; transform: translateY(-50%) !important; max-width: 85%; overflow: hidden; text-overflow: ellipsis; }
   .rm-scrub { margin: 8px 0 0; }
+  .rm-docs .src { display: flex; width: 100%; max-width: 100%; white-space: normal; overflow-wrap: anywhere; line-height: 1.3; padding: 4px 7px; }
+  .rm-docs .src + .src { margin-top: 4px; }
+  .cx-bar { display: grid; grid-template-columns: minmax(0, 1fr) 36px 36px; gap: 0 4px; align-items: center; padding: 12px 12px 4px 16px; }
+  .cx-bar .date-title { grid-column: 1; margin: 0; font-size: 24px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .cx-bar #prevBtn { grid-column: 2; width: 36px; height: 36px; }
+  .cx-bar #nextBtn { grid-column: 3; width: 36px; height: 36px; }
+  .cx-bar .spacer { display: none; }
+  .cx-bar .seg { grid-column: 1 / -1; justify-self: start; margin-top: 4px; }
   .rm-top { gap: 8px; }
   .rm-me { width: 100%; padding: 10px 14px 10px 10px; }
   .rm-me .avatar { width: 44px; height: 44px; font-size: 18px; }
