@@ -39,6 +39,13 @@
           ? `${user.name} · просмотр из аккаунта ${user.real_name}`
           : `${user.name} · ${user.role_label}`;
       }
+
+      if (window.innerWidth <= 700) {
+        setTimeout(() => {
+          const day = document.querySelector('#rangeSeg button[data-days="1"]');
+          if (day) day.click();
+        }, 0);
+      }
     } catch {
       /* статическая демонстрация без бэкенда */
     }

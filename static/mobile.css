@@ -1,0 +1,39 @@
+/* Только мобильная раскладка: десктопный дизайн не меняется. */
+@media (max-width: 900px) {
+  .top { flex-wrap: nowrap; gap: 8px; padding: calc(8px + var(--sat)) 8px 0 8px; min-height: 60px; overflow: visible; }
+  .tabsbar { flex: 1 1 auto; min-width: 0; overflow-x: auto; overflow-y: hidden; padding-left: 0; scrollbar-width: none; }
+  .tabsbar::-webkit-scrollbar { display: none; }
+  .tabsbar a { flex: 0 0 auto; height: 42px; padding: 0 12px; margin: 0 2px; font-size: 12px; }
+  .tabsbar a.active { height: 48px; }
+  .tabsbar a .lbl::before { display: none; }
+  #createBtn { flex: 0 0 42px; width: 42px; height: 42px; padding: 0; justify-content: center; font-size: 0; border-radius: 50%; }
+  #createBtn .ms { font-size: 22px; margin: 0; }
+  .body { padding: 0 6px 8px; }
+  .body > .main { border-radius: 20px; }
+  .cx { display: block; padding: 0; height: auto; overflow: visible; }
+  .cx-main { min-width: 0; }
+  .cx-cal { min-height: calc(100dvh - 150px); border-radius: 20px; }
+  .cx-side { display: none; }
+  .page { padding: 16px 12px 30px; }
+  .ph h1, .page h1 { font-size: 24px; }
+  .st-tiles { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .st-grid { grid-template-columns: 1fr; }
+  .mt-grid { grid-template-columns: 1fr; }
+  .mlist2 { margin-bottom: 10px; }
+  .board { grid-template-columns: 1fr; }
+  .toolbar .search { min-width: 0; flex: 1 1 100%; }
+  .row2, .row3 { grid-template-columns: 1fr; }
+  .modal { width: 100%; border-radius: 20px; }
+  .mh h2 { font-size: 18px; }
+  .mb { padding: 8px 14px 12px; }
+  .notes { grid-template-columns: 1fr; }
+  .md-2 { grid-template-columns: 1fr; }
+  .md-h h2 { font-size: 22px; }
+  .me-pop { max-width: calc(100vw - 16px); }
+}
+@media (max-width: 520px) {
+  .st-tiles { grid-template-columns: 1fr; }
+  .tabsbar a { padding: 0 9px; }
+  .tabsbar a .lbl { font-size: 11px; }
+  .tabsbar a .ms { font-size: 16px; }
+}
