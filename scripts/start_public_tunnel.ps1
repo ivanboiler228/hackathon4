@@ -70,4 +70,31 @@ Write-Host "QR обновлён: qr\jury.png" -ForegroundColor Green
 Write-Host "Ноутбук и эта вкладка должны оставаться включёнными. Ctrl+C — остановить." -ForegroundColor Yellow
 Write-Host ""
 
-Wait-Process -Id $Process.Id
+$Monitor = Start-Job -ScriptBlock {
+    param($PublicUrl, $TunnelPid)
+    $fails = 0
+    while ($true) {
+        Start-Sleep -Seconds 15
+        try {
+            $response = Invoke-WebRequest -UseBasicParsing ($PublicUrl.TrimEnd("/") + "/health") -TimeoutSec 8
+            if ($response.StatusCode -eq 200) {
+                $fails = 0
+            } else {
+                $fails++
+            }
+        } catch {
+            $fails++
+        }
+        if ($fails -ge 2) {
+            Stop-Process -Id $TunnelPid -Force -ErrorAction SilentlyContinue
+            break
+        }
+    }
+} -ArgumentList $Url, $Process.Id
+
+try {
+    Wait-Process -Id $Process.Id
+} finally {
+    Stop-Job $Monitor -ErrorAction SilentlyContinue
+    Remove-Job $Monitor -Force -ErrorAction SilentlyContinue
+}
