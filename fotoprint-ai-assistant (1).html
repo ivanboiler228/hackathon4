@@ -1011,7 +1011,42 @@ mark{background:#ffe58a;color:inherit;border-radius:3px;padding:0 1px}
 .kp-b{height:8px;background:rgba(0,0,0,.06);border-radius:4px;margin-top:6px;overflow:hidden}.kp-b i{display:block;height:100%;background:#1d1d1f;border-radius:4px}
 @media (max-width:900px){.st-grid{grid-template-columns:1fr}.lr{grid-template-columns:28px 1fr auto}.lr-b,.wk4{display:none}}
 .tabsbar a[data-view=docs]{--dot:#e0a800}
+
+/* ===== round 13: designer redesign (Figma «Прототип») ===== */
+:root{--c-cal:177,124,254;--c-task:255,140,125;--c-meet:125,243,255;--c-doc:239,239,52;--c-stat:125,255,155;--disp:'Anonymous Pro','Courier New',ui-monospace,monospace}
+.tabsbar{gap:3px;padding-left:12px}
+.tabsbar a{--rgb:var(--c-cal);height:44px;padding:0 24px;margin:0;border-radius:18px 18px 0 0;
+  background:linear-gradient(180deg,rgba(var(--rgb),0) 0%,rgba(var(--rgb),.85) 100%)!important;
+  border:2px solid transparent;border-bottom:0;
+  border-image:none;box-shadow:inset 0 30px 12px -21px rgba(0,0,0,.18),0 0 4px rgba(0,0,0,.22);
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);color:#55595e;font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:0}
+.tabsbar a::before,.tabsbar a::after,.tabsbar a.active::before,.tabsbar a.active::after{display:none!important}
+.tabsbar a .lbl::before{display:none!important}
+.tabsbar a:hover{height:48px;background:linear-gradient(180deg,rgba(var(--rgb),.1) 0%,rgba(var(--rgb),.95) 100%)!important}
+.tabsbar a.active{height:54px;color:#1d1d1f;margin-bottom:-1px;z-index:3;background:linear-gradient(180deg,rgba(var(--rgb),.15) 0%,rgba(var(--rgb),1) 100%)!important;box-shadow:inset 0 30px 12px -21px rgba(90,60,110,.35),0 0 4px rgba(0,0,0,.25)}
+.tabsbar a .ms{font-size:19px;color:inherit}
+.tabsbar a[data-view=calendar]{--rgb:var(--c-cal)}.tabsbar a[data-view=tasks]{--rgb:var(--c-task)}.tabsbar a[data-view=meetings]{--rgb:var(--c-meet)}.tabsbar a[data-view=docs]{--rgb:var(--c-doc)}.tabsbar a[data-view=stats]{--rgb:var(--c-stat)}
+.tabsbar .count{background:#1d1d1f;color:#fff;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:11px}
+.me-av{background:rgba(26,115,232,.77)!important;color:#fff;font-family:Inter,system-ui,sans-serif;font-weight:900;font-style:italic;font-size:22px;letter-spacing:0}
+.new-tab{background:#fff;color:#1d1d1f;border:1px solid rgba(255,255,255,.9);box-shadow:0 4px 16px rgba(40,64,40,.15)}
+.new-tab:hover{background:#f5f5f5}
+.page h1,.ph h1,.cx-bar .date-title{font-family:var(--disp)!important;font-weight:700!important;letter-spacing:0!important}
+.cx-bar .date-title .yr{font-family:Inter,system-ui,sans-serif;font-weight:300}
+/* section tint inside the main sheet */
+.body>.main{position:relative}
+.body>.main::before{content:"";position:absolute;inset:12px;border-radius:28px;pointer-events:none;z-index:0;background:rgba(var(--sec-rgb,255,255,255),var(--sec-a,0));border:1px solid rgba(var(--sec-rgb,255,255,255),var(--sec-b,0));transition:background .25s,border-color .25s}
+.body>.main>*{position:relative;z-index:1}
+body[data-sec=tasks]{--sec-rgb:255,136,0;--sec-a:.14;--sec-b:.38}
+body[data-sec=meetings]{--sec-rgb:100,198,247;--sec-a:.21;--sec-b:.38}
+body[data-sec=docs]{--sec-rgb:239,214,52;--sec-a:.2;--sec-b:.4}
+body[data-sec=stats]{--sec-rgb:178,243,124;--sec-a:.23;--sec-b:.52}
+body[data-sec=calendar] .cx-cal{background:linear-gradient(180deg,rgba(177,124,254,0) 0%,rgba(177,124,254,.33) 100%),rgba(255,255,255,.45)!important;border:2px solid rgba(177,124,254,.35)!important;box-shadow:0 0 4px rgba(0,0,0,.18)!important}
+.mailcta{border:1px dashed rgba(29,29,31,.2)}
+.mailcta span:not(.ms){display:block;font-size:12px;color:var(--ink2);margin-top:2px}
+.need-lbl{color:#b06000}
+.mh .icon-btn:focus:not(:focus-visible),.mh button:focus:not(:focus-visible){outline:none!important;box-shadow:none!important}
 </style>
+<link rel="stylesheet" href="/static/fonts.css?v=1">
 <link rel="stylesheet" href="/static/mobile.css?v=13">
 </head>
 <body>
@@ -1201,7 +1236,7 @@ function overlap(a,b,c,d){return a<d&&c<b}
 function show(v){
   if(v==='requests')v='tasks';if(v==='audit')v='stats';
   if(v==='today'){v='calendar';MONTH=false;DAYS=1;TODAY_MODE='road';anchor=new Date(NOW)}
-  currentView=v;$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+  currentView=v;document.body.dataset.sec=v;$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
   $$('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===v));const ac=$('#nav a.active');document.documentElement.style.setProperty('--tab',ac?getComputedStyle(ac).getPropertyValue('--tc'):'#c9b6ff');
   
   if(v==='calendar')renderCal();if(v==='tasks')renderBoard();if(v==='meetings')renderMeetings();if(v==='docs')renderDocs();if(v==='stats')renderStats();
@@ -1362,7 +1397,7 @@ function openCreate(at){
     <textarea class="inp nl-in" id="nlIn" rows="3" placeholder="Опишите своими словами, что нужно сделать: кто, что, к какому сроку, насколько важно" autofocus></textarea>
     <div class="nl-ex">${ex.map(x=>`<button class="nl-chip" data-ex="${esc(x)}">${esc(x)}</button>`).join('')}</div>
     <div id="nlOut"></div>
-    <div class="nl-manual">Или без описания: <a href="#" data-k="task">задача</a> · <a href="#" data-k="meeting">встреча</a> · <a href="#" data-k="request">заявка</a> · <a href="#" data-k="reschedule">перенос</a></div>
+    <div class="nl-manual">Без описания: <a href="#" data-k="task">задача</a> · <a href="#" data-k="meeting">встреча</a> · <a href="#" data-k="request">заявка</a> · <a href="#" data-k="reschedule">перенос</a></div>
   </div>
   <div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="nlGo" disabled style="opacity:.5">Продолжить</button></div>`,'narrow');
   const go=k=>{modal.dirty=false;closeModal();const x=P||{title:'',people:[],owner:null,deadline:'',prio:'P2',dur:1,src:''};
@@ -1392,7 +1427,7 @@ function openCreate(at){
 document.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)OPEN[b.dataset.open]()});
 
 /* ============ MODAL ============ */
-function modal(html,cls=''){modal.dirty=false;$('#modal').onclick=null;$('#modal').className='modal '+cls;$('#modal').innerHTML=html;$('#scrim').classList.add('on');setTimeout(()=>{const f=$('#modal').querySelector('[autofocus]')||$('#modal').querySelector('input,textarea,button');f&&f.focus()},30)}
+function modal(html,cls=''){modal.dirty=false;$('#modal').onclick=null;$('#modal').className='modal '+cls;$('#modal').innerHTML=html;$('#scrim').classList.add('on');setTimeout(()=>{const f=$('#modal').querySelector('[autofocus]')||$('#modal').querySelector('.mb input:not([type=checkbox]),.mb textarea')||$('#modal').querySelector('.mf .btn.primary');f&&f.focus({preventScroll:true})},30)}
 function closeModal(){if(window.__meetRecStop){try{window.__meetRecStop()}catch(e){}}if(modal.dirty&&!modal.force){modal.force=true;toast('Есть несохранённые изменения. Нажмите Esc ещё раз, чтобы закрыть без сохранения.');setTimeout(()=>modal.force=false,3000);return}$('#scrim').classList.remove('on');modal.dirty=false;modal.force=false;stopRec()}
 $('#scrim').addEventListener('mousedown',e=>{if(e.target.id==='scrim')closeModal()});
 $('#modal').addEventListener('input',()=>modal.dirty=true);
@@ -1522,7 +1557,7 @@ function openTask(pre={},editId){
       <div id="dupBox">${dupHtml()}</div>
       <div class="row2">
         <div class="field"><label>Контекст: зачем это нужно</label><textarea class="inp" id="tCtx" rows="2" placeholder="Проблема, ссылка на данные">${esc(t.context)}</textarea></div>
-        <div class="field"><label>Результат: что должно получиться</label><textarea class="inp ${t.result?'':'need'}" id="tRes" rows="2" placeholder="Как поймём, что сделано">${esc(t.result)}</textarea><div class="need-lbl" id="tResNeed" style="${t.result?'display:none':''}"><span class="ms" style="font-size:15px">help</span>требует уточнения</div></div>
+        <div class="field"><label>Результат</label><textarea class="inp ${t.result?'':'need'}" id="tRes" rows="2" placeholder="Что должно получиться">${esc(t.result)}</textarea><div class="need-lbl" id="tResNeed" style="${t.result?'display:none':''}"><span class="ms" style="font-size:15px">help</span>Требует уточнения</div></div>
       </div>
       <div class="field"><label>Важность и срочность</label><div class="eis" id="tPrio">
         <span></span><span class="ax">Срочно</span><span class="ax">Не срочно</span>
@@ -1530,12 +1565,12 @@ function openTask(pre={},editId){
         <span class="ax v">Не важно</span>${['P3','P4'].map(k=>`<button data-p="${k}" aria-pressed="${t.prio===k}" style="--c:${PRIO[k].c};--bg:${PRIO[k].bg}"><b>${PRIO[k].a}</b><small>${PRIO[k].l}</small></button>`).join('')}
       </div></div>
       <div class="row3">
-        <div class="field"><label>Как измерим (KPI)</label><input class="inp ${t.kpi.m?'':'need'}" id="tKm" placeholder="напр. доля брака" value="${esc(t.kpi.m)}"></div>
+        <div class="field"><label>KPI</label><input class="inp ${t.kpi.m?'':'need'}" id="tKm" placeholder="напр. доля брака" value="${esc(t.kpi.m)}"></div>
         <div class="field"><label>Цель</label><input class="inp ${t.kpi.t?'':'need'}" id="tKt" placeholder="напр. ≥ 95%" value="${esc(t.kpi.t)}"></div>
-        <div class="field"><label>Срок</label><input type="date" class="inp ${t.deadline?'':'need'}" id="tDl" value="${t.deadline||''}" min="${TODAY}"></div>
+        <div class="field"><label>Срок</label><input type="date" class="inp ${t.deadline?'':'need'}" id="tDl" value="${t.deadline||''}" min="${TODAY}"><div class="need-lbl" id="tDlNeed" style="${t.deadline?'display:none':''}">Обязательно для заполнения</div></div>
       </div>
       <div class="row3">
-        <div class="field"><label>Ответственный</label><select class="inp ${t.owner?'':'need'}" id="tOwn"><option value="">— требует уточнения —</option>${Object.keys(PEOPLE).map(p=>`<option value="${p}" ${t.owner===p?'selected':''}>${PEOPLE[p].name}</option>`).join('')}</select><div id="tOwnHint">${ownHint()}</div></div>
+        <div class="field"><label>Ответственный</label><select class="inp ${t.owner?'':'need'}" id="tOwn"><option value="">Требует уточнения</option>${Object.keys(PEOPLE).map(p=>`<option value="${p}" ${t.owner===p?'selected':''}>${PEOPLE[p].name}</option>`).join('')}</select><div id="tOwnHint">${ownHint()}</div></div>
         <div class="field"><label>Соисполнители</label><select class="inp" id="tCo" multiple size="3" style="height:auto;padding:4px 8px;line-height:1.5" title="Ctrl или Cmd — выбрать несколько">${Object.keys(PEOPLE).map(p=>`<option value="${p}" ${t.co.includes(p)?'selected':''}>${PEOPLE[p].short}</option>`).join('')}</select></div>
         <div class="field"><label>Основание</label><select class="inp" id="tSrc">${t.source.type==='mail'?`<option value="mail" selected>${esc(t.source.label)}</option>`:''}<option value="manual">Вручную</option>${EVENTS.filter(e=>e.cal==='meet'&&e.people.includes(me())).map(e=>`<option value="E:${e.id}" ${t.source.ref===e.id?'selected':''}>Встреча: ${esc(e.title.slice(0,30))}</option>`).join('')}${DOCS.filter(canSee).map(d=>`<option value="D:${d.id}" ${t.source.ref===d.id?'selected':''}>${d.id}: ${esc(d.title.slice(0,30))}</option>`).join('')}</select></div>
       </div>
@@ -1551,7 +1586,7 @@ function openTask(pre={},editId){
       $('#dupBox').after(g,d);old.forEach(x=>x&&x.remove())})();
     const sync=()=>{t.title=$('#tTitle').value;t.context=$('#tCtx').value;t.result=$('#tRes').value;t.kpi={m:$('#tKm').value,t:$('#tKt').value};t.deadline=$('#tDl').value;t.owner=$('#tOwn').value||null;t.co=[...$('#tCo').selectedOptions].map(o=>o.value);t.checkpoints=$('#tCp').value;const s=$('#tSrc').value;if(s==='mail'){}else if(s==='manual')t.source={type:'manual',label:'Вручную'};else{const[k,id]=s.split(':');t.source=k==='E'?{type:'meeting',ref:id,label:EVENTS.find(e=>e.id===id).title}:{type:'doc',ref:id,label:DOCS.find(d=>d.id===id).title}}};
     const miss=()=>{const m=[];if(!t.owner)m.push('ответственный');if(!t.deadline)m.push('срок');if(!t.result)m.push('результат');if(!t.kpi.m)m.push('KPI');$('#tMissing').innerHTML=m.length?`<span class="ms" style="font-size:16px;color:var(--warn)">help</span>Требует уточнения: ${m.join(', ')}`:'<span class="ms" style="font-size:16px;color:var(--ok)">check_circle</span>Задача сформулирована полностью'};miss();
-    const need=()=>{[['#tRes',t.result],['#tKm',t.kpi.m],['#tKt',t.kpi.t],['#tDl',t.deadline],['#tOwn',t.owner]].forEach(([sel,v])=>$(sel).classList.toggle('need',!v));$('#tResNeed').style.display=t.result?'none':'';$('#tOwnHint').innerHTML=ownHint();miss()};
+    const need=()=>{[['#tRes',t.result],['#tKm',t.kpi.m],['#tKt',t.kpi.t],['#tDl',t.deadline],['#tOwn',t.owner]].forEach(([sel,v])=>$(sel).classList.toggle('need',!v));$('#tResNeed').style.display=t.result?'none':'';$('#tDlNeed').style.display=t.deadline?'none':'';$('#tOwnHint').innerHTML=ownHint();miss()};
     const bindJoin=()=>$$('[data-join]').forEach(a=>a.onclick=e=>{e.preventDefault();modal.dirty=false;closeModal();claim(a.dataset.join)});
     $('#tTitle').oninput=()=>{clearTimeout(draw._d);draw._d=setTimeout(()=>{t.title=$('#tTitle').value;$('#dupBox').innerHTML=dupHtml();bindJoin()},350)};
     ['#tOwn','#tDl','#tSrc'].forEach(s=>$(s).onchange=()=>{sync();need()});
@@ -1563,7 +1598,7 @@ function openTask(pre={},editId){
       $('#apply').onclick=()=>{Object.assign(t,s.patch);draw();modal.dirty=true;toast('Предложение применено — проверьте поля')};$('#skip').onclick=()=>$('#aiOut').innerHTML=''};
     $('#tSave').onclick=()=>{sync();if(!t.title.trim()){$('#tTitle').focus();toast('Укажите, что нужно сделать');return}
       if(editId){const o=TASKS.find(x=>x.id===editId);Object.assign(o,t);o.hist.push({t:nowStr(),u:me(),a:'отредактировал(а) задачу'});log('Изменение задачи',editId);modal.dirty=false;closeModal();refresh();toast('Задача обновлена');return}
-      confirmAct({title:'Поставить задачу?',body:taskPreview(t),ok:t.owner?'Поставить и уведомить '+PEOPLE[t.owner].short:'Сохранить в реестр',onOk:()=>{const n={...t,id:'T-'+(TASKS.length+1),status:'new',claimedBy:null,created:me(),hist:[{t:nowStr(),u:me(),a:'поставил(а) задачу'}]};if(n.owner&&n.owner!==me()){n.status='new'}TASKS.push(n);if(n.mailId){const ml=MAILS.find(x=>x.id===n.mailId);if(ml)ml.status='taken'}log('Создание задачи',n.id+' · '+n.title,'подтверждено'+(n.owner?' · уведомлён '+PEOPLE[n.owner].short:''));modal.dirty=false;if(currentView!=='tasks')show('tasks');else refresh();toast('Задача '+n.id+' поставлена','Открыть',()=>openTaskView(n.id))}})};
+      confirmAct({title:'Поставить задачу?',body:taskPreview(t),ok:t.owner?'Поставить и уведомить '+PEOPLE[t.owner].short:'Сохранить',onOk:()=>{const n={...t,id:'T-'+(TASKS.length+1),status:'new',claimedBy:null,created:me(),hist:[{t:nowStr(),u:me(),a:'поставил(а) задачу'}]};if(n.owner&&n.owner!==me()){n.status='new'}TASKS.push(n);if(n.mailId){const ml=MAILS.find(x=>x.id===n.mailId);if(ml)ml.status='taken'}log('Создание задачи',n.id+' · '+n.title,'подтверждено'+(n.owner?' · уведомлён '+PEOPLE[n.owner].short:''));modal.dirty=false;if(currentView!=='tasks')show('tasks');else refresh();toast('Задача '+n.id+' поставлена','Открыть',()=>openTaskView(n.id))}})};
   };
   draw();
 }
@@ -1690,7 +1725,7 @@ function reqHtml(tab){
     return `<div class="req"><div class="ic" style="background:${bg};color:${c}"><span class="ms">${ic}</span></div><div>${body}${r.comment?`<div class="small" style="margin-top:4px">💬 ${esc(r.comment)}</div>`:''}<div class="small muted" style="margin-top:4px">${r.created}</div></div><div class="acts">${acts}</div></div>`}).join(''):(tab==='in'?`<div class="small muted" style="padding:4px 0"><span class="ms" style="font-size:16px;color:var(--ok)">check_circle</span> Новых запросов нет</div>`:`<div class="empty"><span class="ms" style="font-size:40px">inbox</span><br>Здесь пусто</div>`);
 }
 function renderInbox(){const n=REQUESTS.filter(r=>r.to===me()&&r.status==='pending'&&r.kind!=='feedback').length;const b=$('#inboxBtn');if(b){b.classList.toggle('has',!!n);$('#inboxN').innerHTML=n?`Входящие <b>${n}</b>`:'Входящих нет'}const el=$('#taskInbox');if(el)el.innerHTML=reqHtml('in')}
-function openInbox(){modal(`${mh('move_to_inbox','Входящие запросы')}<div class="mb"><div id="taskInbox">${reqHtml('in')}</div></div>`,'wide');$('#taskInbox').onclick=reqClick}
+function openInbox(){const mailSec=MAIL_ON?'':`<div class="br-s">Из почты</div><div class="mailcta in"><span class="ms">mail</span><div><b>Привяжите почту</b><span>Ассистент сделает выжимку писем и составит задачи</span></div><button class="gbtn sm" data-mailconnect>Подключить</button></div><div class="br-s" style="margin-top:14px">От коллег</div>`;modal(`${mh('move_to_inbox','Входящие')}<div class="mb">${mailSec}<div id="taskInbox">${reqHtml('in')}</div></div>`,'wide');$('#taskInbox').onclick=reqClick}
 function renderReq(){renderInbox();if(currentView==='stats')renderStatTop();updateCounts()}
 function rescheduleImpact(r){const e=EVENTS.find(x=>x.id===r.obj);if(!e)return'';const P=r.payload;const clash=e.people.filter(p=>busyFor(p,P.toDate).some(b=>b.t!==e.title&&overlap(P.toS,P.toE,b.s,b.e)));return clash.length?`<div class="small" style="color:var(--warn);margin-top:4px"><span class="ms" style="font-size:15px">warning</span> В новое время заняты: ${clash.map(p=>PEOPLE[p].short).join(', ')}</div>`:`<div class="small" style="color:var(--ok);margin-top:4px"><span class="ms" style="font-size:15px">check_circle</span> Все участники свободны в новое время</div>`}
 const reqClick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const r=REQUESTS.find(x=>x.id===b.dataset.id);const a=b.dataset.r;
@@ -1829,12 +1864,12 @@ function meetAiHtml(e,A){
   const feedback=A.feedback&&A.feedback.verdict?`<div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">rate_review</span> Оценка пользователя: ${A.feedback.verdict==='useful'?'полезно':'есть неточности'}${A.feedback.comment?' · '+esc(A.feedback.comment):''}</div>`:'';
   return `<div class="md-sum">
     <div class="md-rec"><span class="ms">mic</span>AI-выжимка${A.edited_at?' · исправлено вручную':''}${A.created_at?' · '+fmtAiDate(A.created_at):''}${A.duration_sec?' · '+Math.round(A.duration_sec)+' сек':''}</div>
-    <div class="md-s">Коротко</div><p class="md-lead">${esc(A.summary)}</p>
+    <div class="md-s">Суть проблемы</div><p class="md-lead">${esc(A.summary)}</p>
     ${decided.length?`<div class="md-s">Решено</div>${list(decided,'md-ok')}`:''}
     ${proposed.length?`<div class="md-s">Предложено</div>${list(proposed,'md-ag')}`:''}
     ${discussed.length?`<div class="md-s">Обсуждалось</div>${list(discussed,'md-q')}`:''}
     ${needs.length?`<div class="md-s">Требует уточнения</div>${list(needs,'md-q')}`:''}
-    <div class="md-s">Задачи по итогам</div>${tasks}
+    <div class="md-s">Кто за что отвечает</div>${tasks}
     ${risks.length?`<div class="md-s">Риски</div>${list(risks,'md-r')}`:''}
     <details class="md-qt"><summary>Расшифровка · можно исправить</summary><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;padding-top:6px">${esc(A.transcript||'')}</div></details>
     
@@ -1883,7 +1918,7 @@ function openMeetEdit(e,A){
   const fb=A.feedback||{};
   modal(`${mh('edit','Исправить выжимку: '+esc(e.title))}<div class="mb">
     
-    <label class="small">Коротко</label><textarea class="inp" id="meSummary" rows="4">${esc(A.summary||'')}</textarea>
+    <label class="small">Суть проблемы</label><textarea class="inp" id="meSummary" rows="4">${esc(A.summary||'')}</textarea>
     <div class="row2">
       <div><label class="small">Решено (по одному в строке)</label><textarea class="inp" id="meDecided" rows="3">${esc(lines(P.decided))}</textarea></div>
       <div><label class="small">Предложено</label><textarea class="inp" id="meProposed" rows="3">${esc(lines(P.proposed))}</textarea></div>
@@ -1982,8 +2017,8 @@ function meetEditForm(e,past){
   if(!past){const ag=e.agenda||buildAgenda({title:e.title,topic:e.topic||'',people:e.people,linkTask:''}).items;return `${head}<div class="md-s">План встречи · каждый пункт с новой строки</div><textarea class="inp md-ta" id="meAg" rows="8">${esc(ag.join('\n'))}</textarea>${act}`}
   const S=MEET_SUM[e.id];const P=PROTOCOLS[e.id];
   const sum=S?S.summary:'',dec=S?S.decided:(P?P.decided.map(x=>x.txt):[]),op=S?S.open:(P?P.unclear.map(x=>x.txt):[]),rk=S?S.risks:(P?P.risks.map(x=>x.txt):[]);
-  return `${head}<div class="md-s">Коротко</div><textarea class="inp md-ta" id="meSum" rows="4">${esc(sum)}</textarea>
-    <div class="md-s">Решения · каждое с новой строки</div><textarea class="inp md-ta" id="meDec" rows="4">${esc(dec.join('\n'))}</textarea>
+  return `${head}<div class="md-s">Суть проблемы</div><textarea class="inp md-ta" id="meSum" rows="4">${esc(sum)}</textarea>
+    <div class="md-s">Что делаем · каждое с новой строки</div><textarea class="inp md-ta" id="meDec" rows="4">${esc(dec.join('\n'))}</textarea>
     <div class="md-2"><div><div class="md-s">Осталось открытым</div><textarea class="inp md-ta" id="meOpen" rows="3">${esc(op.join('\n'))}</textarea></div><div><div class="md-s">Риски</div><textarea class="inp md-ta" id="meRisk" rows="3">${esc(rk.join('\n'))}</textarea></div></div>${act}`;
 }
 function meetDetail(e,past){
@@ -1999,9 +2034,9 @@ function meetDetail(e,past){
     const quotes=S?S.quotes:P.lines.slice(0,3).map(l=>[l.p,l.txt]);
     return `${head}<div class="md-sum">
       <div class="md-rec"><span class="ms">mic</span>Запись ${S?S.dur:''} · выжимка готова</div>
-      <div class="md-s">Коротко</div><p class="md-lead">${esc(sum)}</p>
-      <div class="md-s">Решения</div><ul class="md-ok">${decided.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
-      <div class="md-s">Задачи по итогам</div>${tasks.map(t=>`<div class="kr" data-tv="${t.id}"><i class="pdot" style="background:${PRIO[t.prio].c}"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?PEOPLE[t.owner].name:'ответственный не назначен'} · ${{new:'новая',progress:'в работе',review:'на проверке',done:'готово'}[t.status]}</span></div><span class="kr-d">${t.deadline?fmtD(t.deadline):'без срока'}</span></div>`).join('')||'<div class="small muted">Задач нет</div>'}
+      <div class="md-s">Суть проблемы</div><p class="md-lead">${esc(sum)}</p>
+      <div class="md-s">Что делаем</div><ul class="md-ok">${decided.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      <div class="md-s">Кто за что отвечает</div>${tasks.map(t=>`<div class="kr" data-tv="${t.id}"><i class="pdot" style="background:${PRIO[t.prio].c}"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?PEOPLE[t.owner].name:'ответственный не назначен'} · ${{new:'новая',progress:'в работе',review:'на проверке',done:'готово'}[t.status]}</span></div><span class="kr-d">${t.deadline?fmtD(t.deadline):'без срока'}</span></div>`).join('')||'<div class="small muted">Задач нет</div>'}
       ${open.length||risks.length?`<div class="md-2">${open.length?`<div><div class="md-s">Осталось открытым</div><ul class="md-q">${open.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${risks.length?`<div><div class="md-s">Риски</div><ul class="md-r">${risks.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}</div>`:''}
       <details class="md-qt"><summary>Ключевые фразы из записи</summary>${quotes.map(([p,t])=>`<div><b>${PEOPLE[p]?.short||'Спикер'}:</b> ${esc(t)}</div>`).join('')}</details>
     </div><div class="md-act" id="mdAct"><button class="gbtn" data-ma="edit"><span class="ms">edit</span>Редактировать</button><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="btn primary" data-ma="send"><span class="ms">send</span>Отправить участникам</button></div>`}
@@ -2095,9 +2130,9 @@ function openNotes(eventId,uploaded){
         <div class="card" style="padding:10px 12px"><h2 style="font-size:14px"><span class="ms" style="font-size:18px">subject</span>Расшифровка<span class="spacer"></span><span class="small muted" id="trCount"></span></h2><div class="transcript" id="tr"></div>
         <textarea class="mynote" id="myNote" placeholder="Ваши пометки (попадут в протокол как «обсуждалось»)…"></textarea></div>
       </div>
-      <div><div class="card ai-card"><h2><span class="ms" style="color:#7b4fd6">auto_awesome</span>Протокол<span class="spacer"></span><button class="btn tonal sm" id="exBtn">${P?'Пересобрать':'Сформировать'}</button></h2><div id="prot">${P?'':'<div class="small muted">Запишите встречу или загрузите расшифровку, затем нажмите «Сформировать».</div>'}</div></div></div>
+      <div><div class="card ai-card"><h2><span class="ms" style="color:#7b4fd6">auto_awesome</span>План встречи<span class="spacer"></span><button class="btn tonal sm" id="exBtn">${P?'Пересобрать':'Сформировать'}</button></h2><div id="prot">${P?'':'<div class="small muted">Запишите встречу или загрузите расшифровку, затем нажмите «Сформировать».</div>'}</div></div></div>
     </div></div>
-    <div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button><button class="btn primary" id="saveProt" ${P&&!P.saved?'':'disabled style="opacity:.5"'}>Сохранить протокол и задачи</button></div>`,'wide');
+    <div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button><button class="btn primary" id="saveProt" ${P&&!P.saved?'':'disabled style="opacity:.5"'}>Сохранить план и задачи</button></div>`,'wide');
   drawTranscript();if(P)drawProtocol(P);
   $('#recBtn').onclick=()=>rec.on?stopRec():startRec();
   $('#exBtn').onclick=()=>{const lines=[...rec.lines];const n=$('#myNote').value.trim();if(n)lines.push({p:me(),txt:n,ts:0,note:true});if(!lines.length){toast('Расшифровка пуста');return}stopRec();const pr=extract(lines,e);PROTOCOLS[eventId]=pr;drawProtocol(pr);$('#saveProt').disabled=false;$('#saveProt').style.opacity=1;log('AI: протокол из расшифровки',e?e.title:'без события','решений '+pr.decided.length+', задач '+pr.tasks.length)};
@@ -2135,7 +2170,7 @@ function extract(lines,e){
 }
 function drawProtocol(P){
   const sec=(k,title,icon,cls)=>P[k].length?`<div class="prot-sec"><h4><span class="tag ${cls}"><span class="ms" style="font-size:14px">${icon}</span>${title}</span><span class="small muted">${P[k].length}</span></h4>${P[k].map((it,i)=>`<div class="pitem"><span contenteditable data-k="${k}" data-i="${i}">${esc(it.txt)}</span><a href="#" class="small" data-ref="${it.ref}" style="color:var(--primary);white-space:nowrap">#${it.ref+1}</a></div>`).join('')}</div>`:'';
-  $('#prot').innerHTML=`${P.saved?'<div class="alert ok"><span class="ms">check_circle</span>Протокол сохранён '+P.at+'. Задачи в реестре со ссылками на протокол.</div>':''}
+  $('#prot').innerHTML=`${P.saved?'<div class="alert ok"><span class="ms">check_circle</span>План сохранён '+P.at+'. Задачи в реестре со ссылками на встречу.</div>':''}
   ${sec('decided','Решено','gavel','ok')}${sec('proposed','Предложено','lightbulb','info')}${sec('discussed','Обсуждалось','forum','neutral')}${sec('unclear','Требует уточнения','help','warn')}${sec('risks','Риски','warning','err')}
   <div class="prot-sec"><h4><span class="tag p1"><span class="ms" style="font-size:14px">checklist</span>Задачи</span><span class="small muted">${P.tasks.length} · отметьте, какие записать в реестр</span></h4>
   ${P.tasks.map((t,i)=>`<div class="ptask"><input type="checkbox" data-tk="${i}" ${t.on?'checked':''} ${P.saved?'disabled':''} aria-label="Включить задачу"><div><div contenteditable="${!P.saved}" data-tt="${i}" style="font-weight:500">${esc(t.title)}</div>
@@ -2155,11 +2190,11 @@ function drawProtocol(P){
 }
 function saveProtocol(eventId){
   const P=PROTOCOLS[eventId];const sel=P.tasks.filter(t=>t.on);const miss=sel.filter(t=>!t.owner||!t.deadline).length;
-  confirmAct({title:'Сохранить протокол?',body:`<div class="preview"><dl><dt>Решено</dt><dd>${P.decided.length}</dd><dt>Требует уточнения</dt><dd>${P.unclear.length}</dd><dt>Задачи в реестр</dt><dd>${sel.length}${miss?` · <span class="tag warn">${miss} без владельца/срока — сохранятся с пометкой «требует уточнения»</span>`:''}</dd><dt>Ссылки</dt><dd>протокол ↔ расшифровка ↔ задачи ↔ встреча</dd></dl></div>`,ok:'Сохранить',onOk:()=>{
+  confirmAct({title:'Сохранить план и задачи?',body:`<div class="preview"><dl><dt>Решено</dt><dd>${P.decided.length}</dd><dt>Требует уточнения</dt><dd>${P.unclear.length}</dd><dt>Задачи в реестр</dt><dd>${sel.length}${miss?` · <span class="tag warn">${miss} без владельца/срока — сохранятся с пометкой «требует уточнения»</span>`:''}</dd><dt>Ссылки</dt><dd>протокол ↔ расшифровка ↔ задачи ↔ встреча</dd></dl></div>`,ok:'Сохранить',onOk:()=>{
     const e=EVENTS.find(x=>x.id===eventId);const pid='P-'+(Object.keys(PROTOCOLS).length+1);
     sel.forEach(t=>{const n={id:'T-'+(TASKS.length+1),title:t.title,context:'Из протокола '+pid+(e?' встречи «'+e.title+'»':'')+', реплика #'+(t.ref+1),result:'',kpi:{m:'',t:''},prio:'P2',deadline:t.deadline,owner:t.owner,co:[],status:'new',source:e?{type:'meeting',ref:e.id,label:e.title}:{type:'manual',label:'Протокол '+pid},claimedBy:null,created:me(),hist:[{t:nowStr(),u:me(),a:'создано из протокола '+pid}]};TASKS.push(n);t.taskId=n.id});
     P.saved=true;P.at=nowStr();if(e)e.protocol=pid;log('Сохранение протокола + задач',pid+(e?' · '+e.title:''),'подтверждено · задач: '+sel.length);
-    openNotes(eventId);refresh(true);toast('Протокол сохранён, задач создано: '+sel.length,'К задачам',()=>{closeModal();show('tasks')})}});
+    openNotes(eventId);refresh(true);toast('План сохранён, задач создано: '+sel.length,'К задачам',()=>{closeModal();show('tasks')})}});
 }
 
 /* ============ 5. MY DAY ============ */
@@ -2362,7 +2397,7 @@ const MAILS=[
 const MAIL_DIGEST=()=>{const t=MAILS.filter(m=>m.task&&m.status==='new');return `За сегодня 14 писем, важных 5. ${t.length?`Нужно действовать по ${t.length}: `+t.map(m=>m.id==='M-1'?'клиент ждёт подтверждения корпоративного заказа до завтра':m.id==='M-2'?'поставщик бумаги поднимает цены с 1 декабря':'подрядчик доставки готов сократить сроки').join('; ')+'.':'Все задачи из писем уже в работе.'} Павел прислал факт октября: перерасход на сверхурочные 12%.`};
 const mailNew=()=>MAIL_ON?MAILS.filter(m=>m.task&&m.status==='new').sort((a,b)=>a.task.prio.localeCompare(b.task.prio)):[];
 function mailBlock(){
-  if(!MAIL_ON)return `<div class="mailcta"><span class="ms">mail</span><div><b>Подключите почту</b></div><button class="gbtn sm" data-mailconnect>Подключить</button></div>`;
+  if(!MAIL_ON)return `<div class="mailcta"><span class="ms">mail</span><div><b>Привяжите почту</b><span>Ассистент сделает выжимку писем и найдёт в них задачи</span></div><button class="gbtn sm" data-mailconnect>Подключить</button></div>`;
   const L=mailNew();if(!L.length)return '';
   return `<div class="br-s">Задачи из почты</div><div class="br-todo">${L.map(m=>`<div class="bt"><i class="pdot" style="background:${PRIO[m.task.prio].c}"></i><span class="bt-x"><b style="font-weight:${m.task.prio==='P1'?600:500}">${esc(m.task.title)}</b><small class="muted"> · ${esc(m.from.split(',')[0])}</small></span><button class="gbtn sm dark" data-mailtask="${m.id}">Создать</button></div>`).join('')}</div>`;
 }
@@ -3041,10 +3076,10 @@ document.addEventListener('keydown',e=>{
 setInterval(()=>{if(currentView==='calendar'){const n=$('.now');if(n)n.style.top=`calc(var(--hour)*${nowH()})`}},60000);
 
 /* init */
-$('#meAvatar').style.background=PEOPLE.anna.color;$('#meAvatar').textContent='А';
+$('#meAvatar').textContent='А';
 $('#inboxBtn').onclick=openInbox;updateCounts();
 const h0=(location.hash||'').slice(1);show(['calendar','today','tasks','requests','meetings','docs','audit','stats'].includes(h0)?h0:'calendar');scrollToWork();
 </script>
-<script src="/static/session.js?v=3" defer></script>
+<script src="/static/session.js?v=4" defer></script>
 </body>
 </html>

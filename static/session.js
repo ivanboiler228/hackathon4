@@ -55,7 +55,7 @@
 
       const avatar = document.querySelector("#meAvatar");
       if (avatar) {
-        avatar.textContent = initials(user.name);
+        avatar.textContent = (user.name || "?").trim().charAt(0).toUpperCase();
         avatar.title = user.is_impersonating
           ? `${user.name} · просмотр из аккаунта ${user.real_name}`
           : `${user.name} · ${user.role_label}`;
