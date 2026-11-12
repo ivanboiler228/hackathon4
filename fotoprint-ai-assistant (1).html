@@ -1041,7 +1041,7 @@ mark{background:#ffe58a;color:inherit;border-radius:3px;padding:0 1px}
               <button class="icon-btn" id="nextBtn" aria-label="Вперёд"><span class="ms">chevron_right</span></button>
               <span class="tz" title="Все время указано по Минску">Минск · UTC+3</span>
               <div class="spacer"></div>
-              <button class="btn tonal sm" id="calAiBtn" title="AI-советник по календарю"><span class="ms">auto_awesome</span>AI-советник</button>
+              
               <div class="seg" id="rangeSeg" role="group" aria-label="Масштаб">
                 <button data-days="1">День</button><button data-days="7">Неделя</button><button data-days="month">Месяц</button>
               </div>
@@ -1059,7 +1059,7 @@ mark{background:#ffe58a;color:inherit;border-radius:3px;padding:0 1px}
       </section>
       <!-- TASKS -->
       <section class="view" id="v-tasks"><div class="page">
-        <div class="ph"><h1>Задачи</h1><button class="gbtn" data-company-ai><span class="ms">auto_awesome</span>AI-обзор</button><button class="inbox-pill" id="inboxBtn"><span class="ms">move_to_inbox</span><span id="inboxN">Входящие</span></button></div>
+        <div class="ph"><h1>Задачи</h1><button class="inbox-pill" id="inboxBtn"><span class="ms">move_to_inbox</span><span id="inboxN">Входящие</span></button></div>
         <div class="toolbar">
           <div class="search"><span class="ms muted">search</span><input id="taskSearch" placeholder="Поиск по задачам" aria-label="Поиск по задачам"></div>
           <div class="seg" id="boardMode" role="group" aria-label="Вид задач"><button data-bm="kanban" aria-pressed="true">По статусу</button><button data-bm="matrix" aria-pressed="false">По важности</button></div>
@@ -1255,8 +1255,6 @@ window._todayBtn=()=>{anchor=new Date(NOW);renderCal()};
 const stepCal=d=>{if(MONTH)anchor=new Date(anchor.getFullYear(),anchor.getMonth()+d,1);else anchor=addDays(anchor,DAYS===1?d:7*d);renderCal()};
 $('#prevBtn').onclick=()=>stepCal(-1);
 $('#nextBtn').onclick=()=>stepCal(1);
-if($('#calAiBtn'))$('#calAiBtn').onclick=()=>openCalendarAI();
-document.addEventListener('click',e=>{const b=e.target.closest('[data-calai]');if(b){openCalendarAI()}});
 $('#calHead').onclick=e=>{const d=e.target.closest('[data-goto]');if(d){anchor=parse(d.dataset.goto);DAYS=1;MONTH=false;renderCal();return}const t=e.target.closest('[data-task]');if(t)openTaskView(t.dataset.task)};
 
 /* drag to reschedule + click */
@@ -2443,13 +2441,13 @@ function renderSide(){
   $('#cxSide').innerHTML=`<div class="brief">
     <div class="br-h"><b>Сводка дня</b><span>${WDL[(NOW.getDay()+6)%7]}, ${fmtD(NOW)} · ${hm(h)} <i class="tzi">UTC+3</i></span></div>
     <p class="br-lead">${lead}</p>
-    <button class="gbtn" data-calai style="margin:4px 0 8px"><span class="ms">auto_awesome</span>Спросить AI-советника</button>
+    
     ${mailBlock()}
     ${prep?`<div class="br-s">Подготовиться к встречам</div>${prep}`:''}
     ${todo.length?`<div class="br-s">Решить сегодня</div><div class="br-todo">${todo.slice(0,4).map(([i,t,a,l])=>`<div class="bt"><span class="ms">${i}</span><span class="bt-x">${t}</span><button class="gbtn sm" ${a}>${l}</button></div>`).join('')}${todo.length>4?`<button class="side-more" data-go="tasks">и ещё ${todo.length-4} →</button>`:''}</div>`:''}
   </div>`;
 }
-document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}if(e.target.closest('[data-company-ai]')){openCompanyAI()}});
+document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}});
 
 /* ============ CALENDAR AI ADVISOR ============ */
 let CAL_AI_FOCUS=null,CAL_AI_CHAT=[],CAL_AI_BUSY=false;
@@ -2894,7 +2892,7 @@ function renderStats(){
       ${histHtml()}
     </div>`;
   }
-  $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1><span class="spacer" style="flex:1"></span><button class="gbtn" data-company-ai><span class="ms">auto_awesome</span>AI-обзор</button></div>`+html;
+  $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1><span class="spacer" style="flex:1"></span></div>`+html;
   const b=$('#statAll');if(b)b.onclick=()=>{STAT_ALL=true;renderStats()};
 }
 let STAT_ALL=false;
