@@ -14,6 +14,9 @@ $PortFile = Join-Path $Tools "port.txt"
 
 New-Item -ItemType Directory -Force -Path $Tools | Out-Null
 
+$Python = Get-Command python -ErrorAction SilentlyContinue
+if (-not $Python) { throw "Не найден python. Установите Python и зависимости из requirements.txt." }
+
 function Test-OurApp([int]$Candidate) {
     try {
         $Response = Invoke-WebRequest -UseBasicParsing "http://127.0.0.1:$Candidate/health" -TimeoutSec 2
@@ -44,9 +47,6 @@ if (-not $ChosenPort) {
 Set-Content -Path $PortFile -Value $ChosenPort
 
 if (-not (Test-OurApp $ChosenPort)) {
-    $Python = Get-Command python -ErrorAction SilentlyContinue
-    if (-not $Python) { throw "Не найден python. Установите Python и зависимости из requirements.txt." }
-
     Write-Host "Запускаю FastAPI на 0.0.0.0:$ChosenPort..." -ForegroundColor Cyan
     $Process = Start-Process -FilePath $Python.Source `
         -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "$ChosenPort") `
@@ -73,4 +73,10 @@ if (-not $Ready) {
 }
 
 Write-Host "Сервер готов: http://127.0.0.1:$ChosenPort" -ForegroundColor Green
+try {
+    Write-Host "Загружаю образцы документов..." -ForegroundColor Cyan
+    & $Python.Source (Join-Path $Root "scripts\seed_sample_docs.py")
+} catch {
+    Write-Host "Образцы документов не загрузились, продолжаю запуск." -ForegroundColor Yellow
+}
 & (Join-Path $PSScriptRoot "keep_tunnel.ps1")

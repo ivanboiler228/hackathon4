@@ -9,4 +9,6 @@ __pycache__/
 venv/
 models/
 tools/
+dist/
+*.zip
 tunnel.*.log
