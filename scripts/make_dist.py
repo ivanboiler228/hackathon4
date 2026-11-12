@@ -26,6 +26,7 @@ INCLUDE_FILES = [
     "SECURITY.md",
     "TZ_REQUIREMENTS.md",
     "THIRD_PARTY.md",
+    "AI_EVAL.md",
     "Procfile",
     "run.ps1",
     ".gitignore",
