@@ -77,12 +77,29 @@ def selected(query: str, doc_ids: list[str]) -> list[dict[str, Any]]:
     return docs
 
 
+def _is_heading(line: str) -> bool:
+    """Строка-заголовок раздела: короткая и без точки в конце («Вывод», «1. Сроки»)."""
+    words = line.split()
+    return 0 < len(words) <= 5 and not line.rstrip().endswith((".", "!", "?", ":", ";", "»", ")"))
+
+
+def split_sentences(text: str) -> list[str]:
+    """Предложения документа без строк-заголовков, чтобы цитата не начиналась с «Вывод»."""
+    out: list[str] = []
+    for line in (text or "").splitlines():
+        line = re.sub(r"\s+", " ", line).strip()
+        if not line or _is_heading(line):
+            continue
+        out.extend(s.strip() for s in re.split(r"(?<=[.!?])\s+", line) if s.strip())
+    return out
+
+
 def best_fragment(query: str, text: str, limit: int = 260) -> str:
     """Короткий фрагмент источника для цитаты в ответе."""
     clean = re.sub(r"\s+", " ", text or "").strip()
     if not clean:
         return ""
-    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", clean) if s.strip()]
+    sentences = split_sentences(text) or [clean]
     q_stems = stems(query)
     best = max(
         sentences,

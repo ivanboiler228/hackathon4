@@ -8,6 +8,7 @@ import httpx
 
 from .config import settings
 from .pii import PIIMasker, TAG_CANON, TAG_RE
+from .retrieval import split_sentences
 
 
 class LLMError(RuntimeError):
@@ -113,7 +114,7 @@ def fallback_answer(query: str, masked_docs: list[dict[str, str]]) -> str:
     q_stems = {t[:5] for t in re.split(r"[^а-яёa-z0-9]+", query.lower().replace("ё", "е")) if len(t) >= 4}
     best: tuple[int, str, str] | None = None
     for doc in masked_docs:
-        sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", doc["text"]) if s.strip()]
+        sentences = split_sentences(doc["text"]) or [doc["text"].strip()]
         for idx, sentence in enumerate(sentences):
             norm = sentence.lower().replace("ё", "е")
             score = sum(1 for stem in q_stems if stem in norm)

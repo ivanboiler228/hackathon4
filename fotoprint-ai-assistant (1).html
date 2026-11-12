@@ -968,6 +968,49 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
   .tabsbar a{padding:0 15px}
   .new-tab{margin-left:8px;padding:0 14px 0 10px}
 }
+/* ===== merged: rounds 10–11 ===== */
+.tz{font-size:12px;color:var(--ink2);background:rgba(255,255,255,.6);border-radius:10px;padding:3px 9px;margin-left:6px}
+.tzi{font-style:normal;font-size:10.5px;color:var(--ink2);background:rgba(0,0,0,.05);border-radius:6px;padding:1px 5px;margin-left:2px}
+.tzl{display:block;font-size:10.5px;color:var(--ink2);font-weight:400}
+.tcard.draft{background:rgba(255,255,255,.75);border:1px dashed rgba(75,91,214,.35);border-left:4px solid var(--pc)}
+.tcard.draft .btn.primary.sm{height:26px;padding:0 10px;font-size:12px}
+.tcard .tdel{opacity:0}.tcard:hover .tdel{opacity:.7}
+.md-ta{width:100%;font-size:14px;line-height:1.5;resize:vertical}
+#mAg{margin:4px 0 10px;width:100%}
+.mp-t{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);padding:2px 6px 8px}
+.acc{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 10px;border-radius:16px}
+.acc:hover{background:rgba(255,255,255,.7)}.acc.on{background:#fff;box-shadow:0 2px 8px rgba(40,60,40,.08)}
+.acc b{display:block;font-weight:600;font-size:14px}.acc>div>span{display:block;font-size:12.5px;color:var(--ink2)}
+.acc .acc-av{width:36px;height:36px;font-size:13px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.acc .ms{color:var(--ink)}
+.mp-h>div>span{font-size:12px;color:var(--ink2)}
+.preview{white-space:pre-wrap}
+.dc-src{cursor:pointer}.dc-src:hover{background:rgba(0,0,0,.06)}
+.dc-doc .dc-sn{display:block;font-size:11.5px;color:#33363a;margin-top:3px;line-height:1.4}
+mark{background:#ffe58a;color:inherit;border-radius:3px;padding:0 1px}
+.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.st-hint{font-size:12.5px;color:var(--ink2);margin:-4px 0 10px}
+.lr{display:grid;grid-template-columns:28px minmax(120px,1fr) 1.2fr auto auto;gap:12px;align-items:center;padding:8px 0;border-top:1px solid rgba(0,0,0,.05)}
+.lr:first-of-type{border-top:0}
+.lr .avatar{width:28px;height:28px;font-size:12px}
+.lr-x b{display:block;font-weight:500;font-size:13.5px}.lr-x span{font-size:12px;color:var(--ink2)}
+.lr-b{height:8px;background:rgba(0,0,0,.06);border-radius:4px;overflow:hidden}.lr-b i{display:block;height:100%;border-radius:4px}
+.lr-n{font-size:12.5px;color:var(--ink2);white-space:nowrap;text-align:right}.lr-n b{font-size:15px;color:var(--ink);font-weight:600}.lr-n b.bad{color:#c5221f}
+.up{color:#2e7d32;font-size:11px}.dn{color:#c5221f;font-size:11px}
+.wk4{display:flex;align-items:flex-end;gap:5px;height:30px;max-width:120px;justify-self:end;width:100%}.wk4 i{flex:1;background:#1d1d1f;border-radius:3px;opacity:.8}
+.kd{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.kd-c{font-size:12px;background:rgba(255,255,255,.8);border-radius:10px;padding:3px 9px;color:var(--ink2)}.kd-c b{color:var(--ink)}
+.kr2{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;padding:7px 0;border-top:1px solid rgba(0,0,0,.05)}
+.kr2-i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700}
+.kr2-i.ok{background:#e6f4ea;color:#2e7d32}.kr2-i.no{background:#fce8e6;color:#c5221f}
+.wbars{display:flex;gap:18px;align-items:flex-end;height:180px;padding:10px 6px 0}
+.wb{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%}
+.wb-s{flex:1;width:44px;position:relative}.wb-s i{position:absolute;left:0;right:0;bottom:0;border-radius:8px}
+.wb-s .all{background:rgba(29,29,31,.15)}.wb-s .ok{background:#1d1d1f}
+.wb b{font-size:13px;font-weight:600}.wb small{font-size:11.5px;color:var(--ink2)}
+.kp{padding:9px 0;border-top:1px solid rgba(0,0,0,.05);cursor:pointer}.kp:first-of-type{border-top:0}
+.kp-b{height:8px;background:rgba(0,0,0,.06);border-radius:4px;margin-top:6px;overflow:hidden}.kp-b i{display:block;height:100%;background:#1d1d1f;border-radius:4px}
+@media (max-width:900px){.st-grid{grid-template-columns:1fr}.lr{grid-template-columns:28px 1fr auto}.lr-b,.wk4{display:none}}
+.tabsbar a[data-view=docs]{--dot:#e0a800}
 </style>
 <link rel="stylesheet" href="/static/mobile.css?v=13">
 </head>
@@ -979,7 +1022,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
       <a data-view="calendar" class="active" style="--tc:#c9b6ff"><span class="ms">calendar_month</span><span class="lbl">Календарь</span></a>
       <a data-view="tasks" style="--tc:#ffb59a"><span class="ms">task_alt</span><span class="lbl">Задачи</span><span class="count" id="cReq" title="Новые запросы"></span><span class="count n" id="cTasks" style="display:none"></span></a>
       <a data-view="meetings" style="--tc:#8cecf2"><span class="ms">mic</span><span class="lbl">Встречи</span></a>
-      <a data-view="docs" style="--tc:#ffd27a"><span class="ms">folder</span><span class="lbl">Документы</span></a>
+      <a data-view="docs" style="--tc:#ffd27a"><span class="ms">description</span><span class="lbl">Документы</span></a>
       <a data-view="stats" style="--tc:#b4f0a8"><span class="ms">monitoring</span><span class="lbl">Статистика</span></a>
     </nav>
     <div class="spacer" style="flex:1"></div>
@@ -996,6 +1039,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
               <div class="date-title" id="dateTitle"></div>
               <button class="icon-btn" id="prevBtn" aria-label="Назад"><span class="ms">chevron_left</span></button>
               <button class="icon-btn" id="nextBtn" aria-label="Вперёд"><span class="ms">chevron_right</span></button>
+              <span class="tz" title="Все время указано по Минску">Минск · UTC+3</span>
               <div class="spacer"></div>
               <button class="btn tonal sm" id="calAiBtn" title="AI-советник по календарю"><span class="ms">auto_awesome</span>AI-советник</button>
               <div class="seg" id="rangeSeg" role="group" aria-label="Масштаб">
@@ -1038,7 +1082,7 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
 
 <script>
 const ICONS={"add": "<path d=\"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z\"/>", "add_task": "<path d=\"M22 5.18 10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8c1.57 0 3.04.46 4.28 1.25l1.45-1.45A10.02 10.02 0 0 0 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22l-1.5-1.5c-1 .46-2.11.72-3.28.72zm7-5h-3v2h3v3h2v-3h3v-2h-3v-3h-2v3z\"/>", "arrow_drop_down": "<path d=\"m7 10 5 5 5-5H7z\"/>", "attach_file": "<path d=\"M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5a2.5 2.5 0 0 0 5 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z\"/>", "auto_awesome": "<path d=\"m19 9 1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25zm0 6-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25zm-7.5-5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zm-1.51 3.49L9 15.17l-.99-2.18L5.83 12l2.18-.99L9 8.83l.99 2.18 2.18.99-2.18.99z\"/>", "back_hand": "<path d=\"M21 7a2.5 2.5 0 0 0-3-2.45V4a2.5 2.5 0 0 0-3.17-2.41A2.509 2.509 0 0 0 12.5 0c-1.23 0-2.25.89-2.46 2.06A2.5 2.5 0 0 0 7 4.5v5.89c-.34-.31-.76-.54-1.22-.66l-.77-.21c-.83-.23-1.7.09-2.19.83-.38.57-.4 1.31-.15 1.95l2.56 6.43A8.354 8.354 0 0 0 13 24c4.42 0 8-3.58 8-8V7zm-2 9c0 3.31-2.69 6-6 6-2.61 0-4.95-1.59-5.91-4.01l-2.6-6.54.53.14c.46.12.83.46 1 .9L7 15h2V4.5c0-.28.22-.5.5-.5s.5.22.5.5V12h2V2.5c0-.28.22-.5.5-.5s.5.22.5.5V12h2V4c0-.28.22-.5.5-.5s.5.22.5.5v8h2V7c0-.28.22-.5.5-.5s.5.22.5.5v9z\"/>", "calendar_month": "<path d=\"M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z\"/>", "check_circle": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z\"/>", "checklist": "<path d=\"M22 7h-9v2h9V7zm0 8h-9v2h9v-2zM5.54 11 2 7.46l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41L5.54 11zm0 8L2 15.46l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41L5.54 19z\"/>", "chevron_left": "<path d=\"M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z\"/>", "chevron_right": "<path d=\"M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z\"/>", "close": "<path d=\"M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z\"/>", "content_copy": "<path d=\"M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\"/>", "delete": "<path d=\"M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z\"/>", "description": "<path d=\"M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z\"/>", "do_not_disturb_on": "<path d=\"M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z\"/>", "edit": "<path d=\"m14.06 9.02.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83a.996.996 0 0 0 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z\"/>", "error": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z\"/>", "event": "<path d=\"M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z\"/>", "event_busy": "<path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5zm3.23 9.41 1.06 1.06 2.44-2.44 2.44 2.44 1.06-1.06-2.44-2.44 2.44-2.44-1.06-1.06-2.44 2.44-2.44-2.44-1.06 1.06 2.44 2.44z\"/>", "event_repeat": "<path d=\"M21 12V6c0-1.1-.9-2-2-2h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h7v-2H5V10h14v2h2zm-2-4H5V6h14v2zm-3.36 12a3.504 3.504 0 0 0 6.86-1c0-1.93-1.57-3.5-3.5-3.5-.95 0-1.82.38-2.45 1H18V18h-4v-4h1.5v1.43c.9-.88 2.14-1.43 3.5-1.43 2.76 0 5 2.24 5 5a5.002 5.002 0 0 1-9.9 1h1.54z\"/>", "group": "<path d=\"M9 13.75c-2.34 0-7 1.17-7 3.5V19h14v-1.75c0-2.33-4.66-3.5-7-3.5zM4.34 17c.84-.58 2.87-1.25 4.66-1.25s3.82.67 4.66 1.25H4.34zM9 12c1.93 0 3.5-1.57 3.5-3.5S10.93 5 9 5 5.5 6.57 5.5 8.5 7.07 12 9 12zm0-5c.83 0 1.5.67 1.5 1.5S9.83 10 9 10s-1.5-.67-1.5-1.5S8.17 7 9 7zm7.04 6.81c1.16.84 1.96 1.96 1.96 3.44V19h4v-1.75c0-2.02-3.5-3.17-5.96-3.44zM15 12c1.93 0 3.5-1.57 3.5-3.5S16.93 5 15 5c-.54 0-1.04.13-1.5.35.63.89 1 1.98 1 3.15s-.37 2.26-1 3.15c.46.22.96.35 1.5.35z\"/>", "groups": "<path d=\"M4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58A2.01 2.01 0 0 0 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zm-7.76-2.78c-1.17-.52-2.61-.9-4.24-.9-1.63 0-3.07.39-4.24.9A2.988 2.988 0 0 0 6 16.39V18h12v-1.61c0-1.18-.68-2.26-1.76-2.74zM8.07 16c.09-.23.13-.39.91-.69.97-.38 1.99-.56 3.02-.56s2.05.18 3.02.56c.77.3.81.46.91.69H8.07zM12 8c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m0-2c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z\"/>", "help": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z\"/>", "inbox": "<path d=\"M19 3H5c-1.1 0-2 .9-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5v-3h3.56c.69 1.19 1.97 2 3.45 2s2.75-.81 3.45-2H19v3zm0-5h-4.99c0 1.1-.9 2-2 2s-2-.9-2-2H5V5h14v9z\"/>", "info": "<path d=\"M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z\"/>", "link": "<path d=\"M17 7h-4v2h4c1.65 0 3 1.35 3 3s-1.35 3-3 3h-4v2h4c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-6 8H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-2zm-3-4h8v2H8z\"/>", "location_on": "<path d=\"M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z\"/><circle cx=\"12\" cy=\"9\" r=\"2.5\"/>", "lock": "<path d=\"M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z\"/>", "lock_open": "<path d=\"M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h2c0-1.66 1.34-3 3-3s3 1.34 3 3v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z\"/>", "menu": "<path d=\"M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z\"/>", "mic": "<path d=\"M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z\"/><path d=\"M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z\"/>", "monitoring": "<path d=\"M21 8c-1.45 0-2.26 1.44-1.93 2.51l-3.55 3.56c-.3-.09-.74-.09-1.04 0l-2.55-2.55C12.27 10.45 11.46 9 10 9c-1.45 0-2.27 1.44-1.93 2.52l-4.56 4.55C2.44 15.74 1 16.55 1 18c0 1.1.9 2 2 2 1.45 0 2.26-1.44 1.93-2.51l4.55-4.56c.3.09.74.09 1.04 0l2.55 2.55C12.73 16.55 13.54 18 15 18c1.45 0 2.27-1.44 1.93-2.52l3.56-3.55c1.07.33 2.51-.48 2.51-1.93 0-1.1-.9-2-2-2z\"/><path d=\"m15 9 .94-2.07L18 6l-2.06-.93L15 3l-.92 2.07L12 6l2.08.93zM3.5 11 4 9l2-.5L4 8l-.5-2L3 8l-2 .5L3 9z\"/>", "move_to_inbox": "<path d=\"M16 9h-2.55V6h-2.9v3H8l4 4zm3-6H4.99C3.88 3 3 3.9 3 5v14c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5v-3h3.56c.69 1.19 1.97 2 3.45 2s2.75-.81 3.45-2H19v3zm0-5h-4.99c0 1.1-.9 2-2 2s-2-.9-2-2H5l-.01-9H19v9z\"/>", "notifications": "<path d=\"M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z\"/>", "notifications_active": "<path d=\"M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zM7.58 4.08 6.15 2.65C3.75 4.48 2.17 7.3 2.03 10.5h2a8.445 8.445 0 0 1 3.55-6.42zm12.39 6.42h2c-.15-3.2-1.73-6.02-4.12-7.85l-1.42 1.43a8.495 8.495 0 0 1 3.54 6.42z\"/>", "post_add": "<path d=\"M17 19.22H5V7h7V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h-2v7.22z\"/><path d=\"M19 2h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V7h3V5h-3V2zM7 9h8v2H7zm0 3v2h8v-2h-3zm0 3h8v2H7z\"/>", "rate_review": "<path d=\"M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17l-.59.59-.58.58V4h16v12zm-9.5-2H18v-2h-5.5zm3.86-5.87c.2-.2.2-.51 0-.71l-1.77-1.77c-.2-.2-.51-.2-.71 0L6 11.53V14h2.47l5.89-5.87z\"/>", "refresh": "<path d=\"M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z\"/>", "schedule": "<path d=\"M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z\"/>", "search": "<path d=\"M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\"/>", "send": "<path d=\"m4.01 6.03 7.51 3.22-7.52-1 .01-2.22m7.5 8.72L4 17.97v-2.22l7.51-1M2.01 3 2 10l15 2-15 2 .01 7L23 12 2.01 3z\"/>", "shield": "<path d=\"M12 2 4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm6 9.09c0 4-2.55 7.7-6 8.83-3.45-1.13-6-4.82-6-8.83v-4.7l6-2.25 6 2.25v4.7z\"/>", "shield_person": "<g fill-rule=\"evenodd\"><circle cx=\"17\" cy=\"15.5\" r=\"1.12\"/><path d=\"M17 17.5c-.73 0-2.19.36-2.24 1.08.5.71 1.32 1.17 2.24 1.17s1.74-.46 2.24-1.17c-.05-.72-1.51-1.08-2.24-1.08z\"/><path d=\"M18 11.09V6.27L10.5 3 3 6.27v4.91c0 4.54 3.2 8.79 7.5 9.82.55-.13 1.08-.32 1.6-.55A5.973 5.973 0 0 0 17 23c3.31 0 6-2.69 6-6 0-2.97-2.16-5.43-5-5.91zM11 17c0 .56.08 1.11.23 1.62-.24.11-.48.22-.73.3-3.17-1-5.5-4.24-5.5-7.74v-3.6l5.5-2.4 5.5 2.4v3.51c-2.84.48-5 2.94-5 5.91zm6 4c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z\"/></g>", "stop": "<path d=\"M16 8v8H8V8h8m2-2H6v12h12V6z\"/>", "subject": "<path d=\"M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z\"/>", "task_alt": "<path d=\"M22 5.18 10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zm-2.21 5.04c.13.57.21 1.17.21 1.78 0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8c1.58 0 3.04.46 4.28 1.25l1.44-1.44A9.9 9.9 0 0 0 12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10c0-1.19-.22-2.33-.6-3.39l-1.61 1.61z\"/>", "thumb_down": "<path d=\"M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm0 12-4.34 4.34L12 14H3v-2l3-7h9v10zm4-12h4v12h-4z\"/>", "thumb_up": "<path d=\"M9 21h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2zM9 9l4.34-4.34L12 10h9v2l-3 7H9V9zM1 9h4v12H1z\"/>", "update": "<path d=\"M11 8v5l4.25 2.52.77-1.28-3.52-2.09V8H11zm10 2V3l-2.64 2.64A8.937 8.937 0 0 0 12 3a9 9 0 1 0 9 9h-2c0 3.86-3.14 7-7 7s-7-3.14-7-7 3.14-7 7-7c1.93 0 3.68.79 4.95 2.05L14 10h7z\"/>", "upload_file": "<path d=\"M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11 8 15.01z\"/>", "warning": "<path d=\"M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z\"/>", "wb_sunny": "<path d=\"m6.76 4.84-1.8-1.79-1.41 1.41 1.79 1.79zM1 10.5h3v2H1zM11 .55h2V3.5h-2zm8.04 2.495 1.408 1.407-1.79 1.79-1.407-1.408zm-1.8 15.115 1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5h3v2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm-1 4h2v2.95h-2zm-7.45-.96 1.41 1.41 1.79-1.8-1.41-1.41z\"/>", "block": "<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9A7.902 7.902 0 0 1 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1A7.902 7.902 0 0 1 20 12c0 4.42-3.58 8-8 8z\"/>", "fact_check": "<g fill-rule=\"evenodd\"><path d=\"M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H4V5h16v14z\"/><path d=\"M19.41 10.42 17.99 9l-3.17 3.17-1.41-1.42L12 12.16 14.82 15zM5 7h5v2H5zm0 4h5v2H5zm0 4h5v2H5z\"/></g>", "flag": "<path d=\"m12.36 6 .4 2H18v6h-3.36l-.4-2H7V6h5.36M14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6L14 4z\"/>", "forum": "<path d=\"M15 4v7H5.17L4 12.17V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z\"/>", "gavel": "<path d=\"M1 21h12v2H1v-2zM5.24 8.07l2.83-2.83 14.14 14.14-2.83 2.83L5.24 8.07zM12.32 1l5.66 5.66-2.83 2.83-5.66-5.66L12.32 1zM3.83 9.48l5.66 5.66-2.83 2.83L1 12.31l2.83-2.83z\"/>", "group_add": "<path d=\"M22 9V7h-2v2h-2v2h2v2h2v-2h2V9zM8 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 7c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6 5H2v-.99C2.2 16.29 5.3 15 8 15s5.8 1.29 6 2v1zM12.51 4.05C13.43 5.11 14 6.49 14 8s-.57 2.89-1.49 3.95C14.47 11.7 16 10.04 16 8s-1.53-3.7-3.49-3.95zm4.02 9.78C17.42 14.66 18 15.7 18 17v3h2v-3c0-1.45-1.59-2.51-3.47-3.17z\"/>", "lightbulb": "<path d=\"M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z\"/>", "star": "<path d=\"M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z\"/>"};
-Object.assign(ICONS,{"north_east": "<path d=\"M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z\"/>", "mic_off": "<path d=\"M10.8 4.9c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 3.91L15 10.6V5c0-1.66-1.34-3-3-3-1.54 0-2.79 1.16-2.96 2.65l1.76 1.76V4.9zM19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4.41 2.86 3 4.27l6 6V11c0 1.66 1.34 3 3 3 .23 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9l4.2 4.2 1.41-1.41L4.41 2.86z\"/>", "edit_note": "<path d=\"M3 10h11v2H3v-2zm0-2h11V6H3v2zm0 8h7v-2H3v2zm15.01-3.13.71-.71a.996.996 0 0 1 1.41 0l.71.71c.39.39.39 1.02 0 1.41l-.71.71-2.12-2.12zm-.71.71-5.3 5.3V21h2.12l5.3-5.3-2.12-2.12z\"/>", "mail": "<path d=\"M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z\"/>", "route": "<path d=\"M19 15.18V7c0-2.21-1.79-4-4-4s-4 1.79-4 4v10c0 1.1-.9 2-2 2s-2-.9-2-2V8.82C8.16 8.4 9 7.3 9 6c0-1.66-1.34-3-3-3S3 4.34 3 6c0 1.3.84 2.4 2 2.82V17c0 2.21 1.79 4 4 4s4-1.79 4-4V7c0-1.1.9-2 2-2s2 .9 2 2v8.18A2.996 2.996 0 0 0 18 21c1.66 0 3-1.34 3-3 0-1.3-.84-2.4-2-2.82zM6 7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 12c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z\"/>", "history": "<path d=\"M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z\"/>", "person": "<path d=\"M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/>", "filter_list": "<path d=\"M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z\"/>", "calendar_view_month": "<path d=\"M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM8 11H4V6h4v5zm6 0h-4V6h4v5zm6 0h-4V6h4v5zM8 18H4v-5h4v5zm6 0h-4v-5h4v5zm6 0h-4v-5h4v5z\"/>", "event_available": "<path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5zm5.56 10.46 5.93-5.93-1.06-1.06-4.87 4.87-2.11-2.11-1.06 1.06z\"/>", "task": "<path d=\"M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9.18-6.95L7.4 14.46 10.94 18l5.66-5.66-1.41-1.41-4.24 4.24-2.13-2.12z\"/>"});
+Object.assign(ICONS,{"north_east": "<path d=\"M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z\"/>", "mic_off": "<path d=\"M10.8 4.9c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 3.91L15 10.6V5c0-1.66-1.34-3-3-3-1.54 0-2.79 1.16-2.96 2.65l1.76 1.76V4.9zM19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4.41 2.86 3 4.27l6 6V11c0 1.66 1.34 3 3 3 .23 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.55-.9l4.2 4.2 1.41-1.41L4.41 2.86z\"/>", "edit_note": "<path d=\"M3 10h11v2H3v-2zm0-2h11V6H3v2zm0 8h7v-2H3v2zm15.01-3.13.71-.71a.996.996 0 0 1 1.41 0l.71.71c.39.39.39 1.02 0 1.41l-.71.71-2.12-2.12zm-.71.71-5.3 5.3V21h2.12l5.3-5.3-2.12-2.12z\"/>", "mail": "<path d=\"M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z\"/>", "list_alt": "<path d=\"M19 5v14H5V5h14m1.1-2H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM11 7h6v2h-6V7zm0 4h6v2h-6v-2zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7z\"/>", "edit": "<path d=\"M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z\"/>", "check": "<path d=\"M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z\"/>", "route": "<path d=\"M19 15.18V7c0-2.21-1.79-4-4-4s-4 1.79-4 4v10c0 1.1-.9 2-2 2s-2-.9-2-2V8.82C8.16 8.4 9 7.3 9 6c0-1.66-1.34-3-3-3S3 4.34 3 6c0 1.3.84 2.4 2 2.82V17c0 2.21 1.79 4 4 4s4-1.79 4-4V7c0-1.1.9-2 2-2s2 .9 2 2v8.18A2.996 2.996 0 0 0 18 21c1.66 0 3-1.34 3-3 0-1.3-.84-2.4-2-2.82zM6 7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 12c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z\"/>", "history": "<path d=\"M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z\"/>", "person": "<path d=\"M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/>", "filter_list": "<path d=\"M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z\"/>", "calendar_view_month": "<path d=\"M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM8 11H4V6h4v5zm6 0h-4V6h4v5zm6 0h-4V6h4v5zM8 18H4v-5h4v5zm6 0h-4v-5h4v5zm6 0h-4v-5h4v5z\"/>", "event_available": "<path d=\"M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5zm5.56 10.46 5.93-5.93-1.06-1.06-4.87 4.87-2.11-2.11-1.06 1.06z\"/>", "task": "<path d=\"M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9.18-6.95L7.4 14.46 10.94 18l5.66-5.66-1.41-1.41-4.24 4.24-2.13-2.12z\"/>"});
 ICONS.folder='<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>';
 ICONS.folder_open='<path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>';
 ICONS.note_add='<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>';
@@ -1098,11 +1142,9 @@ let uid=100;const nid=p=>p+'-'+(++uid);
 
 let EVENTS=[
   {id:'E-1',title:'Планёрка руководителей',date:W(0),s:9,e:9.5,cal:'meet',color:'peacock',people:['anna','igor','olga','dima','maria','pavel'],place:'Переговорная «Кадр»',repeat:'Еженедельно по пн'},
-  {id:'E-2',title:'Фокус: бюджет Q1',date:W(0),s:14,e:16,cal:'focus',color:'lavender',people:['anna']},
   {id:'E-3',title:'Разбор SLA поддержки',date:W(1),s:11,e:12,cal:'meet',color:'tangerine',people:['anna','maria','dima'],place:'Онлайн (Google Meet)',docs:['D-07']},
   {id:'E-4',title:'1:1 с Игорем',date:W(1),s:15,e:15.5,cal:'meet',color:'sage',people:['anna','igor']},
   {id:'E-5',title:'Подготовка к пику: мощности нед. 48',date:W(2),s:10,e:11,cal:'meet',color:'basil',people:['anna','igor','pavel','irina'],place:'Цех, 2 этаж',docs:['D-15','D-03','D-21'],protocol:'P-1'},
-  {id:'E-6',title:'Фокус: стратегия picPac',date:W(2),s:13.5,e:15,cal:'focus',color:'lavender',people:['anna']},
   {id:'E-7',title:'Новогодняя кампания: креатив',date:W(2),s:16,e:17,cal:'meet',color:'grape',people:['anna','olga','dima'],place:'Онлайн (Google Meet)',docs:['D-11']},
   {id:'E-8',title:'Синк picPac.by: мобильное приложение',date:W(3),s:10,e:11,cal:'meet',color:'grape',people:['anna','dima','maria']},
   {id:'E-9',title:'Бюджетный комитет',date:W(3),s:14,e:15.5,cal:'meet',color:'graphite',people:['anna','pavel'],docs:['D-12']},
@@ -1271,7 +1313,7 @@ function openEventPop(id,el){
   ${e.docs?`<div class="pop-row"><span class="ms">attach_file</span><div>${e.docs.map(srcChip).join('')}</div></div>`:''}
   ${e.cal==='meet'&&openT.length?`<div class="pop-row"><span class="ms">checklist</span><div class="small">${openT.map(t=>`<div style="margin-bottom:3px">${prioTag(t.prio)} ${esc(t.title)}</div>`).join('')}</div></div>`:''}
   ${e.cal==='meet'?`<div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px 0 60px">
-    <button class="btn tonal sm" data-a="prep"><span class="ms">auto_awesome</span>Подготовить повестку</button>
+    <button class="btn tonal sm" data-a="prep"><span class="ms">auto_awesome</span>Подготовить план встречи</button>
     <button class="btn sm" data-a="ai"><span class="ms">forum</span>AI-советник</button>
     <button class="btn sm" data-a="notes"><span class="ms">mic</span>${e.protocol?'Открыть протокол':'Вести заметки'}</button></div>`:''}`;
   p.onclick=ev=>{const b=ev.target.closest('[data-a],[data-x],[data-doc]');if(!b)return;ev.preventDefault();
@@ -1322,7 +1364,7 @@ function openCreate(at){
     <textarea class="inp nl-in" id="nlIn" rows="3" placeholder="Опишите своими словами, что нужно сделать: кто, что, к какому сроку, насколько важно" autofocus></textarea>
     <div class="nl-ex">${ex.map(x=>`<button class="nl-chip" data-ex="${esc(x)}">${esc(x)}</button>`).join('')}</div>
     <div id="nlOut"></div>
-    <div class="nl-manual">Или без описания: <a href="#" data-k="task">задача</a> · <a href="#" data-k="meeting">встреча</a> · <a href="#" data-k="request">заявка</a> · <a href="#" data-k="reschedule">перенос</a>${at?' · <a href="#" data-k="focus">фокус-время</a>':''}</div>
+    <div class="nl-manual">Или без описания: <a href="#" data-k="task">задача</a> · <a href="#" data-k="meeting">встреча</a> · <a href="#" data-k="request">заявка</a> · <a href="#" data-k="reschedule">перенос</a></div>
   </div>
   <div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="nlGo" disabled style="opacity:.5">Продолжить</button></div>`,'narrow');
   const go=k=>{modal.dirty=false;closeModal();const x=P||{title:'',people:[],owner:null,deadline:'',prio:'P2',dur:1,src:''};
@@ -1352,7 +1394,7 @@ function openCreate(at){
 document.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)OPEN[b.dataset.open]()});
 
 /* ============ MODAL ============ */
-function modal(html,cls=''){$('#modal').onclick=null;$('#modal').className='modal '+cls;$('#modal').innerHTML=html;$('#scrim').classList.add('on');setTimeout(()=>{const f=$('#modal').querySelector('[autofocus]')||$('#modal').querySelector('input,textarea,button');f&&f.focus()},30)}
+function modal(html,cls=''){modal.dirty=false;$('#modal').onclick=null;$('#modal').className='modal '+cls;$('#modal').innerHTML=html;$('#scrim').classList.add('on');setTimeout(()=>{const f=$('#modal').querySelector('[autofocus]')||$('#modal').querySelector('input,textarea,button');f&&f.focus()},30)}
 function closeModal(){if(window.__meetRecStop){try{window.__meetRecStop()}catch(e){}}if(modal.dirty&&!modal.force){modal.force=true;toast('Есть несохранённые изменения. Нажмите Esc ещё раз, чтобы закрыть без сохранения.');setTimeout(()=>modal.force=false,3000);return}$('#scrim').classList.remove('on');modal.dirty=false;modal.force=false;stopRec()}
 $('#scrim').addEventListener('mousedown',e=>{if(e.target.id==='scrim')closeModal()});
 $('#modal').addEventListener('input',()=>modal.dirty=true);
@@ -1394,17 +1436,21 @@ function openMeeting(pre={}){
       <input class="inp big" id="mTitle" placeholder="О чём встреча?" value="${esc(st.title)}" autofocus>
       <div class="qf"><label>Кто</label><div class="chips" id="mPeople">${st.people.map(p=>`<span class="chip">${av(p)}${PEOPLE[p].short}${p!==me()?`<button data-rm="${p}" aria-label="Убрать"><span class="ms" style="font-size:15px">close</span></button>`:''}</span>`).join('')}<select class="chip-add" id="mAdd"><option value="">+ добавить</option>${others.map(p=>`<option value="${p}">${PEOPLE[p].name}</option>`).join('')}</select></div></div>
       <div class="qf"><label>Сколько</label><div class="seg" id="mDur">${[[.5,'30 мин'],[1,'1 час'],[1.5,'1,5 часа']].map(([d,l])=>`<button data-d="${d}" aria-pressed="${d===st.dur}">${l}</button>`).join('')}</div></div>
-      <div class="qf top"><label>Когда</label><div class="slots3">${opts.length?opts.map((x,i)=>`<button class="slot3" data-slot="${i}" aria-pressed="${x===sel}"><b>${fmtDW(x.ds)}</b><span>${hm(x.s)} – ${hm(x.s+st.dur)}</span>${x.best?'<i>лучше всего</i>':''}</button>`).join(''):'<div class="small muted">Нет общего окна на 2 недели — сократите состав или длительность</div>'}</div></div>
-      ${sel?`<div class="why"><span class="ms">auto_awesome</span>${sel.why.join(' · ')}. Повестку и нужные документы ассистент приложит сам.</div>`:''}
+      <div class="qf top"><label>Когда<small class="tzl">UTC+3</small></label><div class="slots3">${opts.length?opts.map((x,i)=>`<button class="slot3" data-slot="${i}" aria-pressed="${x===sel}"><b>${fmtDW(x.ds)}</b><span>${hm(x.s)} – ${hm(x.s+st.dur)}</span>${x.best?'<i>лучше всего</i>':''}</button>`).join(''):'<div class="small muted">Нет общего окна на 2 недели — сократите состав или длительность</div>'}</div></div>
+      ${sel?`<div class="why"><span class="ms">auto_awesome</span>${sel.why.join(' · ')}</div>`:''}
+      <details class="tf-more" id="mAgD" ${st.agOpen?'open':''}><summary>План встречи — проверить и изменить перед отправкой</summary><textarea class="inp" id="mAg" rows="5" placeholder="Каждый пункт с новой строки">${esc(st.agText||'')}</textarea></details>
     </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="mGo" ${st.chosen&&st.title.trim()?'':'disabled'}>Создать и пригласить</button></div>`,'narrow');
     const sync=()=>{st.title=$('#mTitle').value};
     $('#mTitle').oninput=()=>{sync();$('#mGo').disabled=!(st.chosen&&st.title.trim())};
+    const fillAg=()=>{if(!st.agEdited){st.agText=buildAgenda({title:st.title,topic:st.topic,people:st.people,linkTask:''}).items.join('\n');$('#mAg').value=st.agText}};
+    $('#mAgD').ontoggle=()=>{st.agOpen=$('#mAgD').open;if(st.agOpen){sync();fillAg()}};
+    $('#mAg').oninput=()=>{st.agEdited=true;st.agText=$('#mAg').value};
     $('#mAdd').onchange=e=>{sync();if(e.target.value){st.people.push(e.target.value);st.manual=false}draw()};
     $('#mPeople').onclick=e=>{const b=e.target.closest('[data-rm]');if(!b)return;sync();st.people=st.people.filter(p=>p!==b.dataset.rm);st.manual=false;draw()};
     $('#mDur').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;sync();st.dur=+b.dataset.d;if(st.manual)st.chosen.e=st.chosen.s+st.dur;draw()};
     $$('[data-slot]').forEach(b=>b.onclick=()=>{sync();st.chosen=opts[+b.dataset.slot];draw()});
     $('#mGo').onclick=()=>{sync();const c=st.chosen;const ag=buildAgenda({title:st.title,topic:st.topic,people:st.people,linkTask:''});
-      const e={id:nid('E'),title:st.title.trim(),date:c.ds,s:c.s,e:c.s+st.dur,cal:'meet',color:'peacock',people:[...st.people],place:'Онлайн (Google Meet)',docs:ag.src,agenda:ag.items,topic:st.topic||st.title};
+      const items=st.agEdited?st.agText.split('\n').map(x=>x.trim()).filter(Boolean):ag.items;const e={id:nid('E'),title:st.title.trim(),date:c.ds,s:c.s,e:c.s+st.dur,cal:'meet',color:'peacock',people:[...st.people],place:'Онлайн (Google Meet)',docs:ag.src,agenda:items,topic:st.topic||st.title};
       EVENTS.push(e);log('Создание встречи + приглашения',e.title,'подтверждено пользователем · '+(e.people.length-1)+' приглашений');log('AI: подбор времени',e.title,'выбрано '+fmtDW(c.ds)+' '+hm(c.s));
       modal.dirty=false;closeModal();anchor=parse(c.ds);show('calendar');
       toast(`Встреча ${fmtDW(c.ds)}, ${hm(c.s)} создана, приглашения отправлены`,'Отменить',()=>{EVENTS=EVENTS.filter(x=>x!==e);log('Отмена создания',e.title,'откат');refresh()})};
@@ -1433,16 +1479,16 @@ function buildAgenda(st){
 function previewMeeting(st,back){
   const c=st.chosen;
   modal(`${mh('fact_check','Проверьте перед отправкой','var(--peacock)')}<div class="mb">
-    <div class="steps"><span>1 · Параметры</span>›<span>2 · Время</span>›<span>3 · Повестка</span>›<span class="on">4 · Подтверждение</span></div>
+    <div class="steps"><span>1 · Параметры</span>›<span>2 · Время</span>›<span>3 · План встречи</span>›<span class="on">4 · Подтверждение</span></div>
     <div class="preview"><dl>
       <dt>Встреча</dt><dd><b>${esc(st.title)}</b></dd>
       <dt>Когда</dt><dd>${fmtDW(c.ds)}, ${hm(c.s)} – ${hm(c.s+st.dur)} (Europe/Minsk)</dd>
       <dt>Где</dt><dd>${esc(st.place)}</dd>
       <dt>Приглашения</dt><dd>${st.people.filter(p=>p!==me()).map(p=>PEOPLE[p].name).join(', ')||'—'}</dd>
-      <dt>Повестка</dt><dd>${st.agenda?'<ol style="margin:0;padding-left:18px">'+st.agenda.items.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ol>':'<span class="tag warn">не сформирована</span>'}</dd>
+      <dt>План встречи</dt><dd>${st.agenda?'<ol style="margin:0;padding-left:18px">'+st.agenda.items.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ol>':'<span class="tag warn">не сформирована</span>'}</dd>
       <dt>Документы</dt><dd>${st.agenda&&st.agenda.src.length?st.agenda.src.map(srcChip).join(''):'—'}</dd>
     </dl></div>
-    <div class="field" style="margin-top:12px"><label>Текст приглашения (можно править)</label><textarea class="inp" id="invTxt" rows="3">Коллеги, приглашаю на «${esc(st.title)}». ${st.topic?'Цель: '+esc(st.topic)+'. ':''}Повестка и документы во вложении. Если время не подходит — предложите перенос прямо из приглашения.</textarea></div>
+    <div class="field" style="margin-top:12px"><label>Текст приглашения (можно править)</label><textarea class="inp" id="invTxt" rows="3">Коллеги, приглашаю на «${esc(st.title)}». ${st.topic?'Цель: '+esc(st.topic)+'. ':''}План встречи и документы во вложении. Если время не подходит — предложите перенос прямо из приглашения.</textarea></div>
   </div>
   <div class="mf"><button class="btn text" id="backB">Назад</button><button class="btn primary" id="sendB"><span class="ms">send</span>Создать и отправить</button></div>`,'wide');
   $('#backB').onclick=back;
@@ -1451,18 +1497,20 @@ function previewMeeting(st,back){
     toast('Встреча создана, приглашения отправлены ('+(e.people.length-1)+')','Отменить',()=>{EVENTS=EVENTS.filter(x=>x!==e);log('Отмена создания',e.title,'откат');renderCal()})};
 }
 function openPrep(id){const e=EVENTS.find(x=>x.id===id);const st={title:e.title,topic:e.topic||'',people:e.people,linkTask:''};const ag=buildAgenda(st);
-  modal(`${mh('auto_awesome','Подготовка: '+esc(e.title),'#7b4fd6')}<div class="mb">
-  <div class="muted small" style="margin-bottom:10px">${fmtDW(e.date)}, ${hm(e.s)} – ${hm(e.e)} · ${e.people.length} участник(а)</div>
-  <div class="card ai-card" style="margin-bottom:12px"><div class="ai-label"><span class="ms" style="font-size:16px">auto_awesome</span>Проект повестки</div><ol class="agenda" style="margin:8px 0 0">${(e.agenda||ag.items).map(a=>`<li contenteditable>${esc(a)}</li>`).join('')}</ol>
-  <div style="margin-top:8px">${ag.src.map(srcChip).join('')||'<span class="tag warn">Документов по теме не найдено</span>'}</div></div>
-  <div class="row2"><div class="card"><h2>Открытые задачи участников</h2>${ag.tasks.map(t=>`<div class="small" style="margin-bottom:6px">${prioTag(t.prio)} ${esc(t.title)}<br><span class="muted">${t.owner?PEOPLE[t.owner].short:'нет владельца'} · ${t.deadline?fmtD(t.deadline):'срок не задан'}</span></div>`).join('')||'<div class="small muted">Нет</div>'}</div>
-  <div class="card"><h2>Вопросы</h2><ul class="small" style="margin:0;padding-left:18px">${ag.q.map(q=>`<li>${esc(q)}</li>`).join('')||'<li class="muted">Требует уточнения</li>'}</ul></div></div>
-  ${ag.denied?`<div class="hint"><span class="ms" style="font-size:14px">lock</span> ${ag.denied} документ(а) недоступны вашей роли и не использованы.</div>`:''}
-  </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button><button class="btn tonal" id="prepAi"><span class="ms">auto_awesome</span>AI-советник</button><button class="btn tonal" id="shareAg"><span class="ms">send</span>Разослать повестку участникам</button></div>`,'wide');
+  modal(`${mh('list_alt','План встречи: '+esc(e.title))}<div class="mb">
+  <div class="muted small" style="margin-bottom:10px">${fmtDW(e.date)}, ${hm(e.s)} – ${hm(e.e)} <i class="tzi">UTC+3</i> · ${e.people.map(p=>PEOPLE[p]?PEOPLE[p].short:p).join(', ')}</div>
+  <div class="md-s" style="margin-top:0">Пункты плана · каждый с новой строки</div>
+  <textarea class="inp md-ta" id="prepAg" rows="6">${esc((e.agenda||ag.items).join('\n'))}</textarea>
+  <div style="margin:10px 0 4px">${ag.src.map(srcChip).join('')}</div>
+  ${ag.tasks.length?`<div class="md-s">Открытые задачи участников</div>${ag.tasks.slice(0,4).map(t=>`<div class="kr" data-tv="${t.id}"><i class="pdot" style="background:${PRIO[t.prio].c}"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner&&PEOPLE[t.owner]?PEOPLE[t.owner].short:'нет владельца'}</span></div><span class="kr-d">${t.deadline?fmtD(t.deadline):''}</span></div>`).join('')}`:''}
+  </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="gbtn" id="prepAi"><span class="ms">auto_awesome</span>AI-советник</button><button class="gbtn" id="prepSave">Сохранить</button><button class="btn primary" id="shareAg"><span class="ms">send</span>Сохранить и разослать</button></div>`,'wide');
   log('AI: подготовка встречи',e.title,'источники: '+ag.src.join(', '));
-  $('#prepAi').onclick=()=>{closeModal();openCalendarAI({focusId:id,question:`Подготовь меня к встрече «${e.title}»: что обсудить, какие риски и что стоит перенести?`})};
-  $('#shareAg').onclick=()=>confirmAct({title:'Разослать повестку?',body:`<p>Повестка уйдёт ${e.people.length-1} участникам встречи «${esc(e.title)}».</p>`,ok:'Отправить',onOk:()=>{log('Рассылка повестки',e.title,'подтверждено');toast('Повестка отправлена участникам')}});
+  const save=()=>{e.agenda=$('#prepAg').value.split('\n').map(x=>x.trim()).filter(Boolean);log('Изменение плана встречи',e.title)};
+  $('#prepAi').onclick=()=>{save();modal.dirty=false;closeModal();openCalendarAI({focusId:id,question:`Подготовь меня к встрече «${e.title}»: что обсудить, какие риски и что стоит перенести?`})};
+  $('#prepSave').onclick=()=>{save();modal.dirty=false;closeModal();refresh(true);toast('План встречи сохранён')};
+  $('#shareAg').onclick=()=>{save();modal.dirty=false;closeModal();log('Рассылка плана встречи',e.title,'участникам: '+(e.people.length-1));refresh(true);toast('План встречи отправлен участникам ('+(e.people.length-1)+')')};
 }
+
 
 /* ============ 2. TASK (постановка) ============ */
 function similar(a,b){const w=s=>new Set(s.toLowerCase().replace(/[^а-яёa-z0-9 ]/g,'').split(' ').filter(x=>x.length>3).map(x=>x.slice(0,4)));const A=w(a),B=w(b);let n=0;A.forEach(x=>B.has(x)&&n++);return n<2?0:n/Math.max(1,Math.min(A.size,B.size))}
@@ -1548,7 +1596,6 @@ function openTaskView(id){
     ${t.source.ref?`<div style="margin-top:8px" class="small">Связано: ${t.source.type==='doc'?srcChip(t.source.ref):`<a href="#" data-ev="${t.source.ref}" style="color:var(--primary)">встреча «${esc(t.source.label)}»</a>`}</div>`:''}
     ${t.co.length?`<div class="small" style="margin-top:8px">Соисполнители: ${t.co.map(pname).join(', ')}</div>`:''}
     ${isServerTask(t)?'<div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">lock</span> Задача из протокола: название и основание зафиксированы, статус синхронизируется с сервером.</div>':''}
-    <div class="hist"><div><b>История</b></div>${t.hist.map(h=>`<div>${h.t} · ${PEOPLE[h.u]?.short||h.u}: ${esc(h.a)}</div>`).join('')||'<div>—</div>'}</div>
   </div>
   <div class="mf">
     ${isServerTask(t)?'':`<button class="btn sm" id="tvEdit"><span class="ms">edit</span>Изменить</button><button class="btn sm" id="tvDl"><span class="ms">update</span>Перенести срок</button>`}<button class="btn sm danger" id="tvDel"><span class="ms">delete</span>Удалить</button>
@@ -1598,19 +1645,20 @@ function renderBoard(){
   renderInbox();
   $$('#boardMode button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.bm===BOARD_MODE));
   $('#board').className=BOARD_MODE==='matrix'?'matrix':'board';
-  if(BOARD_MODE==='matrix'){const open=list.filter(t=>t.status!=='done');const q=k=>{const L=open.filter(t=>t.prio===k).sort((a,b)=>(a.deadline||'9').localeCompare(b.deadline||'9'));const x=PRIO[k];return `<div class="quad" data-q="${k}" style="--qc:${x.c};--qbg:${x.bg}"><h3><i class="pdot" style="background:${x.c}"></i>${x.a}<small>${x.l}</small><span class="n">${L.length}</span></h3>${L.slice(0,LANE_OPEN['q'+k]?99:3).map(tcard).join('')}${L.length>3&&!LANE_OPEN['q'+k]?`<button class="lane-more" data-lane-more="q${k}">Ещё ${L.length-3}</button>`:''}${!L.length?'<div class="empty small">Пусто, перетащите задачу сюда</div>':''}</div>`};
+  if(BOARD_MODE==='matrix'){const open=list.filter(t=>t.status!=='done');const q=k=>{const L=open.filter(t=>t.prio===k).sort((a,b)=>(a.deadline||'9').localeCompare(b.deadline||'9'));const x=PRIO[k];const D=mailNew().filter(m=>m.task.prio===k);return `<div class="quad" data-q="${k}" style="--qc:${x.c};--qbg:${x.bg}"><h3><i class="pdot" style="background:${x.c}"></i>${x.a}<small>${x.l}</small><span class="n">${L.length+D.length}</span></h3>${D.map(mailCard).join('')}${L.slice(0,LANE_OPEN['q'+k]?99:3).map(tcard).join('')}${L.length>3&&!LANE_OPEN['q'+k]?`<button class="lane-more" data-lane-more="q${k}">Ещё ${L.length-3}</button>`:''}${!L.length?'<div class="empty small">Пусто, перетащите задачу сюда</div>':''}</div>`};
     $('#board').innerHTML=`<span class="mx-ax corner"></span><span class="mx-ax h">Срочно</span><span class="mx-ax h">Не срочно</span><span class="mx-ax v">Важно</span>${q('P1')}${q('P2')}<span class="mx-ax v">Не важно</span>${q('P3')}${q('P4')}`;return}
   $('#board').innerHTML=lanes.map(([k,n])=>{const L=list.filter(t=>t.status===k).sort((a,b)=>a.prio.localeCompare(b.prio)||(a.deadline||'9').localeCompare(b.deadline||'9'));const open=LANE_OPEN[k],lim=k==='done'&&!open?0:open?99:4;
-    return `<div class="lane ${k==='done'&&!open?'folded':''}" data-lane="${k}"><h3>${n}<span>${L.length}</span></h3>${L.slice(0,lim).map(tcard).join('')}${L.length>lim?`<button class="lane-more" data-lane-more="${k}">${k==='done'&&!open?'Показать':'Ещё '+(L.length-lim)}</button>`:''}${!L.length?'<div class="empty small">Пусто</div>':''}</div>`}).join('');
+    const D=k==='new'?mailNew():[];
+    return `<div class="lane ${k==='done'&&!open?'folded':''}" data-lane="${k}"><h3>${n}<span>${L.length+D.length}</span></h3>${D.map(mailCard).join('')}${L.slice(0,lim).map(tcard).join('')}${L.length>lim?`<button class="lane-more" data-lane-more="${k}">${k==='done'&&!open?'Показать':'Ещё '+(L.length-lim)}</button>`:''}${!L.length&&!D.length?'<div class="empty small">Пусто</div>':''}</div>`}).join('');
 }
 function tcard(t){
   const od=t.deadline&&t.deadline<TODAY&&t.status!=='done';const miss=!t.owner||!t.deadline||!t.kpi.m;const dup=t.status!=='done'&&TASKS.find(x=>x!==t&&x.status!=='done'&&similar(x.title,t.title)>=.5);
   return `<div class="tcard" style="--pc:${(PRIO[t.prio]||PRIO.P4).c}" data-t="${t.id}" draggable="${t.claimedBy===me()||!t.claimedBy}" tabindex="0" title="${PRIO[t.prio]?PRIO[t.prio].l:''}">
     <div class="ttl">${esc(t.title)}</div>
-    <div class="meta">${t.owner?av(t.owner,20):'<span class="ms" style="font-size:16px;color:var(--warn)" title="нет владельца">person</span>'}${t.deadline?`<span class="${od?'overdue':''}">${od?'просрочено · ':''}${fmtD(t.deadline)}</span>`:'<span class="muted">без срока</span>'}<span class="spacer"></span>${miss?'<span class="ms" style="font-size:16px;color:var(--warn)" title="Требует уточнения">help</span>':''}${dup?'<span class="ms" style="font-size:16px;color:var(--err)" title="Возможный дубль '+dup.id+'">content_copy</span>':''}${!t.claimedBy&&t.status!=='done'?`<button class="btn text sm" data-claim="${t.id}" style="padding:0 6px">Взять</button>`:''}<button class="tdel" data-del="${t.id}" title="Удалить"><span class="ms">delete</span></button></div>
+    <div class="meta">${t.owner?av(t.owner,20):'<span class="ms" style="font-size:16px;color:var(--warn)" title="нет владельца">person</span>'}${t.deadline?`<span class="${od?'overdue':''}">${od?'просрочено · ':''}${fmtD(t.deadline)}</span>`:'<span class="muted">без срока</span>'}<span class="spacer"></span>${miss?'<span class="ms" style="font-size:16px;color:var(--warn)" title="Требует уточнения">help</span>':''}${dup?'<span class="ms" style="font-size:16px;color:var(--err)" title="Возможный дубль '+dup.id+'">content_copy</span>':''}${!t.claimedBy&&t.status!=='done'?`<button class="btn text sm" data-claim="${t.id}" style="padding:0 6px">Взять</button>`:''}${isServerTask(t)?'':`<button class="tdel" data-edit="${t.id}" title="Изменить"><span class="ms">edit</span></button>`}<button class="tdel" data-del="${t.id}" title="Удалить"><span class="ms">delete</span></button></div>
   </div>`;
 }
-$('#board').addEventListener('click',e=>{const d=e.target.closest('[data-del]');if(d){e.stopPropagation();deleteTask(d.dataset.del);return}const c=e.target.closest('[data-claim]');if(c){e.stopPropagation();claim(c.dataset.claim);return}const t=e.target.closest('.tcard');if(t)openTaskView(t.dataset.t)});
+$('#board').addEventListener('click',e=>{if(e.target.closest('[data-mt]'))return;const ed=e.target.closest('[data-edit]');if(ed){e.stopPropagation();openTask({},ed.dataset.edit);return}const d=e.target.closest('[data-del]');if(d){e.stopPropagation();deleteTask(d.dataset.del);return}const c=e.target.closest('[data-claim]');if(c){e.stopPropagation();claim(c.dataset.claim);return}const t=e.target.closest('.tcard');if(t)openTaskView(t.dataset.t)});
 $('#board').addEventListener('keydown',e=>{if(e.key==='Enter'){const t=e.target.closest('.tcard');if(t)openTaskView(t.dataset.t)}});
 let dragT=null;
 $('#board').addEventListener('dragstart',e=>{const t=e.target.closest('.tcard');dragT=t&&t.dataset.t});
@@ -1643,8 +1691,8 @@ function reqHtml(tab){
     const acts=r.status==='pending'&&r.to===me()?`<button class="btn sm" data-r="decline" data-id="${r.id}">Отклонить</button>${r.kind==='reschedule'?`<button class="btn sm" data-r="other" data-id="${r.id}">Другое время</button>`:''}<button class="btn primary sm" data-r="ok" data-id="${r.id}">${r.kind==='task'?'Принять и поставить':'Согласовать'}</button>`:r.status==='pending'?`<span class="tag info">ожидает ответа</span><button class="btn text sm" data-r="cancel" data-id="${r.id}">Отозвать</button>`:`<span class="tag ${r.status==='approved'||r.status==='done'?'ok':'err'}">${r.status==='approved'?'согласовано':r.status==='done'?'отправлено':'отклонено'}</span>`;
     return `<div class="req"><div class="ic" style="background:${bg};color:${c}"><span class="ms">${ic}</span></div><div>${body}${r.comment?`<div class="small" style="margin-top:4px">💬 ${esc(r.comment)}</div>`:''}<div class="small muted" style="margin-top:4px">${r.created}</div></div><div class="acts">${acts}</div></div>`}).join(''):(tab==='in'?`<div class="small muted" style="padding:4px 0"><span class="ms" style="font-size:16px;color:var(--ok)">check_circle</span> Новых запросов нет</div>`:`<div class="empty"><span class="ms" style="font-size:40px">inbox</span><br>Здесь пусто</div>`);
 }
-function renderInbox(){const n=REQUESTS.filter(r=>r.to===me()&&r.status==='pending'&&r.kind!=='feedback').length+(MAIL_ON?MAILS.filter(m=>m.task&&m.status==='new').length:0);const b=$('#inboxBtn');if(b){b.classList.toggle('has',!!n);$('#inboxN').innerHTML=n?`Входящие <b>${n}</b>`:'Входящих нет'}const el=$('#taskInbox');if(el)el.innerHTML=reqHtml('in')}
-function openInbox(){modal(`${mh('move_to_inbox','Входящие')}<div class="mb"><div class="ib-s">Из почты</div><div id="mailInbox">${mailTasksHtml()}</div><div class="ib-s">От коллег</div><div id="taskInbox">${reqHtml('in')}</div></div>`,'wide');$('#taskInbox').onclick=reqClick;$('#mailInbox').onclick=mailClick}
+function renderInbox(){const n=REQUESTS.filter(r=>r.to===me()&&r.status==='pending'&&r.kind!=='feedback').length;const b=$('#inboxBtn');if(b){b.classList.toggle('has',!!n);$('#inboxN').innerHTML=n?`Входящие <b>${n}</b>`:'Входящих нет'}const el=$('#taskInbox');if(el)el.innerHTML=reqHtml('in')}
+function openInbox(){modal(`${mh('move_to_inbox','Входящие запросы')}<div class="mb"><div id="taskInbox">${reqHtml('in')}</div></div>`,'wide');$('#taskInbox').onclick=reqClick}
 function renderReq(){renderInbox();if(currentView==='stats')renderStatTop();updateCounts()}
 function rescheduleImpact(r){const e=EVENTS.find(x=>x.id===r.obj);if(!e)return'';const P=r.payload;const clash=e.people.filter(p=>busyFor(p,P.toDate).some(b=>b.t!==e.title&&overlap(P.toS,P.toE,b.s,b.e)));return clash.length?`<div class="small" style="color:var(--warn);margin-top:4px"><span class="ms" style="font-size:15px">warning</span> В новое время заняты: ${clash.map(p=>PEOPLE[p].short).join(', ')}</div>`:`<div class="small" style="color:var(--ok);margin-top:4px"><span class="ms" style="font-size:15px">check_circle</span> Все участники свободны в новое время</div>`}
 const reqClick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const r=REQUESTS.find(x=>x.id===b.dataset.id);const a=b.dataset.r;
@@ -1712,11 +1760,10 @@ function openReschedule(pre={}){
 function openFeedback(id){const t=TASKS.find(x=>x.id===id);let v='accepted';
   modal(`${mh('rate_review','Обратная связь: '+t.id,'var(--grape)')}<div class="mb"><p style="margin-top:0">${esc(t.title)} · исполнитель ${pname(t.owner)}</p>
   <div class="seg" id="fbV" style="margin-bottom:12px"><button data-v="accepted" aria-pressed="true">Принять результат</button><button data-v="rework" aria-pressed="false">На доработку</button></div>
-  <div class="field"><label>KPI «${esc(t.kpi.m)}» — фактическое значение</label><input class="inp" id="fbK" placeholder="цель ${esc(t.kpi.t)}"></div>
-  <div class="field"><label>Комментарий</label><textarea class="inp" id="fbT" placeholder="Что хорошо, что поправить"></textarea></div></div>
-  <div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="fbOk">Отправить</button></div>`,'narrow');
-  $('#fbV').onclick=e=>{const b=e.target.closest('button');if(!b)return;v=b.dataset.v;$$('#fbV button').forEach(x=>x.setAttribute('aria-pressed',x===b))};
-  $('#fbOk').onclick=()=>{const txt=$('#fbT').value+($('#fbK').value?' · KPI факт: '+$('#fbK').value:'');REQUESTS.unshift({id:nid('R'),kind:'feedback',from:me(),to:t.owner,obj:t.id,objLabel:t.title,payload:{verdict:v,text:txt||'—'},status:'done',created:'сейчас'});t.status=v==='accepted'?'done':'progress';t.hist.push({t:nowStr(),u:me(),a:v==='accepted'?'принял(а) результат':'вернул(а) на доработку'});log('Обратная связь',t.id,v);syncServerTask(t,t.status);modal.dirty=false;closeModal();refresh();toast('Обратная связь отправлена '+PEOPLE[t.owner].short)};
+  <div id="fbRw" style="display:none"><div class="field"><label>Что доработать</label><textarea class="inp" id="fbT" placeholder="Коротко: что поправить"></textarea></div></div><input type="hidden" id="fbK" value=""></div>
+  <div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="fbOk">ОК</button></div>`,'narrow');
+  $('#fbV').onclick=e=>{const b=e.target.closest('button');if(!b)return;v=b.dataset.v;$$('#fbV button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#fbRw').style.display=v==='rework'?'':'none';$('#fbOk').textContent=v==='rework'?'Вернуть на доработку':'ОК'};
+  $('#fbOk').onclick=()=>{const txt=$('#fbT').value+($('#fbK').value?' · KPI факт: '+$('#fbK').value:'');REQUESTS.unshift({id:nid('R'),kind:'feedback',from:me(),to:t.owner,obj:t.id,objLabel:t.title,payload:{verdict:v,text:txt||'—'},status:'done',created:'сейчас'});t.status=v==='accepted'?'done':'progress';t.hist.push({t:nowStr(),u:me(),a:v==='accepted'?'принял(а) результат':'вернул(а) на доработку'});log('Обратная связь',t.id,v);syncServerTask(t,t.status);modal.dirty=false;closeModal();refresh();toast('Обратная связь отправлена: '+PEOPLE[t.owner].short)};
 }
 
 function openRequest(){
@@ -1761,14 +1808,14 @@ const MEET_SUM={
     tasks:['T-2','T-4'],open:['Менять ли подрядчика доставки — решим после переговоров'],risks:['Декабрьский пик обращений может снова уронить SLA'],
     quotes:[['maria','31% обращений — «где мой заказ». Если показывать статус сразу, нагрузка упадёт.'],['dima','Статус заказа в автоответ можем выкатить за неделю.']]}
 };
-let MEET_SEL=null;
+let MEET_SEL=null,MEET_EDIT=null;
 const MEET_OPEN={};
 let AI_MEETINGS={};
 let MEETING_TASKS=[];
 const AI_LOADED=new Set();
 function fmtAiDate(iso){try{const d=new Date(iso);return d.toLocaleString('ru-RU',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
 async function loadMeetingAI(id){
-  if(!id||AI_LOADED.has(id))return;
+  if(!id||AI_LOADED.has(id)||window.AI_BOOTED)return;
   AI_LOADED.add(id);
   try{const r=await fetch(`/api/meetings/${encodeURIComponent(id)}/ai`,{credentials:'same-origin'});if(r.ok){AI_MEETINGS[id]=await r.json();if(currentView==='meetings'&&MEET_SEL===id)renderMeetings()}}catch(e){}
 }
@@ -1792,7 +1839,7 @@ function meetAiHtml(e,A){
     <div class="md-s">Задачи по итогам</div>${tasks}
     ${risks.length?`<div class="md-s">Риски</div>${list(risks,'md-r')}`:''}
     <details class="md-qt"><summary>Расшифровка · можно исправить</summary><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;padding-top:6px">${esc(A.transcript||'')}</div></details>
-    <div class="small muted" style="margin-top:8px"><span class="ms" style="font-size:14px">shield</span> Запись обработана на сервере. Персональные данные обезличены перед анализом.</div>
+    
     ${feedback}
   </div><div class="md-act" id="mdAct" style="flex-wrap:wrap"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="gbtn" data-ma="edit"><span class="ms">edit</span>Редактировать</button><button class="gbtn" data-ma="tasks"><span class="ms">task_alt</span>В задачи</button><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать заново</button></div>`;
 }
@@ -1837,7 +1884,7 @@ function openMeetEdit(e,A){
   const lines=x=>(x||[]).join('\n');
   const fb=A.feedback||{};
   modal(`${mh('edit','Исправить выжимку: '+esc(e.title))}<div class="mb">
-    <div class="alert ok"><span class="ms">shield</span> Правки сохраняются на сервере и попадают в аудит. Проверьте текст перед сохранением.</div>
+    
     <label class="small">Коротко</label><textarea class="inp" id="meSummary" rows="4">${esc(A.summary||'')}</textarea>
     <div class="row2">
       <div><label class="small">Решено (по одному в строке)</label><textarea class="inp" id="meDecided" rows="3">${esc(lines(P.decided))}</textarea></div>
@@ -1916,19 +1963,34 @@ function renderMeetings(){
   <div class="mt-grid"><div class="mcol"><div class="glass mlist2"><div class="ml-s">Ближайшие</div>${up.slice(0,lim('up')).map(row).join('')||'<div class="small muted">Нет</div>'}${more('up',up)}</div><div class="glass mlist2"><div class="ml-s">Прошедшие</div>${past.slice(0,lim('past')).map(row).join('')||'<div class="small muted">Нет</div>'}${more('past',past)}</div></div>
   <div class="glass mdet">${e?meetDetail(e,isPast(e)):'<div class="muted">Выберите встречу</div>'}</div></div>`;
   $$('[data-meet-more]').forEach(b=>b.onclick=()=>{MEET_OPEN[b.dataset.meetMore]=true;renderMeetings()});
-  $$('[data-msel]').forEach(b=>b.onclick=()=>{MEET_SEL=b.dataset.msel;renderMeetings()});
+  $$('[data-msel]').forEach(b=>b.onclick=()=>{MEET_SEL=b.dataset.msel;MEET_EDIT=null;renderMeetings()});
   $('#upTr').onchange=ev=>{const f=ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>openNotes(null,rd.result);rd.readAsText(f)};
   if($('#meetRec'))$('#meetRec').onclick=()=>{const ev=EVENTS.find(x=>x.id===MEET_SEL);if(!ev){toast('Выберите встречу');return}openMeetRecord(ev)};
   loadMeetingAI(MEET_SEL);
   const act=$('#mdAct');if(act)act.onclick=ev=>{const b=ev.target.closest('[data-ma]');if(!b)return;const a=b.dataset.ma;
     if(a==='rec')openNotes(e.id);if(a==='ai-rec')openMeetRecord(e);if(a==='resched')openReschedule({eventId:e.id});
-    if(a==='edit')openMeetEdit(e,AI_MEETINGS[e.id]);
+    if(a==='edit'){if(AI_MEETINGS[e.id])openMeetEdit(e,AI_MEETINGS[e.id]);else{MEET_EDIT=e.id;renderMeetings()}}if(a==='cancel'){MEET_EDIT=null;renderMeetings()}
+    if(a==='save'){const L=id=>($(id)?.value||'').split('\n').map(x=>x.trim()).filter(Boolean);
+      if($('#meAg')){e.agenda=L('#meAg');log('Изменение плана встречи',e.title)}
+      else{const S=MEET_SUM[e.id]||(MEET_SUM[e.id]={dur:'',tasks:[],quotes:[]});S.summary=$('#meSum').value.trim();S.decided=L('#meDec');S.open=L('#meOpen');S.risks=L('#meRisk');log('Редактирование выжимки',e.title)}
+      MEET_EDIT=null;renderMeetings();toast('Сохранено')}
     if(a==='tasks')openMeetTasks(e,AI_MEETINGS[e.id]);
     if(a==='copy'){navigator.clipboard?.writeText($('.md-sum')?.innerText||'').then(()=>toast('Выжимка скопирована')).catch(()=>toast('Не удалось скопировать'))}
     if(a==='send'){confirmAct({title:'Отправить выжимку?',body:`<p>Выжимка уйдёт ${e.people.length-1} участникам. Проверьте текст перед отправкой.</p>`,ok:'Отправить',onOk:()=>{log('Рассылка выжимки',e.title,'участникам: '+(e.people.length-1));toast('Выжимка отправлена участникам ('+(e.people.length-1)+')')}})}};
 }
+function meetEditForm(e,past){
+  const head=`<div class="md-h"><div><h2>${esc(e.title)}</h2><div class="md-m">${fmtDW(e.date)}, ${hm(e.s)}–${hm(e.e)} <i class="tzi">UTC+3</i></div></div></div>`;
+  const act=`<div class="md-act" id="mdAct"><button class="btn text" data-ma="cancel">Отмена</button><button class="btn primary" data-ma="save">Сохранить</button></div>`;
+  if(!past){const ag=e.agenda||buildAgenda({title:e.title,topic:e.topic||'',people:e.people,linkTask:''}).items;return `${head}<div class="md-s">План встречи · каждый пункт с новой строки</div><textarea class="inp md-ta" id="meAg" rows="8">${esc(ag.join('\n'))}</textarea>${act}`}
+  const S=MEET_SUM[e.id];const P=PROTOCOLS[e.id];
+  const sum=S?S.summary:'',dec=S?S.decided:(P?P.decided.map(x=>x.txt):[]),op=S?S.open:(P?P.unclear.map(x=>x.txt):[]),rk=S?S.risks:(P?P.risks.map(x=>x.txt):[]);
+  return `${head}<div class="md-s">Коротко</div><textarea class="inp md-ta" id="meSum" rows="4">${esc(sum)}</textarea>
+    <div class="md-s">Решения · каждое с новой строки</div><textarea class="inp md-ta" id="meDec" rows="4">${esc(dec.join('\n'))}</textarea>
+    <div class="md-2"><div><div class="md-s">Осталось открытым</div><textarea class="inp md-ta" id="meOpen" rows="3">${esc(op.join('\n'))}</textarea></div><div><div class="md-s">Риски</div><textarea class="inp md-ta" id="meRisk" rows="3">${esc(rk.join('\n'))}</textarea></div></div>${act}`;
+}
 function meetDetail(e,past){
-  const head=`<div class="md-h"><div><h2>${esc(e.title)}</h2><div class="md-m">${fmtDW(e.date)}, ${hm(e.s)}–${hm(e.e)}${e.place?' · '+esc(e.place):''}</div></div><span class="rm-avs">${e.people.map(p=>av(p)).join('')}</span></div>`;
+  if(MEET_EDIT===e.id)return meetEditForm(e,past);
+  const head=`<div class="md-h"><div><h2>${esc(e.title)}</h2><div class="md-m">${fmtDW(e.date)}, ${hm(e.s)}–${hm(e.e)} <i class="tzi">UTC+3</i>${e.place?' · '+esc(e.place):''}</div></div><span class="rm-avs">${e.people.map(p=>av(p)).join('')}</span></div>`;
   const S=MEET_SUM[e.id];const P=PROTOCOLS[e.id]&&PROTOCOLS[e.id].saved?PROTOCOLS[e.id]:null;
   const A=AI_MEETINGS[e.id];
   if(A)return head+meetAiHtml(e,A);
@@ -1944,11 +2006,11 @@ function meetDetail(e,past){
       <div class="md-s">Задачи по итогам</div>${tasks.map(t=>`<div class="kr" data-tv="${t.id}"><i class="pdot" style="background:${PRIO[t.prio].c}"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?PEOPLE[t.owner].name:'ответственный не назначен'} · ${{new:'новая',progress:'в работе',review:'на проверке',done:'готово'}[t.status]}</span></div><span class="kr-d">${t.deadline?fmtD(t.deadline):'без срока'}</span></div>`).join('')||'<div class="small muted">Задач нет</div>'}
       ${open.length||risks.length?`<div class="md-2">${open.length?`<div><div class="md-s">Осталось открытым</div><ul class="md-q">${open.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${risks.length?`<div><div class="md-s">Риски</div><ul class="md-r">${risks.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}</div>`:''}
       <details class="md-qt"><summary>Ключевые фразы из записи</summary>${quotes.map(([p,t])=>`<div><b>${PEOPLE[p]?.short||'Спикер'}:</b> ${esc(t)}</div>`).join('')}</details>
-    </div><div class="md-act" id="mdAct"><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="btn primary" data-ma="send"><span class="ms">send</span>Отправить участникам</button></div>`}
+    </div><div class="md-act" id="mdAct"><button class="gbtn" data-ma="edit"><span class="ms">edit</span>Редактировать</button><button class="gbtn" data-ma="copy"><span class="ms">content_copy</span>Скопировать</button><button class="btn primary" data-ma="send"><span class="ms">send</span>Отправить участникам</button></div>`}
   if(past)return `${head}<div class="md-empty"><span class="ms">mic_off</span><b>Записи этой встречи нет</b><span>Нажмите «Записать» — локальная расшифровка и AI-выжимка появятся здесь.</span></div><div class="md-act" id="mdAct"><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать</button></div>`;
   const ag=buildAgenda({title:e.title,topic:e.topic||'',people:e.people,linkTask:''});
-  return `${head}<div class="md-s">Повестка</div><ol class="md-ag">${(e.agenda||ag.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${ag.src.length?`<div class="md-s">Документы</div><div>${ag.src.map(srcChip).join('')}</div>`:''}
-    <div class="md-act" id="mdAct"><button class="gbtn" data-ma="resched"><span class="ms">event_repeat</span>Перенести</button><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать</button></div>`;
+  return `${head}<div class="md-s">План встречи</div><ol class="md-ag">${(e.agenda||ag.items).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${ag.src.length?`<div class="md-s">Документы</div><div>${ag.src.map(srcChip).join('')}</div>`:''}
+    <div class="md-act" id="mdAct"><button class="gbtn" data-ma="edit"><span class="ms">edit</span>Изменить план встречи</button><button class="gbtn" data-ma="resched"><span class="ms">event_repeat</span>Перенести</button><button class="btn primary" data-ma="ai-rec"><span class="ms">mic</span>Записать</button></div>`;
 }
 function openMeetRecord(e){
   if(!e){toast('Выберите встречу');return}
@@ -1963,7 +2025,7 @@ function openMeetRecord(e){
   window.__meetRecStop=cleanup;
   const fmtT=s=>pad(Math.floor(s/60))+':'+pad(s%60);
   modal(`${mh('mic','Запись: '+esc(e.title),'var(--tomato)')}<div class="mb">
-    <div class="alert ok"><span class="ms">shield</span> Запись обрабатывается на сервере. Персональные данные обезличиваются перед анализом.</div>
+    
     <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0 12px"><input type="checkbox" id="aiRecConsent"> Участники согласны на запись</label>
     <div class="rec"><button class="recbtn" id="aiRecBtn" type="button" disabled aria-label="Запись"><span class="ms">mic</span></button><div class="wave" id="aiRecWave">${'<i></i>'.repeat(40)}</div><span id="aiRecT" class="small muted">00:00</span></div>
     <div id="aiRecStatus" class="small muted">Проверьте согласие и нажмите «Начать запись».</div>
@@ -1974,7 +2036,7 @@ function openMeetRecord(e){
   const setStatus=(t,err)=>{status.textContent=t;status.style.color=err?'var(--err)':'var(--muted)'};
   const start=async()=>{
     if(!consent.checked){toast('Подтвердите согласие участников');return}
-    if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){setStatus('Микрофон доступен только на HTTPS или localhost. Откройте приложение на ноутбуке по http://127.0.0.1:8000.',true);return}
+    if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){setStatus('Микрофон доступен только на HTTPS или localhost. Откройте приложение по HTTPS.',true);return}
     try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}
     catch(err){setStatus('Не удалось получить доступ к микрофону: '+err.name+'. Разрешите микрофон в браузере.',true);return}
     const types=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'];
@@ -2126,7 +2188,7 @@ function renderTodayList(){
         <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">${pend.length?'<button class="btn tonal sm" data-go="requests">Разобрать запросы</button>':''}${next?`<button class="btn sm" data-prep="${next.id}"><span class="ms">auto_awesome</span>Подготовиться к встрече</button>`:''}<button class="btn sm" data-copy><span class="ms">content_copy</span>Скопировать сводку</button></div>
       </div>
       <div class="card"><h2><span class="ms">schedule</span>План на день<span class="spacer"></span><button class="btn text sm" data-go="calendar">В календарь</button></h2>
-        <ul class="tl">${evs.map(e=>`<li class="${e.e<=h?'past':''}"><span class="time">${hm(e.s)}<br>${hm(e.e)}</span><span class="bar" style="background:${COLORS[e.color]}"></span><span><b style="font-weight:500">${esc(e.title)}</b><br><span class="small muted">${e.place?esc(e.place)+' · ':''}${e.people.length} уч.</span></span><span>${e.cal==='meet'&&e.e>h?`<button class="btn text sm" data-prep="${e.id}">Повестка</button>`:e.protocol?'<span class="tag ok">протокол</span>':''}</span></li>`).join('')||'<li><span></span><span></span><span class="muted">Встреч нет — хороший день для фокус-работы</span><span></span></li>'}
+        <ul class="tl">${evs.map(e=>`<li class="${e.e<=h?'past':''}"><span class="time">${hm(e.s)}<br>${hm(e.e)}</span><span class="bar" style="background:${COLORS[e.color]}"></span><span><b style="font-weight:500">${esc(e.title)}</b><br><span class="small muted">${e.place?esc(e.place)+' · ':''}${e.people.length} уч.</span></span><span>${e.cal==='meet'&&e.e>h?`<button class="btn text sm" data-prep="${e.id}">План встречи</button>`:e.protocol?'<span class="tag ok">протокол</span>':''}</span></li>`).join('')||'<li><span></span><span></span><span class="muted">Встреч нет — хороший день для фокус-работы</span><span></span></li>'}
         ${dueSoon.filter(t=>t.deadline===TODAY).map(t=>`<li><span class="time">до 18:00</span><span class="bar" style="background:var(--tomato)"></span><span>⚑ ${esc(t.title)}</span><span>${prioTag(t.prio)}</span></li>`).join('')}</ul>
       </div>
       <div class="card"><h2><span class="ms">monitoring</span>Ключевые показатели<span class="spacer"></span><span class="small muted">обновлено 11:00</span></h2>
@@ -2182,7 +2244,7 @@ function rmEventCard(e,st,h){
   let foot='';
   if(st==='past')foot=e.protocol?'<span class="tag ok"><span class="ms" style="font-size:14px">check_circle</span>протокол готов</span>':isF?'<span class="tag neutral">завершено</span>':'<button class="btn sm" data-go="meetings"><span class="ms">mic</span>Протокол</button>';
   else if(isF)foot=`<span class="tag info">уведомления приглушены</span>`;
-  else foot=`<button class="btn sm ${st==='live'?'primary':'tonal'}" data-prep="${e.id}"><span class="ms">auto_awesome</span>Повестка</button>${st==='live'?'<button class="btn sm" data-go="meetings"><span class="ms">mic</span>Записать</button>':''}`;
+  else foot=`<button class="btn sm ${st==='live'?'primary':'tonal'}" data-prep="${e.id}"><span class="ms">auto_awesome</span>План встречи</button>${st==='live'?'<button class="btn sm" data-go="meetings"><span class="ms">mic</span>Записать</button>':''}`;
   return `<div class="rm-card ${st} ${isF?'focus':''}"><div class="rm-ch"><span class="rm-dot" style="background:${COLORS[e.color]}"></span><b>${esc(e.title)}</b><button class="rm-ib" data-evp="${e.id}" title="Подробнее"><span class="ms">chevron_right</span></button></div>
     <div class="rm-meta"><span><span class="ms">schedule</span> ${hm(e.s)}–${hm(e.e)}</span>${e.place?`<span><span class="ms">location_on</span> ${esc(e.place)}</span>`:''}${st==='live'?'<span class="tag info">идёт сейчас</span>':''}</div>
     ${st==='live'?`<div class="rm-prog"><i style="width:${prog}%"></i></div>`:''}
@@ -2237,13 +2299,12 @@ function renderToday(){
     evs.filter(e=>inStage(e.s,S)).forEach(e=>{const es=e.e<=h?'past':e.s<=h?'live':'future';const isF=e.cal==='focus';
       items.push({t:e.s,html:rmRow(isF?'focus':'meet',rmPill(isF?'do_not_disturb_on':'event',hm(e.s),rmDur(e.e-e.s)+(isF?' · фокус':' · '+e.people.length+' уч.'),es,`data-evp="${e.id}"`),rmEventCard(e,es,h))});
       (e.docs||[]).filter(id=>KPI_SERIES[id]&&!usedKpi.has(id)&&canSee(DOCS.find(d=>d.id===id))).forEach(id=>{usedKpi.add(id);items.push({t:e.s+.01,html:rmRow('kpi',rmPill('monitoring','KPI',id,es==='past'?'past':''),rmKpiCard(id))})})});
-    gaps.filter(g=>inStage(g.s,S)).forEach(g=>items.push({t:g.s,html:rmRow('focus',rmPill('schedule',hm(g.s),'свободно '+rmDur(g.e-g.s),'free'),`<div class="rm-card free"><div class="rm-ch"><b>Окно ${hm(g.s)}–${hm(g.e)}</b></div><div class="rm-meta"><span class="ms" style="color:#7b4fd6">auto_awesome</span>${focusTask?`Ассистент предлагает фокус на «${esc(focusTask.title.slice(0,60))}» (${focusTask.prio})`:'Можно забронировать фокус-время'}</div><div class="rm-cf"><button class="btn sm tonal" data-rmfocus="${g.s}|${Math.min(g.e,g.s+1.5)}|${focusTask?focusTask.id:''}"><span class="ms">do_not_disturb_on</span>Забронировать ${rmDur(Math.min(g.e-g.s,1.5))}</button></div></div>`)}));
     if(S.k==='eve'&&dueToday.length)items.push({t:18,html:rmRow('task',rmPill('flag','до 18:00','дедлайн',h>=18?'err':'warn'),`<div class="rm-card"><div class="rm-ch"><b>Дедлайны сегодня</b></div><div class="rm-list">${dueToday.map(t=>rmTaskLi(t,`<button class="btn text sm" data-tv="${t.id}">Открыть</button>`)).join('')}</div></div>`)});
     items.sort((a,b)=>a.t-b.t);
     const nEv=evs.filter(e=>inStage(e.s,S)).length;
     return `<div class="rm-col ${items.length?'':'empty'}" data-col="${S.k}" data-from="${S.from}" data-to="${S.to}"><div class="rm-node ${st}"><span class="ms">${st==='past'?'check_circle':'event'}</span></div>
       <div class="rm-h"><b>${S.name}</b><span>${S.lbl}${nEv?' · '+nEv+' событ.':''}</span>${st==='live'?'<span class="tag info">сейчас</span>':''}</div>
-      ${items.map(i=>i.html).join('')||`<div class="small muted" style="padding:6px 0 0">${st==='past'?'Прошло без событий':'Пока пусто — время для фокуса'}</div>`}</div>`}).join('');
+      ${items.map(i=>i.html).join('')||`<div class="small muted" style="padding:6px 0 0">${st==='past'?'Прошло без событий':'Пока пусто'}</div>`}</div>`}).join('');
 
   /* --- column: завтра / + --- */
   let endRows='';
@@ -2301,11 +2362,13 @@ const MAILS=[
   {id:'M-6',from:'Рассылки и уведомления',time:'',subj:'7 писем',sum:'Вебинары, новости сервисов, уведомления — скрыты как неважные.',kind:'noise',status:'new'}
 ];
 const MAIL_DIGEST=()=>{const t=MAILS.filter(m=>m.task&&m.status==='new');return `За сегодня 14 писем, важных 5. ${t.length?`Нужно действовать по ${t.length}: `+t.map(m=>m.id==='M-1'?'клиент ждёт подтверждения корпоративного заказа до завтра':m.id==='M-2'?'поставщик бумаги поднимает цены с 1 декабря':'подрядчик доставки готов сократить сроки').join('; ')+'.':'Все задачи из писем уже в работе.'} Павел прислал факт октября: перерасход на сверхурочные 12%.`};
+const mailNew=()=>MAIL_ON?MAILS.filter(m=>m.task&&m.status==='new').sort((a,b)=>a.task.prio.localeCompare(b.task.prio)):[];
 function mailBlock(){
-  if(!MAIL_ON)return `<div class="mailcta"><span class="ms">mail</span><div><b>Подключите почту</b><span>Ассистент сделает выжимку писем и найдёт в них задачи</span></div><button class="gbtn sm" data-mailconnect>Подключить</button></div>`;
-  const tk=MAILS.filter(m=>m.task&&m.status==='new');
-  return `<div class="br-s">Почта</div><div class="mailsum"><p>${MAIL_DIGEST()}</p><div class="msr"><button class="gbtn sm" data-mailall>Все важные письма</button>${tk.length?`<button class="gbtn sm dark" data-inbox>Задачи из писем: ${tk.length}</button>`:''}</div></div>`;
+  if(!MAIL_ON)return `<div class="mailcta"><span class="ms">mail</span><div><b>Подключите почту</b></div><button class="gbtn sm" data-mailconnect>Подключить</button></div>`;
+  const L=mailNew();if(!L.length)return '';
+  return `<div class="br-s">Задачи из почты</div><div class="br-todo">${L.map(m=>`<div class="bt"><i class="pdot" style="background:${PRIO[m.task.prio].c}"></i><span class="bt-x"><b style="font-weight:${m.task.prio==='P1'?600:500}">${esc(m.task.title)}</b><small class="muted"> · ${esc(m.from.split(',')[0])}</small></span><button class="gbtn sm dark" data-mailtask="${m.id}">Создать</button></div>`).join('')}</div>`;
 }
+function mailCard(m){return `<div class="tcard draft" style="--pc:${PRIO[m.task.prio].c}" data-mt="${m.id}"><div class="ttl">${esc(m.task.title)}</div><div class="meta"><span class="ms" style="font-size:15px;color:#4b5bd6" title="Из письма: ${esc(m.subj)}">mail</span><span class="muted">${esc(m.from.split(',')[0].slice(0,22))}</span><span class="spacer"></span><button class="tdel" data-mailhide="${m.id}" title="Скрыть"><span class="ms">close</span></button><button class="btn primary sm" data-mailtask="${m.id}">Создать</button></div></div>`}
 function mailTasksHtml(){
   if(!MAIL_ON)return `<div class="mailcta in"><span class="ms">mail</span><div><b>Почта не подключена</b><span>После подключения сюда попадут задачи, найденные в письмах</span></div><button class="gbtn sm" data-mailconnect>Подключить</button></div>`;
   const L=MAILS.filter(m=>m.task&&m.status==='new');
@@ -2314,17 +2377,16 @@ function mailTasksHtml(){
 function mailClick(e){
   const t=e.target.closest('[data-mailtask]');if(t){const m=MAILS.find(x=>x.id===t.dataset.mailtask);modal.dirty=false;closeModal();
     openTask({title:m.task.title,context:`Из письма «${m.subj}» (${m.from}): ${m.sum}`,owner:m.task.owner,deadline:m.task.deadline,prio:m.task.prio,kpi:{...m.task.kpi},result:m.task.result,source:{type:'mail',label:'Письмо: '+m.subj},mailId:m.id});return}
-  const h=e.target.closest('[data-mailhide]');if(h){MAILS.find(x=>x.id===h.dataset.mailhide).status='hidden';log('Скрыта задача из письма',h.dataset.mailhide);$('#mailInbox').innerHTML=mailTasksHtml();renderInbox();refresh(true)}
+  const h=e.target.closest('[data-mailhide]');if(h){const m=MAILS.find(x=>x.id===h.dataset.mailhide);m.status='hidden';log('Скрыта задача из письма',m.id);refresh(true);toast('Скрыто','Вернуть',()=>{m.status='new';refresh(true)})}
 }
 function openMailConnect(){let prov='Google Workspace';
   const draw=()=>{modal(`${mh('mail','Подключить почту')}<div class="mb">
     <div class="provs">${[['Google Workspace','Gmail'],['Microsoft 365','Outlook'],['Корпоративная почта','IMAP']].map(([n,s])=>`<button class="prov" data-prov="${n}" aria-pressed="${n===prov}"><b>${n}</b><span>${s}</span></button>`).join('')}</div>
     <div class="qf"><label>Адрес</label><input class="inp" id="mailAddr" value="${MAIL_ADDR}"></div>
-    <ul class="mperm"><li>Читает входящие за последние 3 дня и делает выжимку</li><li>Находит в письмах задачи и предлагает их поставить</li><li>Не отправляет и не удаляет письма</li></ul>
     <div id="mailProg"></div></div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="mailGo">Подключить</button></div>`,'narrow');
     $$('[data-prov]').forEach(b=>b.onclick=()=>{prov=b.dataset.prov;const a=$('#mailAddr').value;draw();$('#mailAddr').value=a});
     $('#mailGo').onclick=()=>{MAIL_ADDR=$('#mailAddr').value.trim()||MAIL_ADDR;MAIL_PROV=prov;$('#mailGo').disabled=true;$('#mailProg').innerHTML='<div class="why"><span class="ms">auto_awesome</span>Читаю входящие за 3 дня…</div>';
-      setTimeout(()=>{MAIL_ON=true;log('Подключение почты',MAIL_PROV+' · '+MAIL_ADDR);log('AI: выжимка писем','14 писем','найдено задач: 3');modal.dirty=false;closeModal();refresh();toast('Почта подключена: 14 писем, найдено 3 задачи','Посмотреть',()=>{show('tasks');openInbox()})},900)}};
+      setTimeout(()=>{MAIL_ON=true;log('Подключение почты',MAIL_PROV+' · '+MAIL_ADDR);log('AI: выжимка писем','14 писем','найдено задач: 3');modal.dirty=false;closeModal();refresh();toast('Почта подключена · задач из писем: 3','Открыть',()=>show('tasks'))},900)}};
   draw();
 }
 function openMailAll(){
@@ -2333,20 +2395,24 @@ function openMailAll(){
   $('#modal').onclick=mailClick;
 }
 function openMe(){const el=$('#meAvatar');closePop();const p=document.createElement('div');p.className='pop me-pop';const U=window.APP_USER;
-  if(!U){p.innerHTML=`<div class="mp-h"><span class="avatar" style="background:#9aa0a6;width:40px;height:40px;font-size:14px">?</span><div><b>Гость</b><span>Нет активной сессии</span></div></div><div class="mp-r"><span class="ms">lock</span><div><b>Нет сессии</b><span>Обновите страницу</span></div></div>`;}
+  if(!U){p.innerHTML=`<div class="mp-t">Аккаунт</div><div class="small muted" style="padding:6px">Нет активной сессии — обновите страницу</div>`}
   else{
-    const nm=U.name||'Пользователь';const ini=nm.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
-    const opts=(U.switch_options||[]).map(o=>`<option value="${o.id}" ${o.id===U.id?'selected':''}>${esc(o.name)} · ${esc(o.dept)}</option>`).join('');
-    const roleRow=U.can_switch?`<div class="mp-r"><span class="ms">swap_horiz</span><div><b>Просмотр как</b><span>${U.is_impersonating?esc('Из аккаунта '+U.real_name):'Директор'}</span></div><select id="fpRoleSwitch" aria-label="Просмотр как" style="height:32px;border:1px solid var(--line);border-radius:9px;padding:0 8px;background:#fff;max-width:150px"><option value="__self" ${U.is_impersonating?'':'selected'}>Директор</option>${opts}</select></div>`:'';
-    p.innerHTML=`<div class="mp-h"><span class="avatar" style="background:#1a73e8;width:40px;height:40px;font-size:14px">${esc(ini)}</span><div><b>${esc(nm)}</b><span>${esc(U.role_label)} · Фотопринт</span></div></div>${roleRow}<div class="mp-r"><span class="ms">mail</span><div>${MAIL_ON?`<b>Почта подключена</b><span>${esc(MAIL_ADDR)}</span>`:'<b>Почта не подключена</b><span>выжимка писем и задачи из почты</span>'}</div>${MAIL_ON?'<button class="gbtn sm" data-mailoff>Отключить</button>':'<button class="gbtn sm" data-mailconnect>Подключить</button>'}</div><div class="mp-r"><span class="ms">badge</span><div><b>${U.role==='boss'?'Полный доступ':'Ограниченный доступ'}</b><span>${U.acls.map(esc).join(' · ')}</span></div></div>`;
+    const selfName=U.is_impersonating?(U.real_name||'Анна Ковалёва'):U.name;
+    const list=[{id:'__self',name:selfName,dept:'Директор'},...(U.switch_options||[])];
+    const cur=U.is_impersonating?U.id:'__self';
+    const ini=n=>String(n||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
+    const col=id=>(PEOPLE[id==='__self'?'anna':id]||{}).color||'#5f6368';
+    p.innerHTML=`<div class="mp-t">Аккаунты</div>${list.map(o=>`<button class="acc ${o.id===cur?'on':''}" data-acc="${o.id}"><span class="avatar acc-av" style="background:${col(o.id)}">${esc(ini(o.name))}</span><div><b>${esc(o.name)}</b><span>${esc(o.dept)}</span></div>${o.id===cur?'<span class="ms">check</span>':''}</button>`).join('')}`;
+    if(!U.can_switch&&!U.is_impersonating)p.querySelectorAll('.acc:not(.on)').forEach(x=>x.remove());
   }
-  document.body.appendChild(p);popEl=p;const r=el.getBoundingClientRect();p.style.left=Math.max(8,Math.min(r.left,innerWidth-360))+'px';p.style.top=(r.bottom+8)+'px';p.style.width='340px';
-  p.onclick=e=>{if(e.target.closest('[data-mailoff]')){MAIL_ON=false;log('Отключение почты',MAIL_ADDR);closePop();refresh();toast('Почта отключена');return}};
-  const sel=p.querySelector('#fpRoleSwitch');
-  if(sel)sel.onchange=async()=>{sel.disabled=true;try{const res=await fetch('/api/switch-role',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({user_id:sel.value==='__self'?null:sel.value})});if(res.ok){location.reload();return}const d=await res.json().catch(()=>({}));toast(d.detail||'Не удалось переключиться')}catch(e){toast('Сервер недоступен')}finally{sel.disabled=false}};
+  document.body.appendChild(p);popEl=p;const r=el.getBoundingClientRect();p.style.left=Math.max(8,Math.min(r.left,innerWidth-360))+'px';p.style.top=(r.bottom+8)+'px';p.style.width='320px';
+  p.onclick=async e=>{const b=e.target.closest('[data-acc]');if(!b||b.classList.contains('on'))return;b.disabled=true;
+    try{const res=await fetch('/api/switch-role',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({user_id:b.dataset.acc==='__self'?null:b.dataset.acc})});if(res.ok){location.reload();return}const d=await res.json().catch(()=>({}));toast(d.detail||'Не удалось переключиться')}catch(err){toast('Сервер недоступен')}finally{b.disabled=false}};
 }
 document.addEventListener('click',e=>{
   if(e.target.closest('[data-mailconnect]')){closePop();openMailConnect();return}
+  if(e.target.closest('[data-mailtask],[data-mailhide]')&&!e.target.closest('#modal')){mailClick(e);return}
+  const mt=e.target.closest('[data-mt]');if(mt){mailClick({target:{closest:sel=>sel==='[data-mailtask]'?{dataset:{mailtask:mt.dataset.mt}}:null}});return}
   if(e.target.closest('[data-mailall]')){openMailAll();return}
   if(e.target.closest('#meAvatar')){openMe();return}
 });
@@ -2366,8 +2432,8 @@ function renderSide(){
     const d=ag.src.map(id=>DOCS.find(x=>x.id===id)).find(Boolean);if(d)how.push(`Прочитать <a href="#" data-doc="${d.id}">${d.id}</a>: ${esc(lc(d.text.split('.')[0]))}`);
     if(ag.q[0])how.push(`Решить: ${esc(lc(ag.q[0].replace(/\?$/,'')))}`);
     const t=ag.tasks.find(t=>t.owner&&t.owner!==m);if(t&&how.length<2)how.push(`Спросить ${PEOPLE[t.owner].short} про «${esc(t.title.slice(0,40))}»`);
-    if(!how.length)how.push('Документов по теме нет — ассистент соберёт повестку по участникам');
-    return `<div class="bp ${e.s<=h?'live':''}"><div class="bp-h"><span class="bp-t">${e.s<=h?'идёт':hm(e.s)}</span><b data-evp="${e.id}">${esc(e.title)}</b><button class="gbtn sm" data-prep="${e.id}">Повестка</button></div><ul>${how.map(x=>`<li>${x}</li>`).join('')}</ul></div>`}).join('');
+    if(!how.length)how.push('Документов по теме нет — ассистент соберёт план встречи по участникам');
+    return `<div class="bp ${e.s<=h?'live':''}"><div class="bp-h"><span class="bp-t">${e.s<=h?'идёт':hm(e.s)}</span><b data-evp="${e.id}">${esc(e.title)}</b><button class="gbtn sm" data-prep="${e.id}">План встречи</button></div><ul>${how.map(x=>`<li>${x}</li>`).join('')}</ul></div>`}).join('');
   const todo=[];
   dueToday.forEach(t=>todo.push(['flag',`Сдать до 18:00: ${esc(t.title)}`,`data-tv="${t.id}"`,'Открыть']));
   review.forEach(t=>todo.push(['rate_review',`Проверить результат: ${esc(t.title)} (${PEOPLE[t.owner]?.short||'—'})`,`data-tv="${t.id}"`,'Проверить']));
@@ -2375,13 +2441,12 @@ function renderSide(){
   overdue.forEach(t=>todo.push(['error',`Просрочено: ${esc(t.title)} (${PEOPLE[t.owner]?.short||'—'})`,`data-nudge="${t.id}"`,t.owner===m?'Перенести':'Напомнить']));
   const lead=`${meets.length?`До конца дня ${meets.length} ${nw(meets.length)}`:'Встреч больше нет'}${todo.length?`, ${todo.length} ${todo.length===1?'дело требует':'дела требуют'} вашего решения`:''}. ${meets[0]?`Главное — «${esc(meets[0].title)}»${meets[0].s<=h?' (идёт сейчас)':' в '+hm(meets[0].s)}.`:''}`;
   $('#cxSide').innerHTML=`<div class="brief">
-    <div class="br-h"><b>Сводка дня</b><span>${WDL[(NOW.getDay()+6)%7]}, ${fmtD(NOW)} · ${hm(h)}</span></div>
+    <div class="br-h"><b>Сводка дня</b><span>${WDL[(NOW.getDay()+6)%7]}, ${fmtD(NOW)} · ${hm(h)} <i class="tzi">UTC+3</i></span></div>
     <p class="br-lead">${lead}</p>
     <button class="gbtn" data-calai style="margin:4px 0 8px"><span class="ms">auto_awesome</span>Спросить AI-советника</button>
     ${mailBlock()}
     ${prep?`<div class="br-s">Подготовиться к встречам</div>${prep}`:''}
     ${todo.length?`<div class="br-s">Решить сегодня</div><div class="br-todo">${todo.slice(0,4).map(([i,t,a,l])=>`<div class="bt"><span class="ms">${i}</span><span class="bt-x">${t}</span><button class="gbtn sm" ${a}>${l}</button></div>`).join('')}${todo.length>4?`<button class="side-more" data-go="tasks">и ещё ${todo.length-4} →</button>`:''}</div>`:''}
-    ${gap?`<div class="br-f"><span>Свободное окно ${hm(gap.s)}–${hm(gap.e)}</span><button class="gbtn sm" data-rmfocus="${gap.s}|${Math.min(gap.e,gap.s+1.5)}|">Занять фокусом</button></div>`:''}
   </div>`;
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-inbox]')){show('tasks');openInbox()}if(e.target.closest('[data-company-ai]')){openCompanyAI()}});
@@ -2441,7 +2506,7 @@ function openCalendarAI(opts={}){
   modal(`${mh('auto_awesome','AI-советник по календарю','#7b4fd6')}<div class="mb" style="padding-bottom:0">
     <div class="small muted" style="margin-bottom:8px">${focus?`Встреча: «${esc(focus.title)}» · `:''}${myEvents.length} событий и ${myTasks.length} задач в контексте · ${me()==='anna'?'все календари':PEOPLE[me()].short}</div>
     <div class="dc-log" id="calAiLog" style="max-height:340px;min-height:120px;padding:8px 0"></div>
-    <div class="dc-hint" style="padding:8px 0"><span class="ms" style="font-size:13px">shield</span> Совет по вашим событиям и задачам. Значимые действия — только после подтверждения.</div>
+    
     <div class="dc-compose" style="padding:8px 0 0;border-top:0"><textarea id="calAiQ" rows="1" placeholder="Что важно на неделе? Где найти время?" aria-label="Вопрос AI-советнику">${esc(opts.question||'')}</textarea><button class="btn primary" id="calAiGo"><span class="ms">send</span>Спросить</button></div>
   </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
   renderCalAiLog();
@@ -2512,7 +2577,7 @@ function openCompanyAI(){
   modal(`${mh('monitoring','AI-обзор','#7b4fd6')}<div class="mb" style="padding-bottom:0">
     <div class="small muted" style="margin-bottom:8px">${boss?'Вся компания':'Ваши задачи и встречи'} · ${snap.tasks.length} задач · ${snap.meetings.length} встреч · документы по вашим правам</div>
     <div class="dc-log" id="companyAiLog" style="max-height:360px;min-height:140px;padding:8px 0"></div>
-    <div class="dc-hint" style="padding:8px 0"><span class="ms" style="font-size:13px">shield</span> AI видит задачи, встречи, документы и аудит. Значимые действия — только после подтверждения.</div>
+    
     <div class="dc-compose" style="padding:8px 0 0;border-top:0"><textarea id="companyAiQ" rows="1" placeholder="Спросите про задачи, людей, сроки…" aria-label="Вопрос AI-обзору"></textarea><button class="btn primary" id="companyAiGo"><span class="ms">send</span>Спросить</button></div>
   </div><div class="mf"><button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
   renderCompanyLog();
@@ -2528,14 +2593,22 @@ let SERVER_DOCS=[],FOLDERS=[],DOC_SEL=new Set(),DOC_CHAT=[],DOC_FILTER='all',DOC
 let DOCS_LOADED=false,DOCS_LOADING=false,DOCS_CAN_MANAGE=false,DOC_ASKING=false,DOCS_UPDATED_AT='';
 const canManage=()=>window.APP_USER?window.APP_USER.role==='boss':ROLE==='director';
 const folderTitle=id=>{const f=FOLDERS.find(x=>x.id===id);return f?f.title:'Без папки'};
+let DOC_HITS=null,DOC_SEARCH_T=null;
 function docsFiltered(){
-  const q=DOC_QUERY.trim().toLowerCase();
   return SERVER_DOCS.filter(d=>{
     if(DOC_FILTER==='mine'&&!d.created_by)return false;
     if(DOC_FILTER!=='all'&&DOC_FILTER!=='mine'&&d.folder_id!==DOC_FILTER)return false;
-    return !q||String(d.title||'').toLowerCase().includes(q);
+    return !DOC_HITS||DOC_HITS.has(d.id);
   });
 }
+async function searchDocsText(q){
+  q=q.trim();if(q.length<2){DOC_HITS=null;renderDocsKeepFocus();return}
+  try{const r=await fetch('/api/docs?q='+encodeURIComponent(q),{credentials:'same-origin',cache:'no-store'});const d=await r.json();
+    if(DOC_QUERY.trim()!==q)return;DOC_HITS=new Map((d.items||[]).map(x=>[x.id,x.snippet||'']))}catch(e){DOC_HITS=null}
+  renderDocsKeepFocus();
+}
+function renderDocsKeepFocus(){const i=$('#dcSearch');const pos=i?i.selectionStart:null;const had=document.activeElement===i;renderDocs();const n=$('#dcSearch');if(n&&had){n.focus();if(pos!=null)n.setSelectionRange(pos,pos)}}
+const markQ=(txt,q)=>{const t=esc(txt);q=q.trim();if(!q)return t;const i=t.toLowerCase().replace(/ё/g,'е').indexOf(esc(q).toLowerCase().replace(/ё/g,'е'));return i<0?t:t.slice(0,i)+'<mark>'+t.slice(i,i+esc(q).length)+'</mark>'+t.slice(i+esc(q).length)};
 async function loadDocsWorkspace(force){
   if(DOCS_LOADING)return;
   if(DOCS_LOADED&&!force)return;
@@ -2556,7 +2629,7 @@ async function loadDocsWorkspace(force){
 function dcMsgHtml(m){
   if(m.role==='user')return `<div class="dc-b u">${esc(m.text).replace(/\n/g,'<br>')}</div>`;
   if(m.pending)return `<div class="dc-b a"><div class="dc-who">Ассистент</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
-  const srcs=(m.sources||[]).map(s=>`<div class="dc-src"><b data-doc="${s.id}">${esc(s.title)}</b> <span>${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
+  const srcs=(m.sources||[]).map(s=>`<div class="dc-src" data-doc="${s.id}" title="Открыть документ целиком"><b>${esc(s.title)}</b> <span>${s.id&&!String(s.id).startsWith('U-')?s.id+' · ':''}${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
   const err=m.error?` style="border-color:rgba(197,34,31,.3)"`:'';
   return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${fmtAi(m.answer)}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
 }
@@ -2567,25 +2640,25 @@ function renderDocs(){
   const folderBtns=`<button class="dc-f ${DOC_FILTER==='all'?'on':''}" data-df="all"><span class="ms">folder_open</span><b>Все документы</b><span class="c">${all.length}</span></button>`+
     FOLDERS.map(f=>`<button class="dc-f ${DOC_FILTER===f.id?'on':''}" data-df="${f.id}"><span class="ms">folder</span><b>${esc(f.title)}</b><span class="c">${f.doc_count||0}</span></button>`).join('')+
     `<button class="dc-f ${DOC_FILTER==='mine'?'on':''}" data-df="mine"><span class="ms">note_add</span><b>Мои загрузки</b><span class="c">${mine.length}</span></button>`;
-  const docsHtml=list.map(d=>`<div class="dc-doc" data-q="${esc(String(d.title||'').toLowerCase())}"><input type="checkbox" data-dsel="${d.id}" ${DOC_SEL.has(d.id)?'checked':''} aria-label="Использовать ${esc(d.title)}"><div><b data-doc="${d.id}">${esc(d.title)}</b><small>${fmtD(d.date)} · ${esc(folderTitle(d.folder_id))}${d.source_type==='email'?' · письмо':d.created_by?' · моё':''}</small></div></div>`).join('')||'<div class="small muted" style="padding:10px">Ничего не найдено</div>';
-  const log=DOC_CHAT.length?DOC_CHAT.map(dcMsgHtml).join(''):`<div class="dc-empty"><span class="ms">auto_awesome</span><b>Спросите по документам</b>Задайте вопрос по ${esc(scopeName)} или отметьте конкретные источники. В ответе будут документ, дата и фрагмент-основание.<div class="dc-sample"><button data-dcq="Проанализируй документы в этой папке: о чём они и что важно?">Проанализировать папку</button><button data-dcq="Что грозит пику спроса в неделю 48?">Что грозит пику в неделю 48?</button><button data-dcq="Какой SLA поддержки и что его роняет?">SLA поддержки</button></div></div>`;
+  const docsHtml=list.map(d=>`<div class="dc-doc" data-q="${esc(String(d.title||'').toLowerCase())}"><input type="checkbox" data-dsel="${d.id}" ${DOC_SEL.has(d.id)?'checked':''} aria-label="Использовать ${esc(d.title)}"><div><b data-doc="${d.id}">${esc(d.title)}</b><small>${d.created_by?'':d.id+' · '}${fmtD(d.date)} · ${esc(folderTitle(d.folder_id))}${d.source_type==='email'?' · письмо':d.created_by?' · моё':''}</small>${DOC_HITS&&DOC_HITS.get(d.id)?`<span class="dc-sn">${markQ(DOC_HITS.get(d.id),DOC_QUERY)}</span>`:''}</div></div>`).join('')||'<div class="small muted" style="padding:10px">Ничего не найдено</div>';
+  const log=DOC_CHAT.length?DOC_CHAT.map(dcMsgHtml).join(''):`<div class="dc-empty"><span class="ms">auto_awesome</span><b>Спросите по документам</b><div class="dc-sample"><button data-dcq="Проанализируй документы в этой папке: о чём они и что важно?">Проанализировать папку</button><button data-dcq="Что грозит пику спроса в неделю 48?">Что грозит пику в неделю 48?</button><button data-dcq="Какой SLA поддержки и что его роняет?">SLA поддержки</button></div></div>`;
   const manage=DOCS_CAN_MANAGE?`<button class="gbtn" id="dcNewFolder"><span class="ms">folder</span>Папка</button><button class="gbtn" id="dcNewMail"><span class="ms">mail</span>Письмо</button><button class="btn primary" id="dcUpload"><span class="ms">upload_file</span>Загрузить</button>`:`<span class="small muted" style="display:inline-flex;align-items:center;gap:4px"><span class="ms" style="font-size:15px">lock</span>Загрузка — только директор</span>`;
   $('#docsPage').innerHTML=`<div class="ph"><h1>Документы</h1><span class="small muted">${all.length} доступно · ${DOC_SEL.size} выбрано</span><span class="spacer" style="flex:1"></span>${manage}</div>
   <div class="dc-grid">
     <div class="glass dc-pane"><div class="dc-head"><span class="ms">folder_open</span>Папки<span style="flex:1"></span>${DOCS_CAN_MANAGE?'<button class="icon-btn" id="dcManageFolders" title="Управление папками" aria-label="Управление папками"><span class="ms">edit</span></button>':''}</div><div class="dc-list">${folderBtns}</div></div>
     <div class="glass dc-pane"><div class="dc-head"><span class="ms">description</span>Источники<span style="flex:1"></span><button class="icon-btn" id="dcRefresh" title="Обновить" aria-label="Обновить"><span class="ms">refresh</span></button></div>
-      <div class="dc-search"><span class="ms">search</span><input id="dcSearch" placeholder="Поиск по названию" aria-label="Поиск по документам" value="${esc(DOC_QUERY)}"></div>
+      <div class="dc-search"><span class="ms">search</span><input id="dcSearch" placeholder="Поиск по тексту документов" aria-label="Поиск по документам" value="${esc(DOC_QUERY)}"></div>
       <div class="dc-list" id="dcList">${docsHtml}</div>
     </div>
     <div class="glass dc-pane dc-chat"><div class="dc-head"><span class="ms">forum</span>Чат по источникам<span style="flex:1"></span><button class="icon-btn" id="dcHelp" title="Как спрашивать" aria-label="Как спрашивать"><span class="ms">help</span></button>${DOC_SEL.size?`<span class="small muted" style="text-transform:none;letter-spacing:0">выбрано ${DOC_SEL.size}</span>${DOC_FILTER!=='all'?'<button class="chip-add" id="dcUseFolder">Вся папка</button>':''}<button class="chip-add" id="dcReset">Сбросить</button>`:`<span class="small muted" style="text-transform:none;letter-spacing:0">${esc(scopeName)}</span>`}</div>
       <div class="dc-log" id="dcLog">${log}</div>
-      <div class="dc-hint"><span class="ms" style="font-size:13px">shield</span> В модель уходят только выбранные фрагменты после обезличивания. Аудио не отправляется.</div>
+      
       <div class="dc-compose"><textarea id="dcQ" rows="1" placeholder="Спросите по документам…" aria-label="Вопрос по документам">${esc(DOC_DRAFT)}</textarea><button class="btn primary" id="dcAsk" ${DOC_ASKING?'disabled':''}><span class="ms">send</span>${DOC_ASKING?'Думаю…':'Спросить'}</button></div>
     </div>
   </div>`;
   $$('[data-df]').forEach(b=>b.onclick=()=>{DOC_FILTER=b.dataset.df;DOC_SEL.clear();renderDocs()});
   $$('[data-dsel]').forEach(c=>c.onchange=()=>{if(c.checked&&!DOC_SEL.has(c.dataset.dsel)&&DOC_SEL.size>=8){c.checked=false;toast('Максимум 8 источников на один вопрос');return}c.checked?DOC_SEL.add(c.dataset.dsel):DOC_SEL.delete(c.dataset.dsel);renderDocs()});
-  const search=$('#dcSearch');if(search)search.oninput=()=>{DOC_QUERY=search.value;$$('#dcList .dc-doc').forEach(el=>{el.style.display=(el.dataset.q||'').includes(DOC_QUERY.trim().toLowerCase())?'':'none'})};
+  const search=$('#dcSearch');if(search)search.oninput=()=>{DOC_QUERY=search.value;clearTimeout(DOC_SEARCH_T);DOC_SEARCH_T=setTimeout(()=>searchDocsText(DOC_QUERY),250)};
   const q=$('#dcQ');if(q){q.oninput=()=>{DOC_DRAFT=q.value};q.onkeydown=ev=>{if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();askDocs()}}}
   if($('#dcAsk'))$('#dcAsk').onclick=askDocs;
   if($('#dcHelp'))$('#dcHelp').onclick=openDocsHelp;
@@ -2635,7 +2708,7 @@ function openDocUpload(){
     <label class="small">Название (необязательно)</label><input class="inp" id="duTitle" placeholder="Например: Регламент смен">
     <label class="small">Файл: .txt, .md, .csv, .pdf или .eml</label><input class="inp" type="file" id="duFile" accept=".txt,.md,.csv,.pdf,.eml">
     <div class="row2"><div><label class="small">Папка</label><select class="inp" id="duFolder">${folderOptions('F-REG')}</select></div><div><label class="small">Доступ</label><select class="inp" id="duAcl">${aclOptions('all')}</select></div></div>
-    <div class="alert ok"><span class="ms">shield</span> Текст хранится на сервере. В модель уходят только обезличенные фрагменты при вопросе.</div>
+    
   </div><div class="mf"><button class="btn text" onclick="closeModal()">Отмена</button><button class="btn primary" id="duGo">Загрузить</button></div>`,'narrow');
   bindFolderAcl($('#duFolder'),$('#duAcl'));
   $('#duGo').onclick=async()=>{
@@ -2768,45 +2841,66 @@ function openDocEdit(d){
   };
 }
 
+const TEAM_WEEKS={igor:[[5,4],[6,6],[4,3],[5,4]],olga:[[4,3],[5,3],[6,5],[4,2]],dima:[[3,3],[4,4],[3,3],[5,5]],maria:[[6,5],[5,4],[7,6],[6,6]],pavel:[[3,2],[2,2],[4,3],[3,3]],irina:[[2,2],[3,2],[2,1],[3,2]]};
+const KPI_DONE=[
+  {t:'Сократить время модерации макета',o:'igor',d:'Производство',k:'Время модерации',g:'≤ 4 ч',f:'3,5 ч',ok:true},
+  {t:'Снизить брак на линии календарей',o:'igor',d:'Производство',k:'Доля брака',g:'≤ 1,5%',f:'1,9%',ok:false},
+  {t:'Запустить рассылку «Осень»',o:'olga',d:'Маркетинг',k:'Лиды',g:'1 200',f:'1 340',ok:true},
+  {t:'Акция «Фотокнига выпускника»',o:'olga',d:'Маркетинг',k:'Конверсия',g:'3%',f:'2,4%',ok:false},
+  {t:'Скрипты ответов по доставке',o:'maria',d:'Поддержка',k:'Время ответа',g:'≤ 2 ч',f:'1,8 ч',ok:true},
+  {t:'Мобильное приложение: оплата в 1 клик',o:'dima',d:'Продукт',k:'Конверсия оплаты',g:'+5%',f:'+6,2%',ok:true},
+  {t:'Закрыть квартал по БДР',o:'pavel',d:'Финансы',k:'Отклонение',g:'≤ 5%',f:'4%',ok:true},
+  {t:'Закрыть вакансию технолога',o:'irina',d:'Персонал',k:'Срок закрытия',g:'≤ 30 дн',f:'38 дн',ok:false}];
+const KPI_NOW={'T-1':['сейчас 114%',.83],'T-5':['закрыто 1 из 3',.33],'T-7':['запас 2 недели',.67],'T-8':['сейчас 1,9%',.79],'T-2':['сейчас 93%',.97],'T-3':['лидов 0 · старт 24.11',0],'T-6':['прайс не обновлён',0]};
+function histHtml(){
+  const L=AUDIT.slice().sort((a,b)=>b.ts-a.ts);const hist=L.slice(0,STAT_ALL?200:6);
+  const who=a=>a.u===me()?'Вы: ':((PEOPLE[a.u]&&PEOPLE[a.u].short)||a.u||'')+': ';
+  return `<div class="glass card"><h2>История</h2><div class="hl">${hist.map(a=>{const k=histKind(a);const deny=k==='deny';const t=a.ts instanceof Date&&!isNaN(a.ts)?pad(a.ts.getHours())+':'+pad(a.ts.getMinutes()):'';
+    return `<div class="hli ${deny?'deny':''}"><span class="ms">${deny?'lock':k==='ai'?'auto_awesome':'check_circle'}</span><div><div>${k==='ai'?'Ассистент '+(AI_TEXT[a.action]||String(a.action).replace(/^AI:\s*/,'').toLowerCase()):who(a)+(HIST_TEXT[a.action]||String(a.action).toLowerCase())} ${a.obj&&a.obj!=='сессия'?`<span class="muted">«${esc(String(a.obj).slice(0,50))}»</span>`:''}</div>${deny?'<small>доступ закрыт — документ не выдан</small>':''}</div><span class="hli-t">${t}</span></div>`}).join('')||'<div class="small muted">Пока пусто</div>'}${L.length>6&&!STAT_ALL?`<button class="lane-more" id="statAll">Показать всё (${L.length})</button>`:''}</div></div>`}
 function renderStats(){
-  const m=me();const mine=TASKS.filter(t=>t.owner===m||t.created===m||t.co.includes(m));const open=mine.filter(t=>t.status!=='done');const done=mine.filter(t=>t.status==='done');
-  const late=open.filter(t=>t.deadline&&t.deadline<TODAY);const onTime=Math.round(done.length/Math.max(1,done.length+late.length)*100);
-  const rq=REQUESTS.filter(r=>(r.to===m||r.from===m)&&(r.kind==='reschedule'||r.kind==='deadline'));
-  const dups=[];open.forEach((a,i)=>open.slice(i+1).forEach(b=>{if(similar(a.title,b.title)>=.5)dups.push([a,b])}));
-  const busyJoin=REQUESTS.filter(r=>r.kind==='join').length+AUDIT.filter(a=>/занятую задачу/.test(a.action)).length;
-  const kpi=open.filter(t=>t.kpi&&t.kpi.m).sort((a,b)=>a.prio.localeCompare(b.prio));
-  const meetCount=Object.keys(AI_MEETINGS).length;
-  const meetTasks=MEETING_TASKS.length;
-  const aiActs=AUDIT.filter(a=>histKind(a)==='ai').length;
-  const srcRows=[
-    ['Задачи в срок',onTime+'%','Задачи, где вы владелец, автор или соавтор. Формула: выполненные / (выполненные + просроченные) × 100.'],
-    ['Переносы',String(rq.length),'Запросы переноса встреч и сроков из блока «Задачи»; считаются только ваши входящие и исходящие.'],
-    ['Без ответственного или срока',String(open.filter(t=>!t.owner||!t.deadline).length),'Открытые задачи без владельца или дедлайна. Ассистент не назначает их сам — только предлагает.'],
-    ['Встречи с выжимкой',String(meetCount),'Записи встреч: локальная расшифровка, обезличивание ПДн и AI-анализ. Аудио на сервере, наружу не уходит.'],
-    ['Задачи из встреч',String(meetTasks),'Задачи, подтверждённые пользователем из протокола встречи. Повторное создание блокируется идемпотентностью.'],
-    ['Действия ассистента',String(aiActs),'Журнал аудита: запросы к документам, отказы в доступе, правки выжимки и подтверждения задач.']
-  ];
-  renderAudit();const hist=AUDIT.slice(0,STAT_ALL?99:7);
-  $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1><button class="gbtn" data-company-ai><span class="ms">auto_awesome</span>AI-обзор</button></div>
-  <div class="st-tiles">
-    <div class="glass st"><span class="st-l">Задачи в срок</span><b>${onTime}%</b><span class="st-d">${late.length?`просрочено ${late.length}: ${esc(late[0].title.slice(0,34))}${late.length>1?'…':''}`:'просрочек нет'}</span></div>
-    <div class="glass st"><span class="st-l">Переносы</span><b>${rq.length}</b><span class="st-d">встреч ${rq.filter(r=>r.kind==='reschedule').length} · сроков ${rq.filter(r=>r.kind==='deadline').length} · ждут ответа ${rq.filter(r=>r.status==='pending').length}</span></div>
-    <div class="glass st" data-go="tasks" style="cursor:pointer"><span class="st-l">Без ответственного или срока</span><b>${open.filter(t=>!t.owner||!t.deadline).length}</b><span class="st-d">${open.filter(t=>!t.owner||!t.deadline).map(t=>'«'+esc(t.title.slice(0,32))+'»').slice(0,1).join('')||'у всех задач есть владелец и срок'}</span></div>
-    <div class="glass st" data-go="meetings" style="cursor:pointer"><span class="st-l">Встречи с выжимкой</span><b>${meetCount}</b><span class="st-d">расшифровка + AI-анализ</span><span class="st-src">Источник: записи встреч</span></div>
-    <div class="glass st" data-go="tasks" style="cursor:pointer"><span class="st-l">Задачи из встреч</span><b>${meetTasks}</b><span class="st-d">подтверждены пользователем</span><span class="st-src">Источник: протоколы встреч</span></div>
-  </div>
-  <div class="st-grid">
-    <div class="glass card" style="grid-column:1/-1"><h2>Что входит в статистику</h2><div class="st-hint">Каждая цифра считается из данных ниже. Нажмите на плитку выше, чтобы перейти к источнику.</div><div class="st-list">${srcRows.map(([t,v,d])=>`<div class="st-row"><div><b>${t}</b><small>${d}</small></div><span>${v}</span></div>`).join('')}</div><div class="small muted" style="margin-top:10px">Данные: задачи и запросы — в браузере, встречи и аудит — в SQLite на сервере. Обновлено ${pad(new Date().getHours())}:${pad(new Date().getMinutes())}.</div></div>
-    <div class="glass card" style="grid-column:1/-1"><h2>Управленческий обзор</h2><div class="st-hint">Просроченные решения с владельцем, сроком и источником. Источник показывает документ и дату основания.</div>${late.length?late.map(t=>`<div class="kr" data-tv="${t.id}" style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05)"><i class="pdot" style="background:var(--err)"></i><div class="kr-x"><b>${esc(t.title)}</b><span>${t.owner?PEOPLE[t.owner]?.name||t.owner:'ответственный не назначен'} · срок ${t.deadline?fmtD(t.deadline):'не задан'}</span><span class="st-src">Источник: ${t.source&&t.source.ref?(t.source.type==='doc'?srcChip(t.source.ref):esc(t.source.label||t.source.ref)):'вручную'}</span></div><span class="kr-d overdue">просрочено</span></div>`).join(''):'<div class="small muted">Просроченных решений нет</div>'}</div>
-    <div class="glass card"><h2>Цели по задачам</h2><div class="st-hint">Как поймём, что задача выполнена: метрика и значение, которые задали при постановке</div>${kpi.map(t=>`<div class="kr" data-tv="${t.id}"><i class="pdot" style="background:${PRIO[t.prio].c}"></i><div class="kr-x"><b>${esc(t.title)}</b><span>Цель: ${esc(t.kpi.m)} ${esc(t.kpi.t)}</span></div>${t.owner?av(t.owner,24):''}<span class="kr-d ${t.deadline&&t.deadline<TODAY?'overdue':''}">${t.deadline?fmtD(t.deadline):'без срока'}</span></div>`).join('')||'<div class="small muted">Нет задач с KPI</div>'}</div>
-    <div class="glass card"><h2>История</h2><div class="hl">${hist.map(a=>{const k=histKind(a);const deny=k==='deny';return `<div class="hli ${deny?'deny':''}"><span class="ms">${deny?'lock':k==='ai'?'auto_awesome':'check_circle'}</span><div><div>${k==='ai'?'Ассистент '+(AI_TEXT[a.action]||a.action.replace(/^AI:\s*/,'').toLowerCase()):(a.u===me()?'Вы: ':PEOPLE[a.u].short+': ')+(HIST_TEXT[a.action]||a.action.toLowerCase())} ${a.obj&&a.obj!=='сессия'?`<span class="muted">«${esc(String(a.obj).slice(0,50))}»</span>`:''}</div>${deny?'<small>доступ закрыт для роли — документ не выдан</small>':''}</div><span class="hli-t">${pad(a.ts.getHours())}:${pad(a.ts.getMinutes())}</span></div>`}).join('')||'<div class="small muted">Пока пусто</div>'}${AUDIT.length>7&&!STAT_ALL?`<button class="lane-more" id="statAll">Показать всё (${AUDIT.length})</button>`:''}</div></div>
-  </div>`;
+  renderAudit();const m=me();const wk=monday(NOW);const wkDays=[0,1,2,3,4].map(i=>iso(addDays(wk,i)));
+  const pct=(a,b)=>b?Math.round(a/b*100):0;const plural=(n,a,b,c)=>n%10===1&&n%100!==11?a:n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?b:c;
+  const boss=(window.APP_USER?window.APP_USER.role==='boss':ROLE==='director');
+  let html='';
+  if(boss){
+    const team=Object.keys(TEAM_WEEKS).filter(p=>PEOPLE[p]);
+    const load=team.map(p=>{const open=TASKS.filter(t=>t.owner===p&&t.status!=='done').length;const mh=EVENTS.filter(e=>e.cal==='meet'&&e.people.includes(p)&&wkDays.includes(e.date)).reduce((a,e)=>a+e.e-e.s,0);return{p,open,mh,over:open>=3||mh>=8}});
+    const maxO=Math.max(4,...load.map(x=>x.open));
+    const ot=team.map(p=>{const W=TEAM_WEEKS[p];const c=W.reduce((a,w)=>a+w[0],0),o=W.reduce((a,w)=>a+w[1],0);return{p,W,v:pct(o,c),trend:pct(W[3][1],W[3][0])-pct(W[2][1],W[2][0])}}).sort((a,b)=>a.v-b.v);
+    const tc=team.reduce((a,p)=>a+TEAM_WEEKS[p].reduce((x,w)=>x+w[0],0),0),to=team.reduce((a,p)=>a+TEAM_WEEKS[p].reduce((x,w)=>x+w[1],0),0);
+    const kOk=KPI_DONE.filter(k=>k.ok).length;const depts=[...new Set(KPI_DONE.map(k=>k.d))];const over=load.filter(x=>x.over);
+    html=`<div class="st-tiles">
+      <div class="glass st"><span class="st-l">Команда закрывает в срок</span><b>${pct(to,tc)}%</b><span class="st-d">${to} из ${tc} задач за 4 недели</span></div>
+      <div class="glass st"><span class="st-l">Перегружены сейчас</span><b>${over.length}</b><span class="st-d">${over.map(x=>PEOPLE[x.p].short).join(', ')||'никто'}</span></div>
+      <div class="glass st"><span class="st-l">Цели KPI достигнуты</span><b>${kOk} из ${KPI_DONE.length}</b><span class="st-d">по закрытым задачам за месяц</span></div></div>
+    <div class="st-grid">
+      <div class="glass card"><h2>Нагрузка команды</h2><div class="st-hint">Открытые задачи и часы встреч на этой неделе</div>${load.sort((a,b)=>b.open-a.open||b.mh-a.mh).map(x=>`<div class="lr">${av(x.p,28)}<div class="lr-x"><b>${PEOPLE[x.p].name}</b><span>${PEOPLE[x.p].role}</span></div><div class="lr-b"><i style="width:${x.open/maxO*100}%;background:${x.over?'#e8710a':'#1d1d1f'}"></i></div><span class="lr-n">${x.open} ${plural(x.open,'задача','задачи','задач')} · ${String(x.mh).replace('.',',')} ч встреч</span>${x.over?'<span class="tag" style="background:#fef3e0;color:#b75b00">перегружен</span>':x.open<=1?'<span class="tag ok">есть ресурс</span>':'<span></span>'}</div>`).join('')}</div>
+      <div class="glass card"><h2>Выполнение в срок</h2><div class="st-hint">Доля задач, закрытых вовремя, за последние 4 недели</div>${ot.map(x=>`<div class="lr">${av(x.p,28)}<div class="lr-x"><b>${PEOPLE[x.p].name}</b><span>${PEOPLE[x.p].role}</span></div><div class="wk4">${x.W.map(w=>`<i style="height:${Math.max(8,pct(w[1],w[0]))}%" title="${w[1]} из ${w[0]}"></i>`).join('')}</div><span class="lr-n"><b class="${x.v<75?'bad':''}">${x.v}%</b> ${x.trend>0?'<span class="up">▲</span>':x.trend<0?'<span class="dn">▼</span>':''}</span><span></span></div>`).join('')}</div>
+      <div class="glass card"><h2>Достижение KPI</h2><div class="st-hint">Закрытые задачи: достигнута ли цель</div><div class="kd">${depts.map(d=>{const L=KPI_DONE.filter(k=>k.d===d);return `<span class="kd-c">${d} <b>${L.filter(k=>k.ok).length}/${L.length}</b></span>`}).join('')}</div>${KPI_DONE.map(k=>`<div class="kr2"><span class="kr2-i ${k.ok?'ok':'no'}">${k.ok?'✓':'✕'}</span><div class="kr-x"><b>${esc(k.t)}</b><span>${PEOPLE[k.o].short} · ${esc(k.k)}: факт ${esc(k.f)}, цель ${esc(k.g)}</span></div></div>`).join('')}</div>
+      ${histHtml()}
+    </div>`;
+  } else {
+    const W=TEAM_WEEKS[m]||[[0,0],[0,0],[0,0],[0,0]];const cur=W[3],prev=W[2];const mx=Math.max(...W.map(w=>w[0]),1);
+    const mine=TASKS.filter(t=>t.owner===m&&t.status!=='done'&&t.kpi&&t.kpi.m);const done=KPI_DONE.filter(k=>k.o===m);
+    html=`<div class="st-tiles">
+      <div class="glass st"><span class="st-l">Закрыто на этой неделе</span><b>${cur[0]}</b><span class="st-d">${cur[0]-prev[0]>=0?'+':''}${cur[0]-prev[0]} к прошлой неделе</span></div>
+      <div class="glass st"><span class="st-l">Из них в срок</span><b>${pct(cur[1],cur[0])}%</b><span class="st-d">${cur[1]} из ${cur[0]} задач</span></div>
+      <div class="glass st"><span class="st-l">Цели KPI в работе</span><b>${mine.length}</b><span class="st-d">достигнуто за месяц: ${done.filter(k=>k.ok).length} из ${done.length}</span></div></div>
+    <div class="st-grid">
+      <div class="glass card"><h2>Моя неделя</h2><div class="st-hint">Закрытые задачи по неделям, тёмным — закрытые в срок</div>
+        <div class="wbars">${W.map((w,i)=>`<div class="wb"><div class="wb-s"><i class="all" style="height:${w[0]/mx*100}%"></i><i class="ok" style="height:${w[1]/mx*100}%"></i></div><b>${w[1]}/${w[0]}</b><small>${i===3?'эта неделя':(3-i)+' нед. назад'}</small></div>`).join('')}</div></div>
+      <div class="glass card"><h2>Мои KPI</h2><div class="st-hint">Прогресс к цели по открытым задачам</div>${mine.map(t=>{const n=KPI_NOW[t.id];return `<div class="kp" data-tv="${t.id}"><div class="kr-x"><b>${esc(t.title)}</b><span>${esc(t.kpi.m)} · цель ${esc(t.kpi.t)}${n?' · '+n[0]:''}</span></div><div class="kp-b"><i style="width:${n?Math.round(n[1]*100):0}%"></i></div></div>`}).join('')||'<div class="small muted">Нет открытых задач с KPI</div>'}
+        ${done.length?`<div class="md-s">Закрыто за месяц</div>${done.map(k=>`<div class="kr2"><span class="kr2-i ${k.ok?'ok':'no'}">${k.ok?'✓':'✕'}</span><div class="kr-x"><b>${esc(k.t)}</b><span>${esc(k.k)}: факт ${esc(k.f)}, цель ${esc(k.g)}</span></div></div>`).join('')}`:''}</div>
+      ${histHtml()}
+    </div>`;
+  }
+  $('#statPage').innerHTML=`<div class="ph"><h1>Статистика</h1><span class="spacer" style="flex:1"></span><button class="gbtn" data-company-ai><span class="ms">auto_awesome</span>AI-обзор</button></div>`+html;
   const b=$('#statAll');if(b)b.onclick=()=>{STAT_ALL=true;renderStats()};
 }
 let STAT_ALL=false;
 function reminders(){
   const m=me(),h=nowH(),R=[];
-  EVENTS.filter(e=>e.date===TODAY&&e.people.includes(m)&&e.s>h&&e.s-h<=3).forEach(e=>R.push({i:'event',c:'var(--peacock)',t:`Через ${Math.round((e.s-h)*60)} мин: ${esc(e.title)}`,s:e.docs?'Повестка и документы готовы':'Повестки нет',a:`data-prep="${e.id}"`,al:'Повестка'}));
+  EVENTS.filter(e=>e.date===TODAY&&e.people.includes(m)&&e.s>h&&e.s-h<=3).forEach(e=>R.push({i:'event',c:'var(--peacock)',t:`Через ${Math.round((e.s-h)*60)} мин: ${esc(e.title)}`,s:e.docs?'План встречи и документы готовы':'Плана встречи нет',a:`data-prep="${e.id}"`,al:'План встречи'}));
   TASKS.filter(t=>t.status!=='done'&&(t.owner===m||t.created===m)&&t.deadline&&t.deadline<TODAY).forEach(t=>R.push({i:'error',c:'var(--err)',t:`Просрочено: ${esc(t.title)}`,s:`${PEOPLE[t.owner]?.short||'—'} · срок был ${fmtD(t.deadline)}`,a:`data-nudge="${t.id}"`,al:t.owner===m?'Перенести':'Напомнить'}));
   TASKS.filter(t=>t.status!=='done'&&(t.owner===m||t.created===m)&&t.deadline&&t.deadline>=TODAY&&daysBetween(TODAY,t.deadline)<=1).forEach(t=>R.push({i:'flag',c:'var(--warn)',t:`Дедлайн ${t.deadline===TODAY?'сегодня':'завтра'}: ${esc(t.title)}`,s:t.kpi.m?'KPI: '+esc(t.kpi.m)+' '+esc(t.kpi.t):'',a:`data-tv="${t.id}"`,al:'Открыть'}));
   TASKS.filter(t=>t.status!=='done'&&t.created===m&&(!t.owner||!t.deadline)).forEach(t=>R.push({i:'help',c:'var(--warn)',t:`Нет ${!t.owner?'владельца':'срока'}: ${esc(t.title)}`,s:'Ассистент не назначает без основания',a:`data-edit="${t.id}"`,al:'Уточнить'}));
@@ -2823,23 +2917,20 @@ document.addEventListener('click',e=>{
   const c=e.target.closest('[data-copy]');if(c){const txt=$('.ai-card p')?.innerText||'';navigator.clipboard?.writeText(txt).then(()=>toast('Сводка скопирована')).catch(()=>toast('Не удалось скопировать — выделите текст вручную'));return}
 });
 async function openDoc(id){
-  let d=DOCS.find(x=>x.id===id);
-  if(!d){
-    d=SERVER_DOCS.find(x=>x.id===id);
-    if(d&&!d.text){
-      try{
-        const r=await fetch('/api/docs/'+encodeURIComponent(id),{credentials:'same-origin'});
-        if(r.ok)d=await r.json();
-      }catch(e){}
-    }
-  }
+  let d=null;
+  try{
+    const r=await fetch('/api/docs/'+encodeURIComponent(id),{credentials:'same-origin'});
+    if(r.ok)d=await r.json();
+    else if(r.status===403){log('Доступ к документу',id,'ОТКЛОНЕНО: нет прав роли');toast('Нет доступа к '+id+' для вашей роли — попытка сохранена в истории');return}
+  }catch(e){}
+  if(!d)d=SERVER_DOCS.find(x=>x.id===id&&x.text)||DOCS.find(x=>x.id===id);
   if(!d){toast('Документ не найден');return}
   const allowed=(ROLES[ROLE]&&ROLES[ROLE].access.includes(d.acl))||d.acl==='all';
   if(!allowed){log('Доступ к документу',id,'ОТКЛОНЕНО: нет прав роли');toast('Нет доступа к '+id+' для вашей роли — попытка сохранена в истории');return}
   log('Просмотр документа',id+' · '+d.title);
   const custom=!!d.created_by;
   const docHead=custom?esc(d.title):d.id+' · '+esc(d.title);
-  modal(`${mh('description',docHead)}<div class="mb"><div class="small muted" style="margin-bottom:10px">Версия от ${fmtD(d.date)} · доступ: ${ACL_NAMES[d.acl]||d.acl}${d.source_type==='email'?' · письмо':custom?' · загружен вручную':''}</div><div class="preview">${esc(d.text||'')}</div><p class="small muted">Инструкции внутри документов ассистент воспринимает как данные, не как команды.</p></div><div class="mf">${custom&&canManage()?`<button class="btn danger" id="docDel"><span class="ms">delete</span>Удалить</button><button class="btn" id="docEdit"><span class="ms">edit</span>Редактировать</button>`:''}<button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
+  modal(`${mh('description',docHead)}<div class="mb"><div class="small muted" style="margin-bottom:10px">Версия от ${fmtD(d.date)} · доступ: ${ACL_NAMES[d.acl]||d.acl}${d.source_type==='email'?' · письмо':custom?' · загружен вручную':''}</div><div class="preview">${esc(d.text||'')}</div></div><div class="mf">${custom&&canManage()?`<button class="btn danger" id="docDel"><span class="ms">delete</span>Удалить</button><button class="btn" id="docEdit"><span class="ms">edit</span>Редактировать</button>`:''}<button class="btn text" onclick="closeModal()">Закрыть</button></div>`,'wide');
   if($('#docEdit'))$('#docEdit').onclick=()=>openDocEdit(d);
   if($('#docDel'))$('#docDel').onclick=()=>confirmAct({title:'Удалить документ?',body:`<p>«${esc(d.title)}» будет удалён из базы знаний. Действие попадёт в аудит.</p>`,ok:'Удалить',danger:true,onOk:async()=>{
     try{
@@ -2883,14 +2974,14 @@ $('#monthWrap').addEventListener('click',e=>{
 /* ============ HISTORY ============ */
 let histF='all';
 if($('#histFilter'))$('#histFilter').onclick=e=>{const b=e.target.closest('[data-h]');if(!b)return;histF=b.dataset.h;$$('#histFilter .fchip').forEach(x=>x.setAttribute('aria-pressed',x===b));renderAudit()};
-const HIST_TEXT={'Подключение почты':'подключили почту','Отключение почты':'отключили почту','Удаление задачи':'удалили задачу','Восстановление задачи':'вернули удалённую задачу','Скрыта задача из письма':'скрыли задачу из письма','Рассылка выжимки':'отправили выжимку встречи','Фокус-время забронировано':'забронировали фокус-время','Смена важности':'изменили важность задачи',
+const HIST_TEXT={'Изменение плана встречи':'изменили план встречи','Рассылка плана встречи':'разослали план встречи','Редактирование выжимки':'отредактировали выжимку встречи','Подключение почты':'подключили почту','Отключение почты':'отключили почту','Удаление задачи':'удалили задачу','Восстановление задачи':'вернули удалённую задачу','Скрыта задача из письма':'скрыли задачу из письма','Рассылка выжимки':'отправили выжимку встречи','Фокус-время забронировано':'забронировали фокус-время','Смена важности':'изменили важность задачи',
  'Вход в систему':'вошли в систему','Смена роли':'сменили роль','Создание встречи + приглашения':'создали встречу и отправили приглашения','Создание события':'добавили событие',
  'Отмена встречи':'отменили встречу','Перенос встречи':'перенесли встречу','Запрос переноса встречи':'попросили перенести встречу','Перенос дедлайна':'перенесли срок задачи',
  'Запрос переноса срока':'попросили перенести срок','Создание задачи':'поставили задачу','Изменение задачи':'изменили задачу','Взятие задачи в работу':'взяли задачу в работу',
  'Попытка взять занятую задачу':'пытались взять задачу, которую уже делает коллега','Смена статуса':'сменили статус задачи','Задача на проверку':'отправили задачу на проверку',
  'Запрос на подключение':'попросили подключиться к задаче','Заявка на задачу':'отправили заявку на задачу','Принятие заявки':'приняли заявку','Согласование':'согласовали запрос',
  'Отклонение запроса':'отклонили запрос','Отзыв запроса':'отозвали запрос','Обратная связь':'дали обратную связь по задаче','Напоминание исполнителю':'напомнили исполнителю',
- 'Сохранение протокола + задач':'сохранили протокол встречи и задачи','Запись встречи':'начали запись встречи','Рассылка повестки':'разослали повестку',
+ 'Сохранение протокола + задач':'сохранили протокол встречи и задачи','Запись встречи':'начали запись встречи','Рассылка плана встречи':'разослали план встречи',
  'Просмотр документа':'открыли документ','Доступ к документу':'пытались открыть закрытый документ','Доступ к документу через ассистента':'спросили ассистента о закрытом документе',
  'Запрос к ассистенту':'спросили ассистента','Оценка ответа ассистента':'оценили ответ ассистента','Обратная связь по AI':'оставили отзыв об ответе ассистента',
  'Попытка обойти правила':'попросили ассистента обойти правила',
@@ -2900,7 +2991,7 @@ const HIST_TEXT={'Подключение почты':'подключили по�
  'Доступ к встрече':'попытались открыть встречу другой роли'
 };
 const AI_TEXT={'AI: выжимка писем':'сделал выжимку писем и нашёл задачи','AI: разбор описания':'разобрал описание задачи','AI: подбор времени для переноса':'подобрал время для переноса','AI: подбор времени':'подобрал время для встречи','AI: подбор времени (чат)':'подобрал время для встречи','AI: подбор времени для переноса':'подобрал время для переноса',
- 'AI: проект повестки':'подготовил проект повестки','AI: подготовка встречи':'подготовил материалы к встрече','AI: улучшение формулировки задачи':'предложил формулировку задачи',
+ 'AI: проект плана встречи':'подготовил проект плана встречи','AI: подготовка встречи':'подготовил материалы к встрече','AI: улучшение формулировки задачи':'предложил формулировку задачи',
  'AI: протокол из расшифровки':'составил протокол по расшифровке','Ответ по документу':'ответил по документу','Ответ ассистента':'не нашёл ответа в документах и сказал об этом',
  'Запрос к ассистенту':'ответил по документам'};
 function histKind(a){if(/ОТКЛОН/.test(a.result))return'deny';if(AI_TEXT[a.action]||/^AI:/.test(a.action)||a.action==='Запрос к ассистенту')return'ai';return'me'}
@@ -2956,6 +3047,6 @@ $('#meAvatar').style.background=PEOPLE.anna.color;$('#meAvatar').textContent='А
 $('#inboxBtn').onclick=openInbox;updateCounts();
 const h0=(location.hash||'').slice(1);show(['calendar','today','tasks','requests','meetings','docs','audit','stats'].includes(h0)?h0:'calendar');scrollToWork();
 </script>
-<script src="/static/session.js?v=2" defer></script>
+<script src="/static/session.js?v=3" defer></script>
 </body>
 </html>

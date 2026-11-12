@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import gzip
 import json
+import math
 import re
 
 try:
@@ -11,7 +12,7 @@ try:
 except ImportError:  # brotli не обязателен: без него остаётся gzip
     brotli = None
 from contextlib import asynccontextmanager
-from datetime import date as date_cls, timedelta
+from datetime import date as date_cls, datetime, timedelta, timezone
 from typing import Any
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
@@ -352,6 +353,9 @@ def _merge_intervals(intervals: list[tuple[float, float]]) -> list[tuple[float, 
     return merged
 
 
+MINSK_TZ = timezone(timedelta(hours=3), "Europe/Minsk")
+
+
 def _free_slots(
     events: list,
     busy: list,
@@ -363,7 +367,11 @@ def _free_slots(
         return []
     people = set(participants)
     slots: list[dict] = []
-    day = date_from
+    # Минск — UTC+3 без перехода на летнее время. Прошедшие окна не предлагаем.
+    now = datetime.now(MINSK_TZ)
+    today = now.date()
+    now_hour = now.hour + now.minute / 60
+    day = max(date_from, today)
     while day <= date_to and len(slots) < 8:
         if day.weekday() < 5:
             iso_day = day.isoformat()
@@ -378,6 +386,8 @@ def _free_slots(
                 if b.date == iso_day and b.person in people
             ]
             cursor = WORK_START
+            if day == today:
+                cursor = max(cursor, math.ceil(now_hour * 2) / 2)
             for start, end in _merge_intervals(intervals):
                 if start - cursor >= MIN_SLOT:
                     slots.append(
@@ -926,10 +936,39 @@ async def folder_delete(folder_id: str, user: dict = Depends(auth.current_user))
     return {"ok": True, "deleted": folder_id}
 
 
+def _doc_snippet(text: str, pos: int, qlen: int, radius: int = 60) -> str:
+    start = max(0, pos - radius)
+    end = min(len(text), pos + qlen + radius)
+    # Не обрезаем слова посередине.
+    while start > 0 and not text[start - 1].isspace():
+        start -= 1
+        if pos - start > radius + 20:
+            break
+    while end < len(text) and not text[end].isspace():
+        end += 1
+    snippet = text[start:end].replace("\n", " ").strip()
+    return ("…" if start > 0 else "") + snippet + ("…" if end < len(text) else "")
+
+
 @app.get("/api/docs")
-async def docs(user: dict = Depends(auth.current_user)):
+async def docs(
+    q: str = Query("", max_length=200),
+    user: dict = Depends(auth.current_user),
+):
     keys = ("id", "title", "date", "acl", "folder_id", "source_type", "created_by", "created_at")
-    items = [{k: d.get(k, "") for k in keys} for d in db.list_docs(user["acls"])]
+    query = retrieval.normalize(q).strip()
+    items = []
+    # Доступ проверяется в SQL до поиска: закрытые документы в выдачу не попадают.
+    for d in db.list_docs(user["acls"]):
+        item = {k: d.get(k, "") for k in keys}
+        if len(query) >= 2:
+            title = retrieval.normalize(d.get("title", ""))
+            text = d.get("text", "") or ""
+            pos = retrieval.normalize(text).find(query)
+            if query not in title and pos < 0:
+                continue
+            item["snippet"] = _doc_snippet(text, pos, len(query)) if pos >= 0 else ""
+        items.append(item)
     return {"items": items, "role": user["role"], "can_manage": user["role"] == "boss"}
 
 

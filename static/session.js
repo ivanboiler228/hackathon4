@@ -40,6 +40,8 @@
           if (typeof AI_LOADED !== "undefined") AI_LOADED.add(item.event_id);
           if (typeof ensureMeetingFromAI === "function") ensureMeetingFromAI(item);
         });
+        // Bootstrap уже вернул все выжимки — отдельные запросы по встречам не нужны.
+        window.AI_BOOTED = true;
         if (typeof MEETING_TASKS !== "undefined") MEETING_TASKS = boot.tasks || [];
         if (typeof addServerTask === "function") {
           (boot.tasks || []).forEach((item) => addServerTask(item));

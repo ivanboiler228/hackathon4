@@ -228,6 +228,14 @@ def init_db() -> None:
         docs_path: Path = settings.data_dir / "docs.json"
         if docs_path.exists():
             docs = json.loads(docs_path.read_text(encoding="utf-8"))
+            seeded_ids = [doc["id"] for doc in docs]
+            # Встроенные документы, которых больше нет в docs.json, убираем.
+            # Загруженные пользователями (created_by) не трогаем.
+            conn.execute(
+                f"DELETE FROM docs WHERE source_type='doc' AND (created_by IS NULL OR created_by='') "
+                f"AND id NOT IN ({','.join('?' for _ in seeded_ids)})",
+                tuple(seeded_ids),
+            )
             for doc in docs:
                 conn.execute(
                     """

@@ -420,3 +420,17 @@ def test_employee_cannot_edit_another_meeting(client):
     response = client.put("/api/meetings/E-BOSS/ai", json={"summary": "Подмена"})
     assert response.status_code == 403
     assert db.get_meeting_ai("E-BOSS")["summary"] == "Выжимка"
+
+
+def test_full_text_search_respects_acl(client):
+    found = client.get("/api/docs", params={"q": "ночную смену"}).json()["items"]
+    ids = {item["id"] for item in found}
+    assert "D-15" in ids
+    assert any("ночную смену" in item["snippet"].lower() for item in found if item["id"] == "D-15")
+
+    boss = {item["id"] for item in client.get("/api/docs", params={"q": "оборот"}).json()["items"]}
+    assert "D-12" in boss
+
+    _switch(client, "igor")
+    employee = {item["id"] for item in client.get("/api/docs", params={"q": "оборот"}).json()["items"]}
+    assert "D-12" not in employee
