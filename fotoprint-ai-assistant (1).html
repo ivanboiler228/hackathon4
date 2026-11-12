@@ -956,9 +956,6 @@ input[type=date].inp{padding:0 10px;font-family:inherit}
 .dc-src b{font-weight:600}
 .dc-src span{color:var(--ink2)}
 .dc-frag{color:var(--ink2);margin-top:3px;line-height:1.4}
-.dc-priv{margin-top:8px;font-size:12px;color:var(--ink2)}
-.dc-priv summary{cursor:pointer}
-.dc-priv pre{white-space:pre-wrap;max-height:180px;overflow:auto;background:rgba(0,0,0,.04);padding:8px;border-radius:10px;margin:6px 0 0;font-size:11px}
 .dc-compose{display:flex;gap:8px;align-items:flex-end;padding:12px;border-top:1px solid rgba(0,0,0,.06)}
 .dc-compose textarea{flex:1;min-height:44px;max-height:120px;resize:vertical;border:1px solid rgba(0,0,0,.1);border-radius:14px;padding:10px 12px;font:inherit;font-size:13.5px;background:#fff}
 .dc-hint{font-size:11.5px;color:var(--ink2);padding:0 14px 10px;line-height:1.4}
@@ -2687,7 +2684,7 @@ function dcMsgHtml(m){
   if(m.pending)return `<div class="dc-b a"><div class="dc-who">Ассистент</div><span class="dc-typing"><i></i><i></i><i></i></span></div>`;
   const srcs=(m.sources||[]).map(s=>`<div class="dc-src" data-doc="${s.id}" title="Открыть документ целиком"><b>${esc(s.title)}</b> <span>${s.id&&!String(s.id).startsWith('U-')?s.id+' · ':''}${fmtD(s.date)}</span>${s.fragment?`<div class="dc-frag">${esc(s.fragment)}</div>`:''}</div>`).join('');
   const err=m.error?` style="border-color:rgba(197,34,31,.3)"`:'';
-  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${fmtAi(m.answer)}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}${m.masked_preview?`<details class="dc-priv"><summary>Что ушло в модель</summary><pre>${esc(m.masked_preview)}</pre></details>`:''}</div>`;
+  return `<div class="dc-b a"${err}><div class="dc-who">Ассистент${m.sources&&m.sources.length?' · источников '+m.sources.length:''}</div><div>${fmtAi(m.answer)}</div>${srcs?`<div class="dc-srcs">${srcs}</div>`:''}</div>`;
 }
 function renderDocs(){
   if(!DOCS_LOADED&&!DOCS_LOADING)loadDocsWorkspace();
