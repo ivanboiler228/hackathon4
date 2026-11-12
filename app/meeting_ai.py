@@ -25,6 +25,7 @@ SUMMARY_SYSTEM = (
     + """
 Ты обрабатываешь расшифровку рабочей встречи. Верни только валидный JSON без markdown:
 {
+  "topic_match": true,
   "summary": "краткая выжимка на 3–6 предложений",
   "decided": ["что явно решено на встрече"],
   "proposed": ["что предложено, но не утверждено"],
@@ -34,6 +35,8 @@ SUMMARY_SYSTEM = (
   "risks": ["риск"]
 }
 Правила:
+- «Контекст» в этом задании — это блок <transcript>;
+- сначала проверь, относится ли расшифровка к названию встречи. Если это посторонний или бытовой разговор, не связанный с темой, поставь topic_match=false, в summary напиши «В записи нет обсуждения темы «...»», а все массивы оставь пустыми; не выдумывай связь с темой;
 - строго различай «решено», «предложено», «обсуждалось» и «требует уточнения»;
 - поручения и задачи не дублируй в «решено», если это не управленческое решение;
 - не выдумывай факты, владельцев и сроки;
@@ -97,6 +100,7 @@ def _normalize(data: dict) -> dict:
     needs = _as_list(data.get("needs_clarification") or data.get("open_questions"))
     return {
         "summary": str(data.get("summary") or "").strip(),
+        "topic_match": bool(data.get("topic_match", True)),
         "decided": decided,
         "proposed": _as_list(data.get("proposed")),
         "discussed": _as_list(data.get("discussed")),
@@ -211,6 +215,22 @@ async def summarize(transcript: str, title: str = "Встреча") -> dict:
         raise MeetingAIError("DeepSeek вернул не объект")
 
     normalized = _normalize(data)
+    if normalized.get("topic_match") is False:
+        # Модель явно сказала, что запись не про тему встречи:
+        # не показываем выдуманные решения/задачи, но сохраняем честный ответ.
+        normalized["summary"] = normalized["summary"] or f"В записи нет обсуждения темы «{masked_title}»."
+        normalized["decided"] = []
+        normalized["proposed"] = []
+        normalized["discussed"] = []
+        normalized["needs_clarification"] = []
+        normalized["tasks"] = []
+        normalized["risks"] = []
+        normalized["protocol"] = {
+            "decided": [],
+            "proposed": [],
+            "discussed": [],
+            "needs_clarification": [],
+        }
     if not normalized["summary"]:
         raise MeetingAIError("DeepSeek не вернул выжимку")
 
