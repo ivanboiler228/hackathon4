@@ -101,7 +101,9 @@ powershell -ExecutionPolicy Bypass -File scripts\start_demo.ps1
 ```
 
 Скрипт поднимает FastAPI (если он ещё не запущен), ждёт `/health`, затем поднимает
-HTTPS-туннель и обновляет QR. Остановить всё:
+HTTPS-туннель и обновляет QR. Если порт 8000 занят другим приложением (например, Godot AI),
+скрипт автоматически берёт 8001/8010/8020 и пишет выбор в `tools/port.txt`.
+Остановить всё:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\stop_demo.ps1

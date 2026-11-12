@@ -8,6 +8,12 @@ $PidFile = Join-Path $Tools "tunnel.pid"
 $UrlFile = Join-Path $Tools "public-url.txt"
 $OutLog = Join-Path $Tools "tunnel.out.log"
 $ErrLog = Join-Path $Tools "tunnel.err.log"
+$PortFile = Join-Path $Tools "port.txt"
+$Port = 8000
+if (Test-Path $PortFile) {
+    $StoredPort = Get-Content $PortFile | Select-Object -First 1
+    if ($StoredPort) { $Port = [int]$StoredPort }
+}
 
 New-Item -ItemType Directory -Force -Path $Tools | Out-Null
 Remove-Item $OutLog, $ErrLog -ErrorAction SilentlyContinue
@@ -26,7 +32,7 @@ if (-not $Ssh) {
 }
 
 $Args = @(
-    "-R", "80:127.0.0.1:8000",
+    "-R", "80:127.0.0.1:$Port",
     "-o", "StrictHostKeyChecking=no",
     "-o", "ServerAliveInterval=30",
     "-o", "ExitOnForwardFailure=yes",
