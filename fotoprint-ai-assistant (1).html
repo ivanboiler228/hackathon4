@@ -295,14 +295,22 @@ textarea.inp{height:auto;min-height:70px;padding:9px 12px;resize:vertical;line-h
 .mcell.we{background:#fcfcfd}
 .mnum{align-self:center;font-size:12px;font-weight:500;min-width:26px;height:26px;padding:0 6px;border-radius:13px;display:grid;place-items:center;margin-bottom:2px;white-space:nowrap}
 .mnum:hover{background:var(--hover)}.mnum.today{background:var(--primary);color:#fff}
-.mev{display:flex;align-items:center;gap:5px;width:100%;min-width:0;font-size:12px;line-height:1.3;padding:2px 6px;border-radius:4px;text-align:left}
+.mev{display:flex;align-items:center;gap:5px;width:100%;min-width:0;font-size:12px;line-height:1.3;padding:2px 6px;border-radius:4px;text-align:left;overflow:hidden}
 .mev:hover{background:var(--hover)}
 .mev i{width:8px;height:8px;border-radius:50%;flex:none}
-.mev .mt{color:var(--muted);flex:none}
+.mev .mev-t{color:var(--muted);flex:none}
 .mev .mn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mev.dl{color:#fff}.mev.dl:hover{filter:brightness(.95)}
 .mmore{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:1px 6px;border-radius:4px}
 .mmore:hover{background:var(--hover);color:var(--text)}
+@media (max-width:700px){
+  .month-wrap .mev{padding:1px 3px;gap:3px;font-size:10px;line-height:1.15}
+  .month-wrap .mev .mev-t{display:none}
+  .month-wrap .mev .mn{font-size:10px}
+  .month-wrap .mcell{padding:2px;gap:1px}
+  .month-wrap .mnum{font-size:10px;min-width:20px;height:20px;margin-bottom:0}
+  .month-wrap .mmore{font-size:10px;padding:1px 3px}
+}
 /* history */
 .fchip{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 12px;border:1px solid var(--line);border-radius:8px;font-weight:500;font-size:13px;color:#3c4043;background:#fff}
 .fchip .ms{font-size:18px}
@@ -493,6 +501,10 @@ textarea.inp{height:auto;min-height:70px;padding:9px 12px;resize:vertical;line-h
 .ev .ev-av i{font-style:normal;font-size:10px;background:#fff;border-radius:11px;padding:3px 6px;margin-left:2px}
 .ev.focus{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.55) 0 6px,transparent 6px 12px)}
 .ev .badge{color:#1f1f1f}
+.ev.short{display:flex;align-items:center;gap:4px;padding:0 8px}
+.ev.short b{flex:1;min-width:0;font-size:10.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev.short .t{flex:none;font-size:9.5px;line-height:1.15;white-space:nowrap}
+.ev.short .badge{display:none}
 .now{background:#1f1f1f}.now::before{background:#1f1f1f}
 /* widgets */
 .cx-widgets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;flex:none}
@@ -1277,7 +1289,7 @@ function renderCal(){
     const cols=[];list.forEach(e=>{let c=0;while(cols[c]&&cols[c].some(x=>overlap(x.s,x.e,e.s,e.e)))c++;(cols[c]=cols[c]||[]).push(e);e._c=c});
     list.forEach(e=>{const tot=Math.max(1,...list.filter(x=>overlap(x.s,x.e,e.s,e.e)).map(x=>x._c+1));const w=100/tot;
       const pr=REQUESTS.find(r=>r.kind==='reschedule'&&r.obj===e.id&&r.status==='pending');
-      g+=`<div class="ev ${e.cal==='focus'?'focus':''} ${e.pending?'pending':''}" data-ev="${e.id}" tabindex="0" style="top:calc(var(--hour)*${e.s});height:calc(var(--hour)*${e.e-e.s} - 2px);--ec:${COLORS[e.color]||'#9aa0a6'};left:calc(${w*e._c}% + 2px);width:calc(${w}% - 8px)">
+      g+=`<div class="ev ${e.cal==='focus'?'focus':''} ${e.pending?'pending':''} ${e.e-e.s<1?'short':''}" data-ev="${e.id}" tabindex="0" style="top:calc(var(--hour)*${e.s});height:calc(var(--hour)*${e.e-e.s} - 2px);--ec:${COLORS[e.color]||'#9aa0a6'};left:calc(${w*e._c}% + 2px);width:calc(${w}% - 8px)">
         <b>${esc(e.title)}</b><span class="t">${hm(e.s)} – ${hm(e.e)}</span>${e.place&&e.e-e.s>=1.5?'<span class="t">'+esc(e.place)+'</span>':''}${e.e-e.s>=1.5&&e.people.length>1?`<span class="ev-av">${e.people.slice(0,4).map(p=>av(p)).join('')}${e.people.length>4?`<i>+${e.people.length-4}</i>`:''}</span>`:''}
         ${e.protocol?'<span class="ms badge" title="Есть протокол">description</span>':''}${pr?'<span class="ms badge" title="Запрошен перенос" style="color:#fff59d">schedule</span>':''}</div>`});
     if(ds===TODAY)g+=`<div class="now" style="top:calc(var(--hour)*${nowH()})"></div>`;
@@ -2991,7 +3003,7 @@ function renderMonth(){
     const show=items.slice(0,3),more=items.length-show.length;
     h+=`<div class="mcell ${d.getMonth()!==f.getMonth()?'out':''} ${(d.getDay()+6)%7>4?'we':''}" data-day="${ds}">
       <button class="mnum ${ds===TODAY?'today':''}" data-goto-day="${ds}" aria-label="${fmtDW(ds)}">${d.getDate()===1?d.getDate()+' '+MON[d.getMonth()].slice(0,3):d.getDate()}</button>
-      ${show.map(x=>x.k==='e'?`<button class="mev" data-mev="${x.e.id}"><i style="background:${COLORS[x.e.color]||CAL[x.e.cal].hex}"></i><span class="mt">${hm(x.e.s)}</span><span class="mn">${esc(x.e.title)}</span></button>`
+      ${show.map(x=>x.k==='e'?`<button class="mev" data-mev="${x.e.id}"><i style="background:${COLORS[x.e.color]||CAL[x.e.cal].hex}"></i><span class="mev-t">${hm(x.e.s)}</span><span class="mn">${esc(x.e.title)}</span></button>`
         :`<button class="mev dl" data-task="${x.t.id}" style="background:${x.t.deadline<TODAY?'var(--tomato)':'#e67c73'}"><span class="mn">⚑ ${esc(x.t.title)}</span></button>`).join('')}
       ${more>0?`<button class="mmore" data-goto-day="${ds}">ещё ${more}</button>`:''}
     </div>`}
