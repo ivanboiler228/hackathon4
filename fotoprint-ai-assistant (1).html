@@ -1057,6 +1057,17 @@ body[data-sec=calendar] .cx-cal{background:linear-gradient(180deg,rgba(177,124,2
 .mailcta span:not(.ms){display:block;font-size:12px;color:var(--ink2);margin-top:2px}
 .need-lbl{color:#b06000}
 .mh .icon-btn:focus:not(:focus-visible),.mh button:focus:not(:focus-visible){outline:none!important;box-shadow:none!important}
+@media (min-width:901px){
+  #v-docs .page,#v-meetings .page{flex:1;min-height:0;display:flex;flex-direction:column}
+  #v-docs .dc-grid{flex:1;min-height:0;align-items:stretch}
+  #v-docs .dc-pane{height:100%;max-height:none;min-height:0}
+  #v-docs .dc-log{max-height:none}
+  #v-meetings .mt-grid{flex:1;min-height:0;align-items:stretch}
+  #v-meetings .mcol{height:100%}
+  #v-meetings .mcol .mlist2{flex:1;min-height:0;overflow:auto}
+  #v-meetings .mdet{height:100%;display:flex;flex-direction:column;overflow:auto}
+  #v-meetings .mdet .md-act{margin-top:auto}
+}
 </style>
 <link rel="stylesheet" href="/static/fonts.css?v=1">
 <link rel="stylesheet" href="/static/mobile.css?v=13">
