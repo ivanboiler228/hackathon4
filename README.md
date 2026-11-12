@@ -609,16 +609,26 @@ python scripts\reset_demo.py
 
 ## Лицензии
 
+Полный перечень сторонних компонентов, моделей, данных и лицензий — в
+[THIRD_PARTY.md](THIRD_PARTY.md). Там 40 Python-пакетов, 165 npm-пакетов,
+модель Vosk, FFmpeg, API и данные.
+
+Коротко:
+
 | Компонент | Лицензия |
 |---|---|
-| FastAPI, Starlette, Pydantic | MIT |
-| Uvicorn | BSD-3-Clause |
-| httpx, itsdangerous, python-dotenv | BSD |
-| qrcode, pypdf | BSD |
+| FastAPI, Pydantic | MIT |
+| Starlette, Uvicorn, httpx, itsdangerous, python-dotenv | BSD-3-Clause |
+| qrcode, pypdf | BSD-3-Clause |
+| Pillow | MIT-CMU |
 | Vosk + модель `vosk-model-small-ru-0.22` | Apache-2.0 |
-| imageio-ffmpeg / ffmpeg | BSD / LGPL-2.1+ (сборка пакета) |
+| imageio-ffmpeg | BSD-2-Clause |
+| FFmpeg (сборка пакета) | LGPL-2.1+ |
+| Tunnelmole, Node.js | MIT |
 | DeepSeek API | коммерческие условия провайдера |
-| Синтетические данные | созданы командой для хакатона |
+| Синтетические данные и образцы | созданы командой для хакатона |
+| Material Design Icons (встроенные SVG) | Apache-2.0 |
+| Шрифты | системные, внешние Google Fonts не подключены |
 
 ## Шифрование: что есть и чего нет
 

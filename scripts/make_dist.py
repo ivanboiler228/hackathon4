@@ -25,6 +25,7 @@ INCLUDE_FILES = [
     "DEPLOY.md",
     "SECURITY.md",
     "TZ_REQUIREMENTS.md",
+    "THIRD_PARTY.md",
     "Procfile",
     "run.ps1",
     ".gitignore",
