@@ -23,6 +23,7 @@ INCLUDE_FILES = [
     "requirements.txt",
     "README.md",
     "DEPLOY.md",
+    "SECURITY.md",
     "Procfile",
     "run.ps1",
     ".gitignore",
