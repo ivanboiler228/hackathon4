@@ -2,15 +2,17 @@
 from __future__ import annotations
 
 import asyncio
+import gzip
 import json
 import re
 from contextlib import asynccontextmanager
 from datetime import date as date_cls, timedelta
 from typing import Any
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile, status
-from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.gzip import GZipMiddleware
 
 from . import auth, calendar_ai, db, documents, meeting_ai, overview_ai, retrieval, stt
 from .config import settings
@@ -36,6 +38,37 @@ from .schemas import (
 
 APP_HTML = settings.base_dir / "fotoprint-ai-assistant (1).html"
 limiter = RateLimiter(settings.rate_limit_per_minute)
+_html_cache: dict[int, tuple[bytes, bytes]] = {}
+
+
+def _html_payload() -> tuple[bytes, bytes]:
+    stamp = APP_HTML.stat().st_mtime_ns
+    payload = _html_cache.get(stamp)
+    if payload is None:
+        raw = APP_HTML.read_bytes()
+        payload = (raw, gzip.compress(raw, 6))
+        _html_cache.clear()
+        _html_cache[stamp] = payload
+    return payload
+
+
+def html_response(request: Request, cache_control: str | None = None) -> Response:
+    """Отдаёт HTML с заранее сжатым gzip и явным Content-Length.
+
+    Туннели (Tunnelmole) надёжнее принимают ответы с Content-Length,
+    чем chunked-поток, поэтому сжимаем один раз и кешируем по mtime.
+    """
+    raw, gz = _html_payload()
+    accepts_gzip = "gzip" in (request.headers.get("accept-encoding") or "").lower()
+    if accepts_gzip:
+        response = Response(content=gz, media_type="text/html; charset=utf-8")
+        response.headers["Content-Encoding"] = "gzip"
+        response.headers["Vary"] = "Accept-Encoding"
+    else:
+        response = Response(content=raw, media_type="text/html; charset=utf-8")
+    if cache_control:
+        response.headers["Cache-Control"] = cache_control
+    return response
 
 
 @asynccontextmanager
@@ -43,10 +76,17 @@ async def lifespan(_: FastAPI):
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     settings.static_dir.mkdir(parents=True, exist_ok=True)
     db.init_db()
+    if APP_HTML.exists():
+        try:
+            raw = APP_HTML.read_bytes()
+            _html_cache[APP_HTML.stat().st_mtime_ns] = (raw, gzip.compress(raw, 6))
+        except OSError:
+            pass
     yield
 
 
 app = FastAPI(title="Фотопринт · AI-ассистент", version="1.0.0", lifespan=lifespan)
+app.add_middleware(GZipMiddleware, minimum_size=500)
 app.mount("/static", StaticFiles(directory=str(settings.static_dir)), name="static")
 
 
@@ -56,8 +96,14 @@ async def security_headers(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
-    if request.url.path.startswith("/api/"):
+    path = request.url.path
+    if path.startswith("/api/"):
         response.headers["Cache-Control"] = "no-store"
+    elif "cache-control" not in response.headers:
+        if path.startswith("/static/"):
+            response.headers["Cache-Control"] = "public, max-age=3600"
+        elif path == "/":
+            response.headers["Cache-Control"] = "public, max-age=60, stale-while-revalidate=30"
     return response
 
 
@@ -90,7 +136,7 @@ async def index(request: Request):
         demo = db.get_user(settings.demo_user)
         if not demo:
             raise HTTPException(status_code=503, detail="Демо-пользователь не найден")
-        response = RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+        response = html_response(request, cache_control="no-store")
         auth.set_session_cookie(response, demo["id"])
         db.log_audit(
             user_id=demo["id"],
@@ -100,7 +146,7 @@ async def index(request: Request):
             meta={"role_label": demo["role_label"]},
         )
         return response
-    return FileResponse(APP_HTML)
+    return html_response(request)
 
 
 @app.post("/api/logout")
@@ -132,6 +178,20 @@ async def me(user: dict = Depends(auth.current_user)):
     if data["can_switch"]:
         data["switch_options"] = _switch_options()
     return data
+
+
+@app.get("/api/bootstrap")
+async def bootstrap(user: dict = Depends(auth.current_user)):
+    """Один запрос для старта: пользователь, выжимки, задачи и аудит."""
+    data = auth.public_user(user)
+    if data["can_switch"]:
+        data["switch_options"] = _switch_options()
+    return {
+        "user": data,
+        "meetings": db.list_meeting_ai(user),
+        "tasks": db.list_meeting_tasks(user),
+        "audit": db.list_audit(user, limit=100),
+    }
 
 
 @app.post("/api/switch-role")
@@ -1571,3 +1631,4 @@ async def ask(payload: AskRequest, user: dict = Depends(auth.current_user)):
 async def audit(limit: int = Query(30, ge=1, le=100), user: dict = Depends(auth.current_user)):
     items = db.list_audit(user, limit=limit)
     return {"items": items, "scope": "all" if user["role"] == "boss" else "own"}
+

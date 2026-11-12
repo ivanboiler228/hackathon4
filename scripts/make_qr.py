@@ -66,7 +66,7 @@ def make_card(url: str, out: Path) -> None:
     canvas.paste(qr, ((width - qr.width) // 2, 210))
 
     draw.text((width // 2, 982), "Наведите камеру телефона", font=hint_font, fill="#1d1d1f", anchor="mm")
-    display_url = url.replace("https://", "").replace("http://", "").rstrip("/")
+    display_url = url.split("?")[0].replace("https://", "").replace("http://", "").rstrip("/")
     draw.text((width // 2, 1032), display_url, font=url_font, fill="#7a7f87", anchor="mm")
     draw.text(
         (width // 2, 1084),

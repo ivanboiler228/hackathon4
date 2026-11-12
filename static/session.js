@@ -11,9 +11,10 @@
 
   async function load() {
     try {
-      const r = await fetch("/api/me", { credentials: "same-origin", cache: "no-store" });
+      const r = await fetch("/api/bootstrap", { credentials: "same-origin", cache: "no-store" });
       if (!r.ok) return;
-      const user = await r.json();
+      const boot = await r.json();
+      const user = boot.user;
       window.APP_USER = user;
 
       // Применяем роль к клиентским данным, не меняя сам дизайн.
@@ -32,33 +33,19 @@
         /* если страница открыта без основного скрипта */
       }
 
-      // Подтягиваем серверные выжимки, задачи и аудит, чтобы данные не терялись после перезагрузки.
+      // Один запрос уже содержит выжимки, задачи и аудит.
       try {
-        const [mr, tr, ar] = await Promise.all([
-          fetch("/api/meetings/ai", { credentials: "same-origin", cache: "no-store" }),
-          fetch("/api/tasks", { credentials: "same-origin", cache: "no-store" }),
-          fetch("/api/audit?limit=100", { credentials: "same-origin", cache: "no-store" }),
-        ]);
-        if (mr.ok) {
-          const data = await mr.json();
-          (data.items || []).forEach((item) => {
-            if (typeof AI_MEETINGS !== "undefined") AI_MEETINGS[item.event_id] = item;
-            if (typeof AI_LOADED !== "undefined") AI_LOADED.add(item.event_id);
-            if (typeof ensureMeetingFromAI === "function") ensureMeetingFromAI(item);
-          });
+        (boot.meetings || []).forEach((item) => {
+          if (typeof AI_MEETINGS !== "undefined") AI_MEETINGS[item.event_id] = item;
+          if (typeof AI_LOADED !== "undefined") AI_LOADED.add(item.event_id);
+          if (typeof ensureMeetingFromAI === "function") ensureMeetingFromAI(item);
+        });
+        if (typeof MEETING_TASKS !== "undefined") MEETING_TASKS = boot.tasks || [];
+        if (typeof addServerTask === "function") {
+          (boot.tasks || []).forEach((item) => addServerTask(item));
         }
-        if (tr.ok) {
-          const data = await tr.json();
-          if (typeof MEETING_TASKS !== "undefined") MEETING_TASKS = data.items || [];
-          if (typeof addServerTask === "function") {
-            (data.items || []).forEach((item) => addServerTask(item));
-          }
-        }
-        if (ar.ok) {
-          const data = await ar.json();
-          window.SERVER_AUDIT = data.items || [];
-          if (typeof mergeServerAudit === "function") mergeServerAudit(data.items || []);
-        }
+        window.SERVER_AUDIT = boot.audit || [];
+        if (typeof mergeServerAudit === "function") mergeServerAudit(boot.audit || []);
         if (typeof refresh === "function") refresh(true);
       } catch {
         /* без бэкенда */

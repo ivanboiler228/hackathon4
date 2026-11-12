@@ -2,14 +2,17 @@
 $Root = Split-Path -Parent $PSScriptRoot
 $Tools = Join-Path $Root "tools"
 
+$SupervisorPidFile = Join-Path $Tools "tunnel-supervisor.pid"
 $TunnelPidFile = Join-Path $Tools "tunnel.pid"
-if (Test-Path $TunnelPidFile) {
-    $TunnelPid = Get-Content $TunnelPidFile | Select-Object -First 1
-    if ($TunnelPid) {
-        Stop-Process -Id ([int]$TunnelPid) -Force -ErrorAction SilentlyContinue
-        Write-Host "Туннель остановлен (PID $TunnelPid)."
+foreach ($file in @($SupervisorPidFile, $TunnelPidFile)) {
+    if (Test-Path $file) {
+        $processId = Get-Content $file | Select-Object -First 1
+        if ($processId) {
+            Stop-Process -Id ([int]$processId) -Force -ErrorAction SilentlyContinue
+            Write-Host "Туннель остановлен (PID $processId)."
+        }
+        Remove-Item $file -ErrorAction SilentlyContinue
     }
-    Remove-Item $TunnelPidFile -ErrorAction SilentlyContinue
 }
 
 $ServerPidFile = Join-Path $Tools "server.pid"

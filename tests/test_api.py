@@ -6,9 +6,9 @@ from app.main import app
 
 
 def _login(client: TestClient) -> None:
-    """Демо-автовход: директор открывает / и получает сессию."""
+    """Демо-автовход: директор открывает / и сразу получает сессию и HTML."""
     r = client.get("/", follow_redirects=False)
-    assert r.status_code == 303
+    assert r.status_code in (200, 303)
     assert settings.session_cookie in client.cookies
     assert client.get("/api/me").json()["role"] == "boss"
 
