@@ -55,3 +55,19 @@ def test_html_without_gzip_has_content_length(tmp_path, monkeypatch):
         assert "content-encoding" not in response.headers
         assert response.headers.get("content-length")
         assert response.headers.get("transfer-encoding") is None
+
+
+def test_html_is_brotli(tmp_path, monkeypatch):
+    import pytest
+
+    pytest.importorskip("brotli")
+    monkeypatch.setattr(settings, "db_path", tmp_path / "br.db")
+    db.init_db()
+    with TestClient(app) as client:
+        client.get("/")
+        response = client.get("/", headers={"Accept-Encoding": "br"})
+        assert response.status_code == 200
+        assert response.headers.get("content-encoding") == "br"
+        assert response.headers.get("content-length")
+        assert response.headers.get("transfer-encoding") is None
+        assert "Accept-Encoding" in response.headers.get("vary", "")

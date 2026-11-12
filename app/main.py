@@ -5,6 +5,11 @@ import asyncio
 import gzip
 import json
 import re
+
+try:
+    import brotli
+except ImportError:  # brotli не обязателен: без него остаётся gzip
+    brotli = None
 from contextlib import asynccontextmanager
 from datetime import date as date_cls, timedelta
 from typing import Any
@@ -38,34 +43,39 @@ from .schemas import (
 
 APP_HTML = settings.base_dir / "fotoprint-ai-assistant (1).html"
 limiter = RateLimiter(settings.rate_limit_per_minute)
-_html_cache: dict[int, tuple[bytes, bytes]] = {}
+_html_cache: dict[int, tuple[bytes, bytes, bytes | None]] = {}
 
 
-def _html_payload() -> tuple[bytes, bytes]:
+def _html_payload() -> tuple[bytes, bytes, bytes | None]:
     stamp = APP_HTML.stat().st_mtime_ns
     payload = _html_cache.get(stamp)
     if payload is None:
         raw = APP_HTML.read_bytes()
-        payload = (raw, gzip.compress(raw, 6))
+        compressed = brotli.compress(raw, quality=11) if brotli else None
+        payload = (raw, gzip.compress(raw, 6), compressed)
         _html_cache.clear()
         _html_cache[stamp] = payload
     return payload
 
 
 def html_response(request: Request, cache_control: str | None = None) -> Response:
-    """Отдаёт HTML с заранее сжатым gzip и явным Content-Length.
+    """Отдаёт HTML с предварительным сжатием и явным Content-Length.
 
     Туннели (Tunnelmole) надёжнее принимают ответы с Content-Length,
     чем chunked-поток, поэтому сжимаем один раз и кешируем по mtime.
     """
-    raw, gz = _html_payload()
-    accepts_gzip = "gzip" in (request.headers.get("accept-encoding") or "").lower()
-    if accepts_gzip:
-        response = Response(content=gz, media_type="text/html; charset=utf-8")
-        response.headers["Content-Encoding"] = "gzip"
-        response.headers["Vary"] = "Accept-Encoding"
+    raw, gz, br = _html_payload()
+    accepts = (request.headers.get("accept-encoding") or "").lower()
+    if br is not None and "br" in accepts:
+        body, encoding = br, "br"
+    elif "gzip" in accepts:
+        body, encoding = gz, "gzip"
     else:
-        response = Response(content=raw, media_type="text/html; charset=utf-8")
+        body, encoding = raw, None
+    response = Response(content=body, media_type="text/html; charset=utf-8")
+    if encoding:
+        response.headers["Content-Encoding"] = encoding
+        response.headers["Vary"] = "Accept-Encoding"
     if cache_control:
         response.headers["Cache-Control"] = cache_control
     return response
@@ -79,7 +89,11 @@ async def lifespan(_: FastAPI):
     if APP_HTML.exists():
         try:
             raw = APP_HTML.read_bytes()
-            _html_cache[APP_HTML.stat().st_mtime_ns] = (raw, gzip.compress(raw, 6))
+            _html_cache[APP_HTML.stat().st_mtime_ns] = (
+                raw,
+                gzip.compress(raw, 6),
+                brotli.compress(raw, quality=11) if brotli else None,
+            )
         except OSError:
             pass
     yield

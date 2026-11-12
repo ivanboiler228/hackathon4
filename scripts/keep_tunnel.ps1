@@ -68,6 +68,15 @@ function Test-Health([string]$BaseUrl, [int]$TimeoutSec = 20) {
     }
 }
 
+function Test-LocalHealth([int]$Port) {
+    try {
+        $response = Invoke-WebRequest -UseBasicParsing ("http://127.0.0.1:$Port/health") -TimeoutSec 4
+        return ($response.StatusCode -eq 200 -and $response.Content -match '"status"\s*:\s*"ok"')
+    } catch {
+        return $false
+    }
+}
+
 function Find-PublicUrl([System.Diagnostics.Process]$Process, [int]$TimeoutSec = 60) {
     $deadline = (Get-Date).AddSeconds($TimeoutSec)
     while ((Get-Date) -lt $deadline) {
@@ -161,9 +170,13 @@ while ($true) {
             $fails++
             Write-Log "health check failed ($fails/3)"
             if ($fails -ge 3) {
-                Write-Log "tunnel is unhealthy; reconnecting"
-                Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
-                break
+                if (Test-LocalHealth $port) {
+                    Write-Log "tunnel is unhealthy; reconnecting"
+                    Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+                    break
+                }
+                Write-Log "local server is down; keeping the tunnel and waiting"
+                $fails = 0
             }
         }
     }
